@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
 עדכון יומי — דירות להשכרה ברמת גן
-מחפש מודעות מפייסבוק ופלטפורמות נוספות, מייצר דף HTML, שולח מייל.
+שולף מודעות ישירות מ-API של יד2, מייצר דף HTML, שולח מייל.
 """
 
 import anthropic
 import os
 import sys
+import json
 import smtplib
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -17,16 +19,9 @@ RECIPIENT_EMAIL = "mirit.tc@gmail.com"
 SENDER_EMAIL    = "miritronicohen@gmail.com"
 SITE_URL        = "https://mirittc-prog.github.io/rent-ramat-gan"
 
-SEARCH_QUERIES = [
-    '"דירה להשכרה רמת גן" site:facebook.com',
-    '"דירות להשכרה ברמת גן" facebook',
-    '"להשכרה רמת גן" facebook קבוצה שכירות',
-    '"שכירות רמת גן" facebook 2025 OR 2026',
-    'rent apartment "Ramat Gan" facebook group',
-    '"דירה" OR "חדר" "רמת גן" "להשכרה" facebook',
-]
-
-DIGEST_TITLE = "🏠 דירות להשכרה ברמת גן"
+DIGEST_TITLE    = "🏠 דירות להשכרה ברמת גן"
+CITY_CODE       = 8600   # קוד עיר יד2 עבור רמת גן
+MAX_LISTINGS    = 50     # מקסימום מודעות לשליפה
 # ────────────────────────────────────────────────────────────────────────────
 
 HEBREW_MONTHS = [
@@ -34,9 +29,19 @@ HEBREW_MONTHS = [
     "יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"
 ]
 
+YAD2_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Referer": "https://www.yad2.co.il/",
+    "Origin": "https://www.yad2.co.il",
+}
+
+
 def get_date_str():
     now = datetime.now()
     return f"{now.day} ב{HEBREW_MONTHS[now.month-1]} {now.year}"
+
 
 def get_issue_number():
     now = datetime.now()
@@ -44,60 +49,114 @@ def get_issue_number():
     return max(1, (now - base).days + 1)
 
 
-def generate_html(client, date_str, issue):
-    print("🔍 מחפש מודעות...")
+def fetch_yad2_listings():
+    """שולף מודעות להשכרה ברמת גן ישירות מ-API של יד2."""
+    print("🏠 שולף מודעות מיד2...")
 
-    queries_formatted = "\n".join(f'{i+1}. {q}' for i, q in enumerate(SEARCH_QUERIES))
+    url = "https://gw.yad2.co.il/feed-search-legacy/realestate/rent"
+    params = {
+        "city":       CITY_CODE,
+        "priceOnly":  1,
+        "forceLdLoad": "true",
+    }
 
-    prompt = f"""חפש ברשת מודעות להשכרת דירות ברמת גן מפייסבוק ופלטפורמות נוספות.
-הרץ את החיפושים הבאים:
-{queries_formatted}
+    try:
+        resp = requests.get(url, params=params, headers=YAD2_HEADERS, timeout=20)
+        resp.raise_for_status()
+        data = resp.json()
+    except requests.RequestException as e:
+        print(f"⚠️ שגיאה בשליפת יד2: {e}")
+        return []
 
-לאחר החיפוש, צור עמוד HTML מלא ומושלם בעברית עם כל המודעות שמצאת.
+    listings = []
+    feed = data.get("data", {}).get("feed", {}).get("feed_items", [])
+
+    for item in feed:
+        if item.get("type") != "ad":
+            continue
+
+        item_id = item.get("id", "")
+        price   = item.get("price", "")
+        rooms   = item.get("rooms", "")
+        street  = item.get("street", "")
+        hood    = item.get("neighborhood", "")
+        floor   = item.get("floor", "")
+        sqm     = item.get("square_meters", "")
+        date    = item.get("date", "")
+        title   = item.get("title", "")
+        row2    = item.get("row2", "")
+
+        address = " ".join(filter(None, [street, hood]))
+        link    = f"https://www.yad2.co.il/item/{item_id}" if item_id else ""
+
+        listings.append({
+            "id":      item_id,
+            "title":   title or row2 or address or "דירה להשכרה",
+            "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
+            "rooms":   str(rooms) if rooms else "לא צוין",
+            "address": address or "רמת גן",
+            "floor":   str(floor) if floor else "",
+            "sqm":     str(sqm) if sqm else "",
+            "date":    date,
+            "link":    link,
+        })
+
+        if len(listings) >= MAX_LISTINGS:
+            break
+
+    print(f"✅ נמצאו {len(listings)} מודעות ביד2")
+    return listings
+
+
+def generate_html(client, listings, date_str, issue):
+    print("🎨 מייצר דף HTML...")
+
+    if listings:
+        listings_text = json.dumps(listings, ensure_ascii=False, indent=2)
+        data_section = f"נמצאו {len(listings)} מודעות ביד2. הנה הנתונים:\n{listings_text}"
+    else:
+        data_section = "לא נמצאו מודעות ביד2 כרגע. צור דף עם הסבר ידידותי וקישורים לחיפוש ידני."
+
+    prompt = f"""צור עמוד HTML מלא ומושלם בעברית עבור דירות להשכרה ברמת גן.
+
+{data_section}
 
 דרישות עיצוב:
 - כיוון RTL, dir="rtl" lang="he", כל הטקסט בעברית
 - רקע כהה: #0d0d14, כרטיסים: #1e1e2e עם גבול #2a2a3e
 - צבע ראשי: #4a9eff (כחול), משני: #e94560 (אדום)
-- Navbar דביק עם הכותרת "{DIGEST_TITLE}" + {date_str}
-- Hero section עם סטטיסטיקות (מספר מודעות, טווח מחירים)
-- טאבים לפילטור: הכל / חדרים 1-2 / 3-4 חדרים / 5+ חדרים
+- Navbar דביק: "{DIGEST_TITLE}" + {date_str}
+- Hero section: כותרת, עדכון #{issue}, סטטיסטיקות (מספר מודעות, טווח מחירים, ממוצע)
+- טאבים לפילטור: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים
 - כרטיסים מגיבים למובייל
 - כל CSS ו-JS מוטמעים בקובץ אחד
 
-לכל מודעה שמצאת, צור כרטיס עם:
-- כותרת (קישור ישיר למודעה המקורית — חובה!)
-- תגיות: מחיר בש"ח, מספר חדרים, שכונה ברמת גן (אם ידוע)
-- תיאור קצר 1-2 משפטים
-- כפתור "לצפייה במודעה ←" המקשר ישירות לפוסט/מודעה
-- תגית "🆕 חדש!" אם המודעה מהשבוע האחרון
+לכל מודעה צור כרטיס עם:
+- כותרת + כתובת (קישור ישיר לדף המודעה ביד2 — חובה! השתמש ב-link מהנתונים)
+- תגיות: מחיר, מספר חדרים, קומה (אם יש), שטח במ"ר (אם יש)
+- כפתור "לצפייה במודעה ←" עם href לקישור
+- תגית "🆕 חדש!" אם המודעה מהיום או אתמול
 
-אם לא נמצאו מודעות ספציפיות, הצג הסבר ידידותי + קישורים ישירים לקבוצות הפייסבוק הרלוונטיות ולחיפוש ביד2/מדלן.
-
-מבנה הדף:
-1. Navbar: "{DIGEST_TITLE}" + {date_str} (sticky)
-2. Hero: כותרת, עדכון #{issue}, סטטיסטיקות
-3. טאבים לפילטור לפי מספר חדרים
-4. כרטיסי מודעות
-5. Footer: "נוצר אוטומטית על ידי Claude · {date_str}"
+מבנה:
+1. Navbar (sticky)
+2. Hero עם סטטיסטיקות
+3. טאבים
+4. כרטיסי מודעות ממוינים לפי תאריך (חדש ראשון)
+5. Footer: "מקור: יד2 · נוצר אוטומטית על ידי Claude · {date_str}"
 
 החזר אך ורק HTML מלא מ-<!DOCTYPE html> עד </html>, ללא שום טקסט אחר."""
 
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=16000,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
         messages=[{"role": "user", "content": prompt}]
     )
 
-    html = ""
-    for block in response.content:
-        if hasattr(block, "text") and block.text:
-            html += block.text
+    html = response.content[0].text if response.content else ""
 
     if "<!DOCTYPE" in html:
         start = html.find("<!DOCTYPE")
-        end = html.rfind("</html>") + 7
+        end   = html.rfind("</html>") + 7
         if end > start:
             html = html[start:end]
 
@@ -108,11 +167,11 @@ def generate_html(client, date_str, issue):
     return html
 
 
-def send_notification_email(date_str, issue, app_password):
+def send_notification_email(date_str, issue, listing_count, app_password):
     print("📧 שולח מייל...")
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"🏠 עדכון #{issue} — דירות להשכרה ברמת גן · {date_str}"
+    msg["Subject"] = f"🏠 {listing_count} דירות להשכרה ברמת גן · {date_str}"
     msg["From"]    = SENDER_EMAIL
     msg["To"]      = RECIPIENT_EMAIL
 
@@ -129,16 +188,15 @@ def send_notification_email(date_str, issue, app_password):
     <div style="padding:28px 32px;">
       <p style="font-size:16px;color:#333;line-height:1.6;">היי מירית! 👋</p>
       <p style="font-size:15px;color:#555;line-height:1.7;">
-        עדכון המודעות היומי שלך מוכן —<br>
-        דירות להשכרה ברמת גן מפייסבוק ומפלטפורמות נוספות.
+        נמצאו <strong style="color:#4a9eff;">{listing_count} מודעות</strong> להשכרה ברמת גן ביד2 היום.
       </p>
       <div style="text-align:center;margin:28px 0;">
         <a href="{SITE_URL}" style="background:#4a9eff;color:white;text-decoration:none;padding:14px 36px;border-radius:8px;font-size:16px;font-weight:bold;display:inline-block;">
-          לצפייה במודעות ←
+          לצפייה בכל המודעות ←
         </a>
       </div>
       <p style="font-size:13px;color:#999;border-top:1px solid #eee;padding-top:16px;margin-top:8px;">
-        נשלח אוטומטית על ידי Claude · {date_str}<br>
+        מקור: יד2 · נשלח אוטומטית על ידי Claude · {date_str}<br>
         <a href="{SITE_URL}" style="color:#4a9eff;">{SITE_URL}</a>
       </p>
     </div>
@@ -157,7 +215,7 @@ def send_notification_email(date_str, issue, app_password):
 
 
 def main():
-    api_key      = os.environ.get("ANTHROPIC_API_KEY")
+    api_key      = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     app_password = os.environ.get("GMAIL_APP_PASSWORD", "").replace('\xa0', '').replace(' ', '').strip()
 
     if not api_key:
@@ -173,12 +231,17 @@ def main():
 
     print(f"📅 מייצר עדכון — {date_str} (עדכון #{issue})")
 
-    html = generate_html(client, date_str, issue)
+    # 1. שליפת מודעות מיד2
+    listings = fetch_yad2_listings()
+
+    # 2. יצירת HTML עם Claude
+    html = generate_html(client, listings, date_str, issue)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
     print(f"✅ index.html נשמר ({len(html):,} תווים)")
 
-    send_notification_email(date_str, issue, app_password)
+    # 3. שליחת מייל
+    send_notification_email(date_str, issue, len(listings), app_password)
 
 
 if __name__ == "__main__":
