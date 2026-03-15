@@ -1,1062 +1,480 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="he">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏠 דירות להשכרה ברמת גן – 15 במרץ 2026</title>
+<title>דירות להשכרה ברמת גן</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0d0d14;
-    --card: #1e1e2e;
-    --border: #2a2a3e;
-    --primary: #4a9eff;
-    --secondary: #e94560;
-    --text: #e0e0f0;
-    --muted: #8888aa;
-    --success: #36d399;
-    --warning: #f5a623;
-    --radius: 14px;
-  }
-
-  html { scroll-behavior: smooth; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    background: #0d0d14;
+    color: #e0e0f0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    direction: rtl;
     min-height: 100vh;
   }
 
-  /* ===== NAVBAR ===== */
+  /* Navbar */
   .navbar {
     position: sticky;
     top: 0;
-    z-index: 999;
-    background: rgba(13,13,20,0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    background: rgba(13,13,20,0.97);
+    border-bottom: 2px solid #2a2a3e;
+    backdrop-filter: blur(10px);
     padding: 0 24px;
-    height: 62px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-
   .navbar-brand {
-    font-size: 1.18rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    color: var(--primary);
+    color: #4a9eff;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-
   .navbar-date {
-    font-size: 0.82rem;
-    color: var(--muted);
-    background: var(--card);
-    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: #888;
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
     border-radius: 20px;
     padding: 4px 14px;
   }
 
-  /* ===== HERO ===== */
+  /* Hero */
   .hero {
-    background: linear-gradient(135deg, #0d0d14 0%, #141428 50%, #0d1a2e 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 56px 24px 44px;
+    background: linear-gradient(135deg, #0d0d14 0%, #1a1a2e 50%, #0d0d14 100%);
+    border-bottom: 1px solid #2a2a3e;
+    padding: 48px 24px 40px;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
-
   .hero::before {
     content: '';
     position: absolute;
-    top: -80px; left: 50%;
-    transform: translateX(-50%);
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(74,158,255,0.07) 0%, transparent 70%);
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(74,158,255,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
-
-  .hero-badge {
-    display: inline-block;
-    background: rgba(74,158,255,0.12);
-    border: 1px solid rgba(74,158,255,0.3);
-    color: var(--primary);
-    border-radius: 20px;
-    padding: 4px 16px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin-bottom: 18px;
-    letter-spacing: 0.04em;
-  }
-
-  .hero h1 {
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
+  .hero-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
     margin-bottom: 10px;
-    line-height: 1.2;
+    line-height: 1.3;
   }
+  .hero-title span { color: #4a9eff; }
 
-  .hero h1 span { color: var(--primary); }
-
-  .hero-sub {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-bottom: 36px;
+  .update-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 20px;
+    padding: 5px 16px;
+    font-size: 0.82rem;
+    color: #aaa;
+    margin-bottom: 32px;
   }
-
-  .hero-sub .update-badge {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: var(--success);
+  .update-badge .dot {
+    width: 7px; height: 7px;
+    background: #e94560;
     border-radius: 50%;
-    margin-left: 6px;
-    animation: pulse 1.6s infinite;
+    animation: pulse 2s infinite;
   }
-
   @keyframes pulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.4); }
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.5; transform:scale(1.3); }
   }
 
-  .stats-row {
+  .stats-grid {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 16px;
+    flex-wrap: wrap;
   }
-
-  .stat-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+  .stat-card {
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 14px;
     padding: 18px 28px;
     min-width: 140px;
-    text-align: center;
     transition: border-color 0.2s;
   }
-
-  .stat-box:hover { border-color: var(--primary); }
-
-  .stat-num {
-    font-size: 1.9rem;
+  .stat-card:hover { border-color: #4a9eff; }
+  .stat-value {
+    font-size: 1.7rem;
     font-weight: 800;
-    color: var(--primary);
-    display: block;
+    color: #4a9eff;
+    line-height: 1;
+    margin-bottom: 4px;
   }
-
   .stat-label {
     font-size: 0.78rem;
-    color: var(--muted);
-    margin-top: 2px;
+    color: #888;
   }
 
-  /* ===== INFO BANNER ===== */
-  .info-banner {
-    background: rgba(233,69,96,0.08);
-    border: 1px solid rgba(233,69,96,0.25);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    margin: 28px auto;
-    max-width: 860px;
-    font-size: 0.88rem;
-    color: #f8c6ce;
+  /* No Results */
+  .no-results-section {
+    max-width: 700px;
+    margin: 48px auto 32px;
+    padding: 0 24px;
+  }
+  .no-results-card {
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .no-results-icon {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .no-results-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .no-results-desc {
+    color: #888;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* Search Links */
+  .search-links {
     display: flex;
-    gap: 10px;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
   }
-
-  .info-banner .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-
-  /* ===== MAIN CONTENT ===== */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
+  .search-link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0d0d14;
+    border: 1px solid #2a2a3e;
+    border-radius: 12px;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: #e0e0f0;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    gap: 12px;
   }
+  .search-link-btn:hover {
+    border-color: #4a9eff;
+    background: rgba(74,158,255,0.07);
+    color: #4a9eff;
+    transform: translateX(-3px);
+  }
+  .search-link-btn .link-icon { font-size: 1.3rem; }
+  .search-link-btn .link-text { flex: 1; text-align: right; }
+  .search-link-btn .link-arrow { color: #4a9eff; font-size: 1.1rem; }
 
-  /* ===== SECTION TITLE ===== */
-  .section-title {
+  /* Tips Section */
+  .tips-section {
+    max-width: 700px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+  .tips-card {
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 20px;
+    padding: 28px 32px;
+  }
+  .tips-title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--text);
-    margin: 36px 0 18px;
+    color: #4a9eff;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ===== TABS ===== */
-  .tabs-wrap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 28px 0 24px;
-  }
-
-  .tab-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 30px;
-    padding: 8px 20px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-  }
-
-  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
-
-  .tab-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-  }
-
-  /* ===== CARDS GRID ===== */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 20px;
-  }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: var(--primary);
-    box-shadow: 0 8px 32px rgba(74,158,255,0.12);
-  }
-
-  .card-header {
-    padding: 20px 20px 12px;
-    flex: 1;
-  }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    gap: 8px;
-  }
-
-  .card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-    line-height: 1.35;
-    flex: 1;
-  }
-
-  .card-title:hover { color: var(--primary); }
-
-  .new-badge {
-    background: var(--secondary);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    border-radius: 10px;
-    padding: 3px 9px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 12px 0;
-  }
-
-  .tag {
-    border-radius: 20px;
-    padding: 3px 12px;
-    font-size: 0.78rem;
-    font-weight: 600;
-  }
-
-  .tag-price {
-    background: rgba(74,158,255,0.14);
-    border: 1px solid rgba(74,158,255,0.3);
-    color: var(--primary);
-  }
-
-  .tag-rooms {
-    background: rgba(54,211,153,0.12);
-    border: 1px solid rgba(54,211,153,0.28);
-    color: var(--success);
-  }
-
-  .tag-area {
-    background: rgba(245,166,35,0.1);
-    border: 1px solid rgba(245,166,35,0.28);
-    color: var(--warning);
-  }
-
-  .tag-source {
-    background: rgba(233,69,96,0.1);
-    border: 1px solid rgba(233,69,96,0.25);
-    color: var(--secondary);
-  }
-
-  .card-desc {
-    font-size: 0.87rem;
-    color: var(--muted);
-    line-height: 1.55;
-  }
-
-  .card-footer {
-    padding: 14px 20px;
-    border-top: 1px solid var(--border);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .btn-view {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(74,158,255,0.12);
-    border: 1px solid rgba(74,158,255,0.3);
-    color: var(--primary);
-    border-radius: 8px;
-    padding: 8px 18px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s;
-    font-family: inherit;
-    cursor: pointer;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .btn-view:hover {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
-  }
-
-  /* ===== DIVIDER SECTION ===== */
-  .divider-section {
-    margin: 44px 0 28px;
-    padding-top: 28px;
-    border-top: 1px solid var(--border);
-  }
-
-  .divider-section h2 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--text);
-  }
-
-  .divider-section p {
-    font-size: 0.88rem;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
-
-  /* ===== GROUPS GRID ===== */
-  .groups-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .group-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .group-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-3px);
-  }
-
-  .group-card-name {
-    font-size: 0.97rem;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .group-card-meta {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  .group-card-meta span {
-    display: inline-block;
-    margin-left: 12px;
-  }
-
-  .btn-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(233,69,96,0.1);
-    border: 1px solid rgba(233,69,96,0.25);
-    color: var(--secondary);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s;
-    width: 100%;
-    justify-content: center;
-    margin-top: auto;
-  }
-
-  .btn-group:hover {
-    background: var(--secondary);
-    color: #fff;
-  }
-
-  /* ===== PLATFORMS ===== */
-  .platforms-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-    margin-top: 16px;
-  }
-
-  .platform-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .platform-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(74,158,255,0.1);
-  }
-
-  .platform-icon { font-size: 2rem; }
-
-  .platform-name {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .platform-desc {
-    font-size: 0.77rem;
-    color: var(--muted);
-  }
-
-  /* ===== TIPS ===== */
-  .tips-box {
-    background: rgba(54,211,153,0.06);
-    border: 1px solid rgba(54,211,153,0.2);
-    border-radius: var(--radius);
-    padding: 20px 22px;
-    margin-top: 28px;
-  }
-
-  .tips-box h3 {
-    color: var(--success);
-    font-size: 0.97rem;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .tips-box ul {
+  .tips-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
-
-  .tips-box li {
-    font-size: 0.85rem;
-    color: var(--muted);
+  .tips-list li {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #bbb;
+    line-height: 1.5;
   }
-
-  .tips-box li::before {
-    content: '✓';
-    color: var(--success);
-    font-weight: 700;
+  .tip-bullet {
+    width: 20px; height: 20px;
+    background: rgba(74,158,255,0.15);
+    border: 1px solid rgba(74,158,255,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    color: #4a9eff;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: 2px;
   }
 
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--card);
-    border-top: 1px solid var(--border);
+  /* Tabs */
+  .tabs-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 0;
+  }
+  .tabs-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    background: #1e1e2e;
+    border: 1px solid #2a2a3e;
+    border-radius: 24px;
+    padding: 8px 20px;
+    color: #888;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { border-color: #4a9eff; color: #4a9eff; }
+  .tab-btn.active {
+    background: #4a9eff;
+    border-color: #4a9eff;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding-bottom: 48px;
+  }
+
+  /* Empty State for tabs */
+  .empty-tab {
+    grid-column: 1 / -1;
     text-align: center;
-    padding: 22px 20px;
-    font-size: 0.8rem;
-    color: var(--muted);
+    padding: 60px 24px;
+    color: #555;
+    font-size: 1rem;
   }
+  .empty-tab-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
 
-  footer a { color: var(--primary); text-decoration: none; }
+  /* Footer */
+  footer {
+    background: #0d0d14;
+    border-top: 1px solid #2a2a3e;
+    padding: 24px;
+    text-align: center;
+    color: #555;
+    font-size: 0.82rem;
+    line-height: 1.8;
+  }
+  footer a { color: #4a9eff; text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* ===== HIDDEN ===== */
-  .hidden { display: none !important; }
+  /* Divider */
+  .section-divider {
+    max-width: 700px;
+    margin: 0 auto 32px;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .divider-line {
+    border: none;
+    border-top: 1px solid #2a2a3e;
+    margin: 0;
+  }
 
-  /* ===== RESPONSIVE ===== */
   @media (max-width: 600px) {
+    .navbar { padding: 0 16px; }
     .navbar-brand { font-size: 1rem; }
-    .hero { padding: 40px 16px 32px; }
-    .container { padding: 0 14px 40px; }
-    .cards-grid { grid-template-columns: 1fr; }
-    .stat-box { min-width: 110px; padding: 14px 18px; }
+    .hero { padding: 36px 16px 32px; }
+    .stat-card { min-width: 120px; padding: 14px 20px; }
+    .no-results-card { padding: 28px 20px; }
+    .tips-card { padding: 22px 20px; }
+    .tabs-section { padding: 24px 16px 0; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
+<!-- Navbar -->
 <nav class="navbar">
   <a href="#" class="navbar-brand">🏠 דירות להשכרה ברמת גן</a>
   <span class="navbar-date">📅 15 במרץ 2026</span>
 </nav>
 
-<!-- ===== HERO ===== -->
+<!-- Hero -->
 <section class="hero">
-  <div class="hero-badge">🔍 עדכון #1 · מרץ 2026</div>
-  <h1>דירות להשכרה ב<span>רמת גן</span></h1>
-  <p class="hero-sub">
-    <span class="update-badge"></span>
-    עודכן לאחרונה: 15 במרץ 2026 · נאסף מפייסבוק, יד2, מדלן, הומלס ועוד
-  </p>
-  <div class="stats-row">
-    <div class="stat-box">
-      <span class="stat-num">6</span>
-      <span class="stat-label">קבוצות פייסבוק</span>
+  <h1 class="hero-title">דירות להשכרה ב<span>רמת גן</span></h1>
+  <div class="update-badge">
+    <span class="dot"></span>
+    עדכון מספר 1 · 15 במרץ 2026
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">מודעות פעילות</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-num">387+</span>
-      <span class="stat-label">מודעות פעילות (מדלן)</span>
+    <div class="stat-card">
+      <div class="stat-value">—</div>
+      <div class="stat-label">טווח מחירים</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-num">52+</span>
-      <span class="stat-label">מודעות (הומלס)</span>
-    </div>
-    <div class="stat-box">
-      <span class="stat-num">5,000–14,000 ₪</span>
-      <span class="stat-label">טווח מחירים שכ"ד</span>
+    <div class="stat-card">
+      <div class="stat-value">—</div>
+      <div class="stat-label">מחיר ממוצע</div>
     </div>
   </div>
 </section>
 
-<!-- ===== MAIN ===== -->
-<div class="container">
-
-  <div class="info-banner">
-    <span class="icon">⚠️</span>
-    <div>
-      <strong>שימו לב:</strong> פייסבוק אינה מאפשרת לאנשי חיפוש אוטומטי לגשת לפוסטים ספציפיים בקבוצות סגורות. הפוסטים המפורסמים בקבוצות השכירות מוגנים ודורשים הרשמה לקבוצה. בדף זה תמצאו את <strong>כל הקבוצות הרלוונטיות</strong> שנמצאו בחיפוש + מודעות שנגלשו בפלטפורמות פתוחות + קישורים ישירים לחיפוש בכל הפלטפורמות.
-    </div>
-  </div>
-
-  <!-- TABS -->
-  <div class="tabs-wrap">
-    <button class="tab-btn active" data-filter="all" onclick="filterCards(this, 'all')">🏘️ הכל</button>
-    <button class="tab-btn" data-filter="1-2" onclick="filterCards(this, '1-2')">🛏️ 1–2 חדרים</button>
-    <button class="tab-btn" data-filter="3-4" onclick="filterCards(this, '3-4')">🏠 3–4 חדרים</button>
-    <button class="tab-btn" data-filter="5plus" onclick="filterCards(this, '5plus')">🏡 5+ חדרים</button>
-    <button class="tab-btn" data-filter="group" onclick="filterCards(this, 'group')">👥 קבוצות פייסבוק</button>
-  </div>
-
-  <p class="section-title">📌 מודעות שנמצאו ברשת</p>
-
-  <div class="cards-grid" id="cardsGrid">
-
-    <!-- CARD 1 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/253957624766723/posts/2960804150748710/" target="_blank" class="card-title">
-            להשכרה דירה מהממת! ללא תיווך! דרך נגבה 8 רמת גן
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">4 חדרים</span>
-          <span class="tag tag-area">🗺️ רמת גן דרומית</span>
-          <span class="tag tag-source">📘 Facebook</span>
-        </div>
-        <p class="card-desc">דירת 4 חדרים, 96 מ"ר, ללא תיווך, בבניין מטופח. נגישות מצוינת לתחבורה ציבורית ולמרכזי קניות.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/253957624766723/posts/2960804150748710/" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 2 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/253957624766723/posts/2650389715123490/" target="_blank" class="card-title">
-            דירה חדשה להשכרה במגדל METRO – יוסף הגלילי 22 רמת גן
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ הבורסה</span>
-          <span class="tag tag-source">📘 Facebook</span>
-        </div>
-        <p class="card-desc">דירה חדשה במגדל METRO בשכונת הבורסה המבוקשת. בניין יוקרתי עם שוות חניה ומחסן.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/253957624766723/posts/2650389715123490/" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 3 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://fb-nadlan.com/" target="_blank" class="card-title">
-            דירה 3 חדרים – הרי הגלעד 5, שכונת הבורסה רמת גן
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">💰 7,000 ₪/חודש</span>
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ הבורסה</span>
-          <span class="tag tag-source">📘 FB-Nadlan</span>
-        </div>
-        <p class="card-desc">דירה משופצת לחלוטין, שמורה ונקיה, 90 מ"ר, קומה 2. כולל מרפסת שמש ומרפסת שירות.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://fb-nadlan.com/" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 4 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/1068642559922565/posts/24461117536915071/" target="_blank" class="card-title">
-            להשכרה דירה ברחוב התפוצות רמת גן – 3 חדרי שינה
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">3–4 חדרים</span>
-          <span class="tag tag-area">🗺️ מרכז רמת גן</span>
-          <span class="tag tag-source">📘 Facebook</span>
-        </div>
-        <p class="card-desc">דירה מהממת ברחוב התפוצות, שכונה שקטה ומרכזית. פרטים נוספים בקישור ישיר לפוסט.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/1068642559922565/posts/24461117536915071/" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 5 -->
-    <div class="card" data-cat="1-2">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="card-title">
-            דירת 2 חדרים – הרועה, רמת גן
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">💰 3,500 ₪/חודש</span>
-          <span class="tag tag-rooms">2 חדרים</span>
-          <span class="tag tag-area">🗺️ הרועה</span>
-          <span class="tag tag-source">🌐 Janglo</span>
-        </div>
-        <p class="card-desc">דירת 2 חדרים, יחיד בקומה, חלונות גדולים עם נוף, חניה פרטית, מעלית. מצוינת לזוג או יחיד.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 6 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="card-title">
-            דירת 3 חדרים – ביאליק 79, שכונת תל בנימין, רמת גן
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">💰 6,800 ₪/חודש</span>
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ תל בנימין</span>
-          <span class="tag tag-source">🌐 Janglo</span>
-        </div>
-        <p class="card-desc">דירה נוחה מאוד בקרבת כל אמצעי התחבורה הציבוריים. מטבח מאובזר, שכונה שקטה.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 7 – rentberry -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://rentberry.com/il/apartments/s/ramat-gan-israel" target="_blank" class="card-title">
-            דירה ברמת גן – ליד הרכבת הקלה, ביאליק, הרצל
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ מרכז רמת גן</span>
-          <span class="tag tag-source">🌐 Rentberry</span>
-        </div>
-        <p class="card-desc">מיקום מעולה בקרבת הרכבת הקלה, רחוב ביאליק, הרצל, קניונים ופארקים. ממ"ד, חניה חינם.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://rentberry.com/il/apartments/s/ramat-gan-israel" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 8 – madlan -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C/3-bd" target="_blank" class="card-title">
-            דירות 3 חדרים להשכרה ברמת גן – 115 מודעות פעילות
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ כל רמת גן</span>
-          <span class="tag tag-source">🏢 מדלן</span>
-        </div>
-        <p class="card-desc">115 דירות 3 חדרים להשכרה ברמת גן ממתינות לך. פילטור לפי שכונה, מחיר ומאפיינים.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C/3-bd" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 9 – yad2 -->
-    <div class="card" data-cat="3-4">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600" target="_blank" class="card-title">
-            דירות 3 חדרים מעוצבות ברמת גן/גבעתיים – יד2
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">💰 מ-13,778 ₪</span>
-          <span class="tag tag-rooms">3 חדרים</span>
-          <span class="tag tag-area">🗺️ רמת גן וגבעתיים</span>
-          <span class="tag tag-source">🏢 יד2</span>
-        </div>
-        <p class="card-desc">דירות מעוצבות להשכרה, 3 חדרים. כולל דמי ניהול, מחסן וחניה. מחיר החל מ-13,778 ₪/חודש.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- CARD 10 – janglo penthouse -->
-    <div class="card" data-cat="5plus">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="card-title">
-            פנטהאוז משופץ – מרום נווה, רמת גן – 4–5 חדרים
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">4–5 חדרים</span>
-          <span class="tag tag-area">🗺️ מרום נווה</span>
-          <span class="tag tag-source">🌐 Janglo</span>
-        </div>
-        <p class="card-desc">פנטהאוז מקסים ומשופץ בשכונת מרום נווה, 3 מקלחות, 3 שירותים. נדיר ואיכותי במיוחד.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="btn-view">לצפייה במודעה ←</a>
-      </div>
-    </div>
-
-    <!-- ===== GROUP CARDS ===== -->
-    <!-- GROUP 1 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/647901439404148/" target="_blank" class="card-title">
-            קבוצת פייסבוק: דירות להשכרה רמת גן/גבעתיים במחיר שפוי
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">👥 60,000+ חברים</span>
-          <span class="tag tag-source">📘 Facebook Group</span>
-        </div>
-        <p class="card-desc">קבוצת הפייסבוק הגדולה ביותר לדירות שכירות ברמת גן וגבעתיים. פעילה מאוד עם עשרות פוסטים יומיים.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/647901439404148/" target="_blank" class="btn-view">כניסה לקבוצה ←</a>
-      </div>
-    </div>
-
-    <!-- GROUP 2 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/253957624766723/" target="_blank" class="card-title">
-            קבוצת פייסבוק: דירות להשכרה ברמת גן
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-source">📘 Facebook Group</span>
-          <span class="tag tag-area">🗺️ רמת גן</span>
-        </div>
-        <p class="card-desc">קבוצה ייעודית לדירות להשכרה ברמת גן בלבד. כוללת פוסטים ישירים מבעלי דירות ומתווכים.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/253957624766723/" target="_blank" class="btn-view">כניסה לקבוצה ←</a>
-      </div>
-    </div>
-
-    <!-- GROUP 3 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/1870209196564360/" target="_blank" class="card-title">
-            קבוצת פייסבוק: דירות להשכרה רמת גן גבעתיים
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-source">📘 Facebook Group</span>
-          <span class="tag tag-area">🗺️ רמת גן + גבעתיים</span>
-        </div>
-        <p class="card-desc">קבוצה פעילה לשכירויות ברמת גן וגבעתיים. מתאימה למחפשים דירות בשני הערים.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/1870209196564360/" target="_blank" class="btn-view">כניסה לקבוצה ←</a>
-      </div>
-    </div>
-
-    <!-- GROUP 4 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/DIRARAMATGAN/" target="_blank" class="card-title">
-            קבוצת פייסבוק: דירה להשכרה ברמת גן – ללא תיווך
-          </a>
-          <span class="new-badge">🆕 חדש!</span>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-price">🚫 ללא תיווך</span>
-          <span class="tag tag-source">📘 Facebook Group</span>
-        </div>
-        <p class="card-desc">קבוצה ייחודית המוקדשת למודעות ישירות מבעלי דירות בלבד – ללא מתווכים! חוסכת עמלות.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/DIRARAMATGAN/" target="_blank" class="btn-view">כניסה לקבוצה ←</a>
-      </div>
-    </div>
-
-    <!-- GROUP 5 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/groups/676904735776441/" target="_blank" class="card-title">
-            קבוצת פייסבוק: דירה להשכרה רמת גן – סטודיו ושותפים
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-rooms">סטודיו / שותפים</span>
-          <span class="tag tag-source">📘 Facebook Group</span>
-        </div>
-        <p class="card-desc">קבוצה ייחודית לסטודיואים ושיתוף דירות ברמת גן במחיר שפוי. מצוינת לסטודנטים וצעירים.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/groups/676904735776441/" target="_blank" class="btn-view">כניסה לקבוצה ←</a>
-      </div>
-    </div>
-
-    <!-- GROUP 6 -->
-    <div class="card" data-cat="group">
-      <div class="card-header">
-        <div class="card-top">
-          <a href="https://www.facebook.com/RamatGanRoomforRent/" target="_blank" class="card-title">
-            Ramat Gan Rentals (English) – עמוד פייסבוק
-          </a>
-        </div>
-        <div class="card-tags">
-          <span class="tag tag-source">📘 Facebook Page</span>
-          <span class="tag tag-area">🌍 English</span>
-        </div>
-        <p class="card-desc">עמוד הפייסבוק הרשמי לשכירות ברמת גן באנגלית. מתאים לעולים חדשים ומחפשים דוברי אנגלית.</p>
-      </div>
-      <div class="card-footer">
-        <a href="https://www.facebook.com/RamatGanRoomforRent/" target="_blank" class="btn-view">כניסה לעמוד ←</a>
-      </div>
-    </div>
-
-  </div><!-- /cards-grid -->
-
-  <!-- ===== PLATFORMS SECTION ===== -->
-  <div class="divider-section">
-    <h2>🔗 חיפוש מהיר בפלטפורמות הגדולות</h2>
-    <p>לחצו על אחד הכפתורים למעבר ישיר לתוצאות חיפוש מסוננות לרמת גן</p>
-
-    <div class="platforms-grid">
-      <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600" target="_blank" class="platform-card">
-        <span class="platform-icon">🔶</span>
-        <span class="platform-name">יד2</span>
-        <span class="platform-desc">אלפי מודעות · עדכון יומי</span>
+<!-- No Results -->
+<div class="no-results-section">
+  <div class="no-results-card">
+    <span class="no-results-icon">🔍</span>
+    <h2 class="no-results-title">לא נמצאו מודעות כרגע</h2>
+    <p class="no-results-desc">
+      לא הצלחנו למצוא מודעות להשכרה ברמת גן ביד2 בעדכון הנוכחי.<br>
+      ייתכן שהמלאי עודכן, השוק עמוס, או שהחיפוש לא החזיר תוצאות באופן זמני.<br>
+      ניתן לחפש ישירות בפלטפורמות הבאות:
+    </p>
+    <div class="search-links">
+      <a class="search-link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🏡</span>
+        <span class="link-text">חיפוש דירות להשכרה ברמת גן – יד2</span>
+        <span class="link-arrow">←</span>
       </a>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="platform-card">
-        <span class="platform-icon">🏘️</span>
-        <span class="platform-name">מדלן</span>
-        <span class="platform-desc">387+ דירות · מידע שוק</span>
+      <a class="search-link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=1-2"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🛏️</span>
+        <span class="link-text">דירות 1–2 חדרים להשכרה ברמת גן – יד2</span>
+        <span class="link-arrow">←</span>
       </a>
-      <a href="https://www.homeless.co.il/Rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F" target="_blank" class="platform-card">
-        <span class="platform-icon">🏚️</span>
-        <span class="platform-name">הומלס</span>
-        <span class="platform-desc">52+ מודעות · מעודכן</span>
+      <a class="search-link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=3-4"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🏘️</span>
+        <span class="link-text">דירות 3–4 חדרים להשכרה ברמת גן – יד2</span>
+        <span class="link-arrow">←</span>
       </a>
-      <a href="https://www.komo.co.il/code/nadlan/apartments-for-rent.asp?nehes=1&cityName=%D7%A8%D7%9E%D7%AA+%D7%92%D7%9F" target="_blank" class="platform-card">
-        <span class="platform-icon">🔍</span>
-        <span class="platform-name">קומו</span>
-        <span class="platform-desc">לוח מודעות · ללא תיווך</span>
+      <a class="search-link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=5-"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🏙️</span>
+        <span class="link-text">דירות 5+ חדרים להשכרה ברמת גן – יד2</span>
+        <span class="link-arrow">←</span>
       </a>
-      <a href="https://fb-nadlan.com/" target="_blank" class="platform-card">
-        <span class="platform-icon">📘</span>
-        <span class="platform-name">FB-Nadlan</span>
-        <span class="platform-desc">נדל"ן בפייסבוק · כל הקבוצות</span>
+      <a class="search-link-btn"
+         href="https://www.madlan.co.il/for-rent/%D7%93%D7%99%D7%A8%D7%94/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F"
+         target="_blank" rel="noopener">
+        <span class="link-icon">📊</span>
+        <span class="link-text">דירות להשכרה ברמת גן – מדלן</span>
+        <span class="link-arrow">←</span>
       </a>
-      <a href="https://www.ad.co.il/nadlanrent?sp275=17441&sp276=17492" target="_blank" class="platform-card">
-        <span class="platform-icon">📋</span>
-        <span class="platform-name">AD.co.il</span>
-        <span class="platform-desc">מודעות שכירות רמת גן</span>
-      </a>
-      <a href="https://www.janglo.net/real-estate-rentals/apartments/telaviv?text=ramat+gan" target="_blank" class="platform-card">
-        <span class="platform-icon">🌐</span>
-        <span class="platform-name">Janglo</span>
-        <span class="platform-desc">English listings · expats</span>
-      </a>
-      <a href="https://www.standarti.co.il/blog/10" target="_blank" class="platform-card">
-        <span class="platform-icon">📑</span>
-        <span class="platform-name">סטנדרטי</span>
-        <span class="platform-desc">מאגר קבוצות פייסבוק</span>
+      <a class="search-link-btn"
+         href="https://www.homeless.co.il/rent/ramat-gan/"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🌐</span>
+        <span class="link-text">דירות להשכרה ברמת גן – Homeless</span>
+        <span class="link-arrow">←</span>
       </a>
     </div>
   </div>
+</div>
 
-  <!-- TIPS BOX -->
-  <div class="tips-box">
-    <h3>💡 טיפים לחיפוש דירה ברמת גן</h3>
-    <ul>
-      <li>הצטרפו לכמה שיותר קבוצות פייסבוק – כל קבוצה מכסה מגוון שונה של מודעות ובעלי דירות.</li>
-      <li>הגיבו מהר: דירות טובות ברמת גן נעלמות תוך שעות – השיבו מיידית לפוסטים.</li>
-      <li>לאחר ההצטרפות לקבוצות פייסבוק, בקשו גם קישורים לקבוצות WhatsApp רלוונטיות לאזור.</li>
-      <li>בקשו לצפות בדירה בהקדם האפשרי – מומלץ להיות בין הראשונים לראות.</li>
-      <li>בדקו מחירי שוק ביד2 ומדלן לפני ניהול משא ומתן על שכ"ד.</li>
-      <li>שימו לב: דירות ללא תיווך זמינות בקבוצת DIRARAMATGAN בפייסבוק וחוסכות עמלת תיווך.</li>
+<!-- Tips -->
+<div class="tips-section">
+  <div class="tips-card">
+    <div class="tips-title">💡 טיפים לחיפוש דירה ברמת גן</div>
+    <ul class="tips-list">
+      <li>
+        <span class="tip-bullet">1</span>
+        <span>הפעילו התראות ביד2 – כך תקבלו עדכון מיידי כשמודעה חדשה מתפרסמת לפי הקריטריונים שלכם.</span>
+      </li>
+      <li>
+        <span class="tip-bullet">2</span>
+        <span>רמת גן מציעה שכונות מגוונות – בורוכוב, נווה עופר, מרכז העיר ואזורים ורובעים אחרים. ציינו שכונה מועדפת לתוצאות ממוקדות.</span>
+      </li>
+      <li>
+        <span class="tip-bullet">3</span>
+        <span>המחירים ברמת גן גבוהים יחסית לאזור גוש דן – השוו מחירים גם בסביבה כמו בני ברק, גבעתיים וקריית אונו.</span>
+      </li>
+      <li>
+        <span class="tip-bullet">4</span>
+        <span>בדקו קרבה לתחנות רכבת ונתיבי תחבורה ציבורית – רמת גן מחוברת טוב לתל אביב ולמרכז המטרופולין.</span>
+      </li>
+      <li>
+        <span class="tip-bullet">5</span>
+        <span>שאלו על עלויות ועד בית, חניה ומחסן – הם עשויים להוסיף מאות שקלים לדמי השכירות החודשיים.</span>
+      </li>
     </ul>
   </div>
+</div>
 
-</div><!-- /container -->
+<div class="section-divider">
+  <hr class="divider-line">
+</div>
 
-<!-- ===== FOOTER ===== -->
+<!-- Tabs (shown even without results for UX) -->
+<div class="tabs-section">
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="setTab('all', this)">הכל (0)</button>
+    <button class="tab-btn" onclick="setTab('1-2', this)">1–2 חדרים (0)</button>
+    <button class="tab-btn" onclick="setTab('3-4', this)">3–4 חדרים (0)</button>
+    <button class="tab-btn" onclick="setTab('5+', this)">5+ חדרים (0)</button>
+  </div>
+  <div class="cards-grid" id="cards-grid">
+    <div class="empty-tab">
+      <span class="empty-tab-icon">🏚️</span>
+      אין מודעות להצגה כרגע — אנא חפשו ישירות ביד2 דרך הקישורים למעלה.
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
 <footer>
-  <p>נוצר אוטומטית על ידי <a href="#">Claude (Anthropic)</a> · 15 במרץ 2026</p>
-  <p style="margin-top:6px; font-size:0.75rem;">המידע נאסף מפייסבוק, יד2, מדלן, הומלס, ג'אנגלו ועוד. האתר אינו אחראי על נכונות המודעות. תמיד אמתו מידע לפני חתימה על חוזה.</p>
+  <div>מקור: <a href="https://www.yad2.co.il" target="_blank" rel="noopener">יד2</a> · נוצר אוטומטית על ידי Claude · 15 במרץ 2026</div>
+  <div style="margin-top:6px;font-size:0.78rem;color:#444;">
+    הנתונים מוצגים למטרות מידע בלבד · לא אחראים לשינויים במחירים או בזמינות המודעות
+  </div>
 </footer>
 
 <script>
-  function filterCards(btn, filter) {
-    // Update active tab
+  function setTab(tab, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    // Filter cards
-    const cards = document.querySelectorAll('#cardsGrid .card');
-    cards.forEach(card => {
-      const cat = card.getAttribute('data-cat');
-      if (filter === 'all') {
-        card.classList.remove('hidden');
-      } else if (filter === '1-2') {
-        cat === '1-2' ? card.classList.remove('hidden') : card.classList.add('hidden');
-      } else if (filter === '3-4') {
-        cat === '3-4' ? card.classList.remove('hidden') : card.classList.add('hidden');
-      } else if (filter === '5plus') {
-        cat === '5plus' ? card.classList.remove('hidden') : card.classList.add('hidden');
-      } else if (filter === 'group') {
-        cat === 'group' ? card.classList.remove('hidden') : card.classList.add('hidden');
-      }
-    });
-
-    // Update count display
-    const visible = document.querySelectorAll('#cardsGrid .card:not(.hidden)').length;
-    console.log('Showing', visible, 'cards for filter:', filter);
+    // No listings to filter — always shows empty state
+    const grid = document.getElementById('cards-grid');
+    grid.innerHTML = `
+      <div class="empty-tab">
+        <span class="empty-tab-icon">🏚️</span>
+        אין מודעות להצגה כרגע — אנא חפשו ישירות ביד2 דרך הקישורים למעלה.
+      </div>`;
   }
-
-  // Smooth reveal on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll('.card, .platform-card, .group-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(18px)';
-    el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    observer.observe(el);
-  });
 </script>
+
 </body>
 </html>
