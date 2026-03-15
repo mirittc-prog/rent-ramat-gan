@@ -1,0 +1,41 @@
+name: עדכון יומי — דירות להשכרה ברמת גן
+
+on:
+  schedule:
+    - cron: '0 10 * * *'   # כל יום בשעה 12:00 שעון ישראל (UTC+2)
+                             # אחרי 27/3: שעון קיץ UTC+3 → הריצה תהיה ב-13:00
+  workflow_dispatch:         # הפעלה ידנית מטאב Actions
+
+permissions:
+  contents: write
+
+jobs:
+  update-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Generate digest and send email
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python generate_digest.py
+
+      - name: Commit and push updated digest
+        run: |
+          git config --global user.email "digest-bot@noreply.github.com"
+          git config --global user.name "Rent Digest Bot"
+          git add index.html
+          git diff --staged --quiet || git commit -m "🏠 עדכון יומי — $(date +'%d/%m/%Y')"
+          git pull --rebase origin main
+          git push
