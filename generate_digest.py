@@ -30,11 +30,19 @@ HEBREW_MONTHS = [
 ]
 
 YAD2_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Referer": "https://www.yad2.co.il/",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Referer": "https://www.yad2.co.il/realestate/rent",
     "Origin": "https://www.yad2.co.il",
+    "sec-ch-ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"macOS"',
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "Connection": "keep-alive",
 }
 
 
@@ -53,15 +61,28 @@ def fetch_yad2_listings():
     """שולף מודעות להשכרה ברמת גן ישירות מ-API של יד2."""
     print("🏠 שולף מודעות מיד2...")
 
+    session = requests.Session()
+
+    # שלב 1: פנייה לדף הבית כדי לקבל cookies כמו דפדפן אמיתי
+    try:
+        session.get(
+            "https://www.yad2.co.il/realestate/rent",
+            headers={**YAD2_HEADERS, "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
+            timeout=15
+        )
+    except Exception:
+        pass  # גם בלי cookies נמשיך לנסות
+
+    # שלב 2: פנייה ל-API
     url = "https://gw.yad2.co.il/feed-search-legacy/realestate/rent"
     params = {
-        "city":       CITY_CODE,
-        "priceOnly":  1,
+        "city":        CITY_CODE,
+        "priceOnly":   1,
         "forceLdLoad": "true",
     }
 
     try:
-        resp = requests.get(url, params=params, headers=YAD2_HEADERS, timeout=20)
+        resp = session.get(url, params=params, headers=YAD2_HEADERS, timeout=20)
         resp.raise_for_status()
         data = resp.json()
     except requests.RequestException as e:
