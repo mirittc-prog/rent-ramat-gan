@@ -14,7 +14,7 @@
     --primary: #4a9eff;
     --secondary: #e94560;
     --text: #e0e0f0;
-    --muted: #8888aa;
+    --muted: #888aaa;
     --radius: 12px;
   }
 
@@ -23,407 +23,485 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', 'Arial Hebrew', Arial, sans-serif;
     line-height: 1.6;
     min-height: 100vh;
   }
 
-  /* ── NAVBAR ── */
-  nav {
+  /* ===== NAVBAR ===== */
+  .navbar {
     position: sticky;
     top: 0;
     z-index: 999;
-    background: rgba(13,13,20,0.92);
+    background: rgba(13,13,20,0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     padding: 0 24px;
-    height: 60px;
+    height: 62px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .nav-brand {
-    font-size: 1.1rem;
+  .navbar-brand {
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--primary);
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .nav-date {
-    background: var(--border);
+  .navbar-date {
+    font-size: 0.85rem;
     color: var(--muted);
-    font-size: 0.8rem;
-    padding: 4px 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
     border-radius: 20px;
-    white-space: nowrap;
   }
 
-  /* ── HERO ── */
+  /* ===== HERO ===== */
   .hero {
-    background: linear-gradient(135deg, #0d0d14 0%, #141428 50%, #0d1a2a 100%);
-    padding: 60px 24px 48px;
-    text-align: center;
+    background: linear-gradient(135deg, #0d0d14 0%, #12122a 50%, #0d0d14 100%);
     border-bottom: 1px solid var(--border);
+    padding: 56px 24px 44px;
+    text-align: center;
     position: relative;
     overflow: hidden;
   }
   .hero::before {
     content: '';
     position: absolute;
-    top: -80px; left: 50%;
-    transform: translateX(-50%);
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(74,158,255,0.07) 0%, transparent 70%);
+    top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(74,158,255,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
-  .hero h1 {
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 12px;
-  }
-  .hero h1 span { color: var(--primary); }
-  .update-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .hero-tag {
+    display: inline-block;
     background: rgba(74,158,255,0.12);
     border: 1px solid rgba(74,158,255,0.3);
     color: var(--primary);
-    font-size: 0.82rem;
-    padding: 5px 14px;
+    font-size: 0.78rem;
+    padding: 4px 14px;
     border-radius: 20px;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .hero h1 span { color: var(--primary); }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 1rem;
     margin-bottom: 36px;
   }
-  .update-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 680px;
+  /* Stats */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 700px;
     margin: 0 auto;
   }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 20px 16px;
-    transition: transform 0.2s, border-color 0.2s;
+    padding: 18px 28px;
+    min-width: 140px;
+    flex: 1;
   }
-  .stat-card:hover { transform: translateY(-3px); border-color: var(--primary); }
-  .stat-num {
-    font-size: 2rem;
+  .stat-card .stat-val {
+    font-size: 1.8rem;
     font-weight: 800;
     color: var(--primary);
     display: block;
-    line-height: 1;
-    margin-bottom: 6px;
   }
-  .stat-label { font-size: 0.78rem; color: var(--muted); }
-
-  /* ── TABS ── */
-  .tabs-section {
-    padding: 32px 24px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .tabs {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-  }
-  .tab-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
+  .stat-card .stat-lbl {
+    font-size: 0.78rem;
     color: var(--muted);
-    padding: 8px 20px;
-    border-radius: 24px;
-    font-size: 0.88rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    direction: rtl;
-  }
-  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
-  .tab-btn.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-    font-weight: 600;
+    margin-top: 2px;
   }
 
-  /* ── EMPTY STATE ── */
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
-
-  .empty-state {
-    text-align: center;
-    padding: 60px 24px;
+  /* ===== EMPTY STATE ===== */
+  .empty-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  .empty-box {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
-    margin-top: 8px;
-    position: relative;
-    overflow: hidden;
-  }
-  .empty-state::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    padding: 48px 36px;
+    text-align: center;
   }
   .empty-icon {
-    font-size: 5rem;
-    display: block;
+    font-size: 4rem;
     margin-bottom: 20px;
-    filter: drop-shadow(0 0 20px rgba(74,158,255,0.3));
+    display: block;
+    animation: float 3s ease-in-out infinite;
   }
-  .empty-state h2 {
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .empty-box h2 {
     font-size: 1.5rem;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .empty-state p {
+  .empty-box p {
     color: var(--muted);
     font-size: 0.95rem;
-    max-width: 480px;
-    margin: 0 auto 28px;
+    margin-bottom: 8px;
     line-height: 1.7;
   }
-
-  .manual-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 14px;
-    max-width: 780px;
-    margin: 0 auto 32px;
-    text-align: right;
+  .empty-box p strong {
+    color: var(--text);
   }
-  .manual-link-card {
+
+  /* Search links */
+  .search-links {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .search-links h3 {
+    font-size: 0.9rem;
+    color: var(--muted);
+    text-align: right;
+    margin-bottom: 4px;
+  }
+  .link-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: rgba(74,158,255,0.06);
     border: 1px solid rgba(74,158,255,0.2);
     border-radius: 10px;
-    padding: 16px 18px;
-    transition: all 0.2s;
+    padding: 14px 18px;
     text-decoration: none;
-    display: block;
-    color: inherit;
+    color: var(--text);
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
   }
-  .manual-link-card:hover {
-    background: rgba(74,158,255,0.12);
-    border-color: var(--primary);
-    transform: translateY(-2px);
+  .link-btn:hover {
+    background: rgba(74,158,255,0.14);
+    border-color: rgba(74,158,255,0.45);
+    transform: translateX(-3px);
   }
-  .manual-link-card .link-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
-  .manual-link-card .link-title { font-size: 0.95rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
-  .manual-link-card .link-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+  .link-btn .link-icon { font-size: 1.3rem; }
+  .link-btn .link-arrow { color: var(--primary); font-size: 1rem; }
+  .link-btn .link-meta { font-size: 0.78rem; color: var(--muted); }
 
-  .tips-box {
-    background: rgba(233,69,96,0.07);
-    border: 1px solid rgba(233,69,96,0.25);
-    border-radius: 10px;
-    padding: 20px 24px;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: right;
-  }
-  .tips-box h3 { color: var(--secondary); font-size: 0.95rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .tips-box ul { list-style: none; }
-  .tips-box li {
-    font-size: 0.83rem;
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 20px;
     color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Tips box */
+  .tips-box {
+    background: rgba(233,69,96,0.06);
+    border: 1px solid rgba(233,69,96,0.2);
+    border-radius: 10px;
+    padding: 16px 18px;
+    text-align: right;
+    margin-top: 16px;
+  }
+  .tips-box h4 {
+    color: var(--secondary);
+    font-size: 0.88rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tips-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .tips-box ul li {
+    color: var(--muted);
+    font-size: 0.83rem;
     padding: 4px 0;
-    border-bottom: 1px solid rgba(42,42,62,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
     display: flex;
     align-items: flex-start;
     gap: 8px;
   }
-  .tips-box li:last-child { border-bottom: none; }
-  .tips-box li::before { content: '✦'; color: var(--secondary); font-size: 0.6rem; margin-top: 5px; flex-shrink: 0; }
+  .tips-box ul li:last-child { border-bottom: none; }
+  .tips-box ul li::before { content: '✦'; color: var(--secondary); font-size: 0.65rem; margin-top: 4px; flex-shrink: 0; }
 
-  .retry-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--primary), #2c7ee0);
-    color: #fff;
-    text-decoration: none;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 24px;
-    transition: opacity 0.2s, transform 0.2s;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
+  /* Tabs placeholder (hidden, no listings) */
+  .tabs-section {
+    padding: 28px 24px 0;
+    max-width: 900px;
+    margin: 0 auto;
+    display: none;
   }
-  .retry-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
-  /* ── FOOTER ── */
+  /* ===== REFRESH BOX ===== */
+  .refresh-section {
+    max-width: 680px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+  }
+  .refresh-box {
+    background: linear-gradient(135deg, rgba(74,158,255,0.06), rgba(74,158,255,0.02));
+    border: 1px dashed rgba(74,158,255,0.3);
+    border-radius: 12px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .refresh-box .ri { font-size: 1.8rem; flex-shrink: 0; }
+  .refresh-box .rt { flex: 1; min-width: 180px; }
+  .refresh-box .rt strong { color: var(--primary); display: block; font-size: 0.95rem; margin-bottom: 3px; }
+  .refresh-box .rt span { color: var(--muted); font-size: 0.82rem; }
+  .refresh-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .refresh-btn:hover { opacity: 0.85; }
+
+  /* ===== FOOTER ===== */
   footer {
-    background: var(--card);
+    margin-top: 60px;
     border-top: 1px solid var(--border);
-    padding: 20px 24px;
+    padding: 28px 24px;
     text-align: center;
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+    line-height: 1.8;
   }
-  footer span { color: var(--primary); }
+  footer a { color: var(--primary); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-dots { color: var(--border); margin: 0 8px; }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 520px) {
-    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .stat-card { padding: 14px 10px; }
-    .stat-num { font-size: 1.5rem; }
-    nav { padding: 0 14px; }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 480px) {
+    .navbar { padding: 0 14px; }
+    .navbar-brand { font-size: 0.95rem; }
     .hero { padding: 40px 16px 36px; }
-  }
-  @media (max-width: 380px) {
-    .stats-grid { grid-template-columns: 1fr; max-width: 220px; }
+    .empty-box { padding: 36px 20px; }
+    .stat-card { padding: 14px 18px; }
+    .stat-card .stat-val { font-size: 1.5rem; }
+    .search-links { gap: 10px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══ NAVBAR ══ -->
-<nav>
-  <div class="nav-brand">🏠 דירות להשכרה ברמת גן</div>
-  <div class="nav-date">📅 15 במרץ 2026</div>
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <a href="#" class="navbar-brand">🏠 דירות להשכרה ברמת גן</a>
+  <span class="navbar-date">📅 15 במרץ 2026</span>
 </nav>
 
-<!-- ══ HERO ══ -->
+<!-- ===== HERO ===== -->
 <section class="hero">
-  <h1>דירות להשכרה ב<span>רמת גן</span></h1>
-  <div class="update-badge">עדכון #1 · 15 במרץ 2026</div>
-
-  <div class="stats-grid">
+  <div class="hero-tag">⚡ עדכון מס׳ 1 — 15 במרץ 2026</div>
+  <h1>דירות להשכרה<br><span>ברמת גן</span></h1>
+  <p class="hero-sub">סריקה אוטומטית של מודעות יד2 · מתעדכן מספר פעמים ביום</p>
+  <div class="stats">
     <div class="stat-card">
-      <span class="stat-num">0</span>
-      <div class="stat-label">מודעות פעילות</div>
+      <span class="stat-val">0</span>
+      <div class="stat-lbl">מודעות נמצאו</div>
     </div>
     <div class="stat-card">
-      <span class="stat-num">—</span>
-      <div class="stat-label">טווח מחירים</div>
+      <span class="stat-val">—</span>
+      <div class="stat-lbl">טווח מחירים</div>
     </div>
     <div class="stat-card">
-      <span class="stat-num">—</span>
-      <div class="stat-label">מחיר ממוצע</div>
+      <span class="stat-val">—</span>
+      <div class="stat-lbl">מחיר ממוצע</div>
     </div>
   </div>
 </section>
 
-<!-- ══ TABS + CONTENT ══ -->
-<section class="tabs-section">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="filterTab(this,'all')">🏘️ הכל (0)</button>
-    <button class="tab-btn" onclick="filterTab(this,'1-2')">🛏️ 1–2 חדרים (0)</button>
-    <button class="tab-btn" onclick="filterTab(this,'3-4')">🛏️ 3–4 חדרים (0)</button>
-    <button class="tab-btn" onclick="filterTab(this,'5+')">🛏️ 5+ חדרים (0)</button>
-  </div>
-</section>
-
-<main class="container">
-
-  <!-- EMPTY STATE -->
-  <div class="empty-state" id="emptyState">
+<!-- ===== EMPTY STATE ===== -->
+<div class="empty-wrap" id="main-content">
+  <div class="empty-box">
     <span class="empty-icon">🔍</span>
     <h2>לא נמצאו מודעות כרגע</h2>
     <p>
-      לא נמצאו מודעות להשכרה ברמת גן ביד2 בזמן שליפת הנתונים.
-      ייתכן שהמודעות הוסרו זמנית, או שאין כרגע היצע בפילטרים שנבחרו.
-      מומלץ לחפש ישירות באתר יד2.
+      הסריקה האוטומטית של יד2 לא מצאה מודעות השכרה ברמת גן בזמן העדכון האחרון.<br>
+      <strong>זה קורה לפעמים — אבל יש כמה דרכים נוחות להמשיך לחפש!</strong>
+    </p>
+    <p style="margin-top:10px;">
+      המודעות ביד2 מתעדכנות כל הזמן. לחץ על אחד הקישורים למטה לחיפוש ישיר ועדכני.
     </p>
 
-    <!-- קישורים ידניים -->
-    <div class="manual-links">
-      <a class="manual-link-card"
-         href="https://www.yad2.co.il/realestate/rent?city=8600"
+    <div class="search-links">
+      <h3>🔗 חיפוש ידני ביד2 — לפי מספר חדרים:</h3>
+
+      <a class="link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=1-2"
+         target="_blank" rel="noopener">
+        <span class="link-icon">🛏️</span>
+        <span>
+          <strong>1–2 חדרים ברמת גן</strong>
+          <span class="link-meta">· דירות קטנות להשכרה</span>
+        </span>
+        <span class="link-arrow">←</span>
+      </a>
+
+      <a class="link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=3-4"
          target="_blank" rel="noopener">
         <span class="link-icon">🏠</span>
-        <div class="link-title">חיפוש כללי – השכרה</div>
-        <div class="link-desc">כל הדירות להשכרה ברמת גן, ללא פילטרים</div>
+        <span>
+          <strong>3–4 חדרים ברמת גן</strong>
+          <span class="link-meta">· דירות משפחתיות להשכרה</span>
+        </span>
+        <span class="link-arrow">←</span>
       </a>
 
-      <a class="manual-link-card"
-         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=1-2.5"
-         target="_blank" rel="noopener">
-        <span class="link-icon">🛏️</span>
-        <div class="link-title">1–2 חדרים</div>
-        <div class="link-desc">דירות קטנות וסטודיו ברמת גן</div>
-      </a>
-
-      <a class="manual-link-card"
-         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=3-4.5"
-         target="_blank" rel="noopener">
-        <span class="link-icon">🛏️</span>
-        <div class="link-title">3–4 חדרים</div>
-        <div class="link-desc">דירות משפחתיות ברמת גן</div>
-      </a>
-
-      <a class="manual-link-card"
+      <a class="link-btn"
          href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=5-"
          target="_blank" rel="noopener">
         <span class="link-icon">🏡</span>
-        <div class="link-title">5+ חדרים</div>
-        <div class="link-desc">דירות גדולות ווילות ברמת גן</div>
+        <span>
+          <strong>5+ חדרים ברמת גן</strong>
+          <span class="link-meta">· דירות גדולות ווילות</span>
+        </span>
+        <span class="link-arrow">←</span>
       </a>
 
-      <a class="manual-link-card"
-         href="https://www.yad2.co.il/realestate/rent?city=8600&price=3000-6000"
-         target="_blank" rel="noopener">
-        <span class="link-icon">💰</span>
-        <div class="link-title">עד 6,000 ₪</div>
-        <div class="link-desc">דירות בטווח מחירים נגיש</div>
-      </a>
-
-      <a class="manual-link-card"
-         href="https://www.yad2.co.il/realestate/rent?city=8600&order=date"
-         target="_blank" rel="noopener">
-        <span class="link-icon">🆕</span>
-        <div class="link-title">חדש ביותר</div>
-        <div class="link-desc">מודעות שפורסמו לאחרונה ברמת גן</div>
+      <a class="link-btn"
+         href="https://www.yad2.co.il/realestate/rent?city=8600"
+         target="_blank" rel="noopener"
+         style="background:rgba(233,69,96,0.07);border-color:rgba(233,69,96,0.25);">
+        <span class="link-icon">🗺️</span>
+        <span>
+          <strong>כל הדירות ברמת גן</strong>
+          <span class="link-meta">· כל הסוגים — תוצאות עדכניות</span>
+        </span>
+        <span class="link-arrow" style="color:var(--secondary);">←</span>
       </a>
     </div>
 
-    <!-- טיפים -->
+    <div class="divider">טיפים לחיפוש יעיל</div>
+
     <div class="tips-box">
-      <h3>💡 טיפים לחיפוש מוצלח</h3>
+      <h4>💡 איך למצוא דירה מהר יותר?</h4>
       <ul>
-        <li>הגדר התראת מייל ביד2 כדי לקבל מודעות חדשות מיד כשהן עולות</li>
-        <li>חפש גם בשכונות סמוכות: בני ברק, גבעתיים, פתח תקווה</li>
-        <li>בדוק גם קבוצות פייסבוק של "דירות להשכרה ברמת גן"</li>
-        <li>פנה לסוכני נדל"ן מקומיים לנכסים שאינם מפורסמים</li>
-        <li>הדף מתעדכן אוטומטית — כדאי לחזור מאוחר יותר</li>
+        <li>הגדירו התראות ביד2 — תקבלו SMS/מייל על מודעות חדשות מיד עם פרסומן</li>
+        <li>חפשו בשעות הבוקר המוקדמות (8:00–10:00) — כשמפרסמים הכי הרבה</li>
+        <li>השתמשו בפילטר "חדש ב-24 שעות האחרונות" כדי לראות רק מה עדכני</li>
+        <li>בדקו גם מודעות ללא תמונה — לעתים הן זולות יותר ופחות מבוקשות</li>
+        <li>צרו קשר עם הבעלים מיד — דירות טובות ברמת גן נחטפות תוך שעות</li>
       </ul>
     </div>
 
-    <a class="retry-btn"
+  </div>
+</div>
+
+<!-- ===== REFRESH BOX ===== -->
+<div class="refresh-section">
+  <div class="refresh-box">
+    <span class="ri">🔄</span>
+    <div class="rt">
+      <strong>רוצה לבדוק שוב?</strong>
+      <span>המודעות ביד2 מתעדכנות כל הזמן — ייתכן שמשהו חדש התפרסם</span>
+    </div>
+    <a class="refresh-btn"
        href="https://www.yad2.co.il/realestate/rent?city=8600"
        target="_blank" rel="noopener">
-      🔗 עבור לחיפוש ביד2 עכשיו ←
+      לחיפוש עדכני ←
     </a>
   </div>
+</div>
 
-</main>
-
-<!-- ══ FOOTER ══ -->
+<!-- ===== FOOTER ===== -->
 <footer>
-  מקור: <span>יד2</span> · נוצר אוטומטית על ידי <span>Claude</span> · 15 במרץ 2026
+  <div>
+    מקור: <a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" rel="noopener">יד2</a>
+    <span class="footer-dots">·</span>
+    נוצר אוטומטית על ידי Claude
+    <span class="footer-dots">·</span>
+    15 במרץ 2026
+  </div>
+  <div style="margin-top:6px;font-size:0.76rem;color:#555570;">
+    הנתונים מוצגים למטרת מידע בלבד · אין אחריות על עדכניות המידע · לבדיקה סופית היכנסו ישירות ליד2
+  </div>
 </footer>
 
 <script>
-  function filterTab(btn, type) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // כאשר אין מודעות, כל הטאבים מציגים את מצב הריק
-    const empty = document.getElementById('emptyState');
-    if (empty) empty.style.display = 'block';
-  }
+  // Animate stats on load
+  document.addEventListener('DOMContentLoaded', function () {
+    const statVals = document.querySelectorAll('.stat-val');
+    statVals.forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(10px)';
+      el.style.transition = 'all 0.5s ease';
+    });
+    setTimeout(function() {
+      statVals.forEach(function(el, i) {
+        setTimeout(function() {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, i * 120);
+      });
+    }, 300);
+
+    // Animate empty box
+    var emptyBox = document.querySelector('.empty-box');
+    if (emptyBox) {
+      emptyBox.style.opacity = '0';
+      emptyBox.style.transform = 'translateY(20px)';
+      emptyBox.style.transition = 'all 0.6s ease';
+      setTimeout(function() {
+        emptyBox.style.opacity = '1';
+        emptyBox.style.transform = 'translateY(0)';
+      }, 500);
+    }
+
+    // Stagger link buttons
+    var linkBtns = document.querySelectorAll('.link-btn');
+    linkBtns.forEach(function(btn, i) {
+      btn.style.opacity = '0';
+      btn.style.transform = 'translateX(16px)';
+      btn.style.transition = 'opacity 0.4s ease, transform 0.4s ease, background 0.2s, border-color 0.2s';
+      setTimeout(function() {
+        btn.style.opacity = '1';
+        btn.style.transform = 'translateX(0)';
+      }, 800 + i * 100);
+    });
+  });
 </script>
 </body>
 </html>
