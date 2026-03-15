@@ -60,60 +60,77 @@ def fetch_yad2_listings(client):
     """שולף מודעות להשכרה ברמת גן דרך חיפוש אינטרנט של Claude."""
     print("🔍 מחפש מודעות ביד2 דרך חיפוש אינטרנט...")
 
-    try:
-        response = client.messages.create(
-            model="claude-sonnet-4-6",
-            max_tokens=8000,
-            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
-            messages=[{
-                "role": "user",
-                "content": (
-                    "חפש דירות להשכרה ברמת גן ביד2 שפורסמו לאחרונה.\n"
-                    "בצע מספר חיפושים:\n"
-                    "1. yad2.co.il דירות להשכרה רמת גן\n"
-                    "2. site:yad2.co.il/item להשכרה רמת גן\n\n"
-                    "לכל מודעה שתמצא, אסוף את הפרטים הבאים.\n"
-                    "בסוף החזר JSON array תקין בלבד (ללא טקסט נוסף) בפורמט:\n"
-                    '[{"title":"...","price":5000,"rooms":3,"address":"...","floor":2,'
-                    '"sqm":80,"date":"...","link":"https://www.yad2.co.il/item/..."}]'
-                )
-            }]
-        )
+    searches = [
+        'yad2.co.il "רמת גן" "להשכרה" דירה',
+        'site:yad2.co.il/item "רמת גן"',
+        'yad2 דירות להשכרה רמת גן חדרים שקל',
+    ]
 
-        for block in response.content:
-            if hasattr(block, "text") and block.text:
+    all_listings = []
+
+    for query in searches:
+        try:
+            response = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=4000,
+                tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 1}],
+                messages=[
+                    {
+                        "role": "user",
+                        "content": (
+                            f'Search for: {query}\n\n'
+                            "From the search results, extract every rental apartment listing you find. "
+                            "Return ONLY a JSON array. No explanations. No markdown. Just raw JSON.\n"
+                            "If you find zero listings, return exactly: []\n"
+                            "Format: "
+                            '[{"title":"3 rooms Ramat Gan","price":6500,"rooms":3,'
+                            '"address":"Bialik St","floor":2,"sqm":75,'
+                            '"date":"2026-03-15","link":"https://www.yad2.co.il/item/XXXXX"}]'
+                        )
+                    }
+                ]
+            )
+
+            for block in response.content:
+                if not (hasattr(block, "text") and block.text):
+                    continue
                 text = block.text.strip()
+                # מצא JSON array בתשובה
                 start = text.find("[")
                 end   = text.rfind("]") + 1
-                if start >= 0 and end > start:
-                    try:
-                        raw = json.loads(text[start:end])
-                        listings = []
-                        for item in raw:
-                            price = item.get("price", "")
-                            listings.append({
-                                "id":      "",
-                                "title":   item.get("title", "דירה להשכרה"),
-                                "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
-                                "rooms":   str(item.get("rooms", "")) or "לא צוין",
-                                "address": item.get("address", "רמת גן"),
-                                "floor":   str(item.get("floor", "")) if item.get("floor") else "",
-                                "sqm":     str(item.get("sqm", "")) if item.get("sqm") else "",
-                                "date":    item.get("date", ""),
-                                "link":    item.get("link", ""),
-                            })
-                            if len(listings) >= MAX_LISTINGS:
-                                break
-                        print(f"✅ נמצאו {len(listings)} מודעות")
-                        return listings
-                    except json.JSONDecodeError as e:
-                        print(f"  ↳ שגיאת JSON: {e} | טקסט: {text[:200]}")
+                if start < 0 or end <= start:
+                    print(f"  ↳ לא נמצא JSON בתשובה: {text[:120]}")
+                    continue
+                try:
+                    raw = json.loads(text[start:end])
+                    for item in raw:
+                        price = item.get("price", "")
+                        listing = {
+                            "id":      "",
+                            "title":   item.get("title", "דירה להשכרה"),
+                            "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
+                            "rooms":   str(item.get("rooms", "")) or "לא צוין",
+                            "address": item.get("address", "רמת גן"),
+                            "floor":   str(item.get("floor", "")) if item.get("floor") else "",
+                            "sqm":     str(item.get("sqm", "")) if item.get("sqm") else "",
+                            "date":    item.get("date", ""),
+                            "link":    item.get("link", ""),
+                        }
+                        # הוסף רק אם לא כפול
+                        if listing["link"] not in [l["link"] for l in all_listings]:
+                            all_listings.append(listing)
+                    print(f"  ✅ חיפוש '{query[:40]}': {len(raw)} מודעות")
+                except json.JSONDecodeError as e:
+                    print(f"  ↳ שגיאת JSON: {e} | {text[:120]}")
 
-    except Exception as e:
-        print(f"⚠️ שגיאה בחיפוש: {e}")
+        except Exception as e:
+            print(f"  ↳ שגיאה בחיפוש '{query[:40]}': {e}")
 
-    print("⚠️ לא נמצאו מודעות")
-    return []
+        if len(all_listings) >= MAX_LISTINGS:
+            break
+
+    print(f"✅ סה\"כ נמצאו {len(all_listings)} מודעות")
+    return all_listings[:MAX_LISTINGS]
 
 
 def generate_html(client, listings, date_str, issue):
