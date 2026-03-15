@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 עדכון יומי — דירות להשכרה ברמת גן
-שולף מודעות ישירות מ-API של יד2, מייצר דף HTML, שולח מייל.
+מחפש מודעות דרך Claude web search, מייצר דף HTML, שולח מייל.
 """
 
 import anthropic
@@ -9,7 +9,6 @@ import os
 import sys
 import json
 import smtplib
-import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
@@ -57,131 +56,64 @@ def get_issue_number():
     return max(1, (now - base).days + 1)
 
 
-def _try_fetch_url(url, params, timeout):
-    """מבצע בקשה ומחזיר JSON, או None אם נכשל."""
+def fetch_yad2_listings(client):
+    """שולף מודעות להשכרה ברמת גן דרך חיפוש אינטרנט של Claude."""
+    print("🔍 מחפש מודעות ביד2 דרך חיפוש אינטרנט...")
+
     try:
-        resp = requests.get(url, params=params, headers=YAD2_HEADERS, timeout=timeout)
-        resp.raise_for_status()
-        text = resp.text.strip()
-        if not text:
-            print(f"  ↳ נכשל: תשובה ריקה מהשרת")
-            return None
-        if not text.startswith("{") and not text.startswith("["):
-            print(f"  ↳ תשובה לא-JSON (ראשית): {text[:200]}")
-            return None
-        return resp.json()
-    except requests.RequestException as e:
-        print(f"  ↳ נכשל: {e}")
-        return None
-    except ValueError as e:
-        print(f"  ↳ נכשל לפרסר JSON: {e}")
-        return None
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=8000,
+            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
+            messages=[{
+                "role": "user",
+                "content": (
+                    "חפש דירות להשכרה ברמת גן ביד2 שפורסמו לאחרונה.\n"
+                    "בצע מספר חיפושים:\n"
+                    "1. yad2.co.il דירות להשכרה רמת גן\n"
+                    "2. site:yad2.co.il/item להשכרה רמת גן\n\n"
+                    "לכל מודעה שתמצא, אסוף את הפרטים הבאים.\n"
+                    "בסוף החזר JSON array תקין בלבד (ללא טקסט נוסף) בפורמט:\n"
+                    '[{"title":"...","price":5000,"rooms":3,"address":"...","floor":2,'
+                    '"sqm":80,"date":"...","link":"https://www.yad2.co.il/item/..."}]'
+                )
+            }]
+        )
 
+        for block in response.content:
+            if hasattr(block, "text") and block.text:
+                text = block.text.strip()
+                start = text.find("[")
+                end   = text.rfind("]") + 1
+                if start >= 0 and end > start:
+                    try:
+                        raw = json.loads(text[start:end])
+                        listings = []
+                        for item in raw:
+                            price = item.get("price", "")
+                            listings.append({
+                                "id":      "",
+                                "title":   item.get("title", "דירה להשכרה"),
+                                "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
+                                "rooms":   str(item.get("rooms", "")) or "לא צוין",
+                                "address": item.get("address", "רמת גן"),
+                                "floor":   str(item.get("floor", "")) if item.get("floor") else "",
+                                "sqm":     str(item.get("sqm", "")) if item.get("sqm") else "",
+                                "date":    item.get("date", ""),
+                                "link":    item.get("link", ""),
+                            })
+                            if len(listings) >= MAX_LISTINGS:
+                                break
+                        print(f"✅ נמצאו {len(listings)} מודעות")
+                        return listings
+                    except json.JSONDecodeError as e:
+                        print(f"  ↳ שגיאת JSON: {e} | טקסט: {text[:200]}")
 
-def fetch_yad2_listings():
-    """שולף מודעות להשכרה ברמת גן — מנסה מספר נתיבי API ו-ScraperAPI."""
-    scraper_key = os.environ.get("SCRAPER_API_KEY", "").strip()
-    print(f"🏠 שולף מודעות מיד2... (ScraperAPI: {'כן' if scraper_key else 'לא'})")
+    except Exception as e:
+        print(f"⚠️ שגיאה בחיפוש: {e}")
 
-    # נתיבי API לניסיון
-    candidate_paths = [
-        f"https://gw.yad2.co.il/realestate-3/search?propertyGroup=apartments&dealType=2&city={CITY_CODE}",
-        f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}&propertyGroup=apartments&dealType=2",
-        f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}",
-    ]
-
-    data = None
-    for yad2_url in candidate_paths:
-        # נסה עם premium residential IPs (עוקף Radware) ואז בלי
-        scraper_configs = []
-        if scraper_key:
-            scraper_configs = [
-                {"api_key": scraper_key, "url": yad2_url, "render": "false",
-                 "premium": "true", "country_code": "il"},
-                {"api_key": scraper_key, "url": yad2_url, "render": "false"},
-            ]
-        else:
-            scraper_configs = [{"_direct": yad2_url}]
-
-        for cfg in scraper_configs:
-            if "_direct" in cfg:
-                url, params, timeout = cfg["_direct"], {}, 20
-                label = "ישיר"
-            else:
-                url, params, timeout = "http://api.scraperapi.com", cfg, 60
-                label = f"premium={cfg.get('premium','false')}"
-            print(f"  ⤷ מנסה: {yad2_url} ({label})")
-            data = _try_fetch_url(url, params, timeout)
-            if data:
-                print(f"  ✅ הצליח!")
-                break
-        if data:
-            break
-
-    if not data:
-        print("⚠️ כל נתיבי יד2 נכשלו. מחזיר רשימה ריקה.")
-        return []
-
-    # — debug: הדפסת מבנה ה-JSON (3 רמות ראשונות) —
-    def _preview(obj, depth=0):
-        if depth > 2:
-            return "..."
-        if isinstance(obj, dict):
-            return {k: _preview(v, depth+1) for k, v in list(obj.items())[:5]}
-        if isinstance(obj, list):
-            return [_preview(obj[0], depth+1)] if obj else []
-        return obj
-    print(f"  📦 מבנה JSON: {json.dumps(_preview(data), ensure_ascii=False)}")
-
-    listings = []
-
-    # נסה נתיבים שונים לרשימת המודעות
-    feed_items = (
-        data.get("data", {}).get("feed", {}).get("feed_items")
-        or data.get("data", {}).get("feed_items")
-        or data.get("feed_items")
-        or data.get("data", {}).get("items")
-        or data.get("items")
-        or []
-    )
-
-    print(f"  🔢 סה\"כ פריטים ב-feed: {len(feed_items)}")
-
-    for item in feed_items:
-        if item.get("type") not in ("ad", "listing", None):
-            continue
-
-        item_id = item.get("id", "") or item.get("token", "")
-        price   = item.get("price", "")
-        rooms   = item.get("rooms", "")
-        street  = item.get("street", "")
-        hood    = item.get("neighborhood", "")
-        floor   = item.get("floor", "")
-        sqm     = item.get("square_meters", "") or item.get("squareMeter", "")
-        date    = item.get("date", "") or item.get("updated_at", "")
-        title   = item.get("title", "")
-        row2    = item.get("row2", "")
-
-        address = " ".join(filter(None, [street, hood]))
-        link    = f"https://www.yad2.co.il/item/{item_id}" if item_id else ""
-
-        listings.append({
-            "id":      item_id,
-            "title":   title or row2 or address or "דירה להשכרה",
-            "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
-            "rooms":   str(rooms) if rooms else "לא צוין",
-            "address": address or "רמת גן",
-            "floor":   str(floor) if floor else "",
-            "sqm":     str(sqm) if sqm else "",
-            "date":    date,
-            "link":    link,
-        })
-
-        if len(listings) >= MAX_LISTINGS:
-            break
-
-    print(f"✅ נמצאו {len(listings)} מודעות ביד2")
-    return listings
+    print("⚠️ לא נמצאו מודעות")
+    return []
 
 
 def generate_html(client, listings, date_str, issue):
@@ -308,7 +240,7 @@ def main():
     print(f"📅 מייצר עדכון — {date_str} (עדכון #{issue})")
 
     # 1. שליפת מודעות מיד2
-    listings = fetch_yad2_listings()
+    listings = fetch_yad2_listings(client)
 
     # 2. יצירת HTML עם Claude
     html = generate_html(client, listings, date_str, issue)
