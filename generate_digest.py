@@ -62,9 +62,19 @@ def _try_fetch_url(url, params, timeout):
     try:
         resp = requests.get(url, params=params, headers=YAD2_HEADERS, timeout=timeout)
         resp.raise_for_status()
+        text = resp.text.strip()
+        if not text:
+            print(f"  ↳ נכשל: תשובה ריקה מהשרת")
+            return None
+        if not text.startswith("{") and not text.startswith("["):
+            print(f"  ↳ תשובה לא-JSON (ראשית): {text[:200]}")
+            return None
         return resp.json()
     except requests.RequestException as e:
         print(f"  ↳ נכשל: {e}")
+        return None
+    except ValueError as e:
+        print(f"  ↳ נכשל לפרסר JSON: {e}")
         return None
 
 
@@ -75,25 +85,29 @@ def fetch_yad2_listings():
 
     # רשימת נתיבי API לניסיון — מהחדש לישן
     candidate_paths = [
+        f"https://gw.yad2.co.il/realestate-3/search?propertyGroup=apartments&dealType=2&city={CITY_CODE}",
+        f"https://gw.yad2.co.il/realestate-3/feed?propertyGroup=apartments&dealType=2&city={CITY_CODE}",
         f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}&propertyGroup=apartments&dealType=2",
         f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}",
         f"https://gw.yad2.co.il/realestate/rent?city={CITY_CODE}&propertyGroup=apartments",
-        f"https://gw.yad2.co.il/realestate/feed?city={CITY_CODE}&dealType=2",
     ]
 
     data = None
     for yad2_url in candidate_paths:
-        print(f"  ⤷ מנסה: {yad2_url}")
-        if scraper_key:
-            url = "http://api.scraperapi.com"
-            params = {"api_key": scraper_key, "url": yad2_url, "render": "false"}
-            timeout = 45
-        else:
-            url, params, timeout = yad2_url, {}, 20
+        for render_mode in (["false", "true"] if scraper_key else [None]):
+            print(f"  ⤷ מנסה: {yad2_url} (render={render_mode})")
+            if scraper_key:
+                url = "http://api.scraperapi.com"
+                params = {"api_key": scraper_key, "url": yad2_url, "render": render_mode}
+                timeout = 60
+            else:
+                url, params, timeout = yad2_url, {}, 20
 
-        data = _try_fetch_url(url, params, timeout)
+            data = _try_fetch_url(url, params, timeout)
+            if data:
+                print(f"  ✅ הצליח!")
+                break
         if data:
-            print(f"  ✅ הצליח!")
             break
 
     if not data:
