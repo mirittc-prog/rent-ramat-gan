@@ -83,26 +83,34 @@ def fetch_yad2_listings():
     scraper_key = os.environ.get("SCRAPER_API_KEY", "").strip()
     print(f"🏠 שולף מודעות מיד2... (ScraperAPI: {'כן' if scraper_key else 'לא'})")
 
-    # רשימת נתיבי API לניסיון — מהחדש לישן
+    # נתיבי API לניסיון
     candidate_paths = [
         f"https://gw.yad2.co.il/realestate-3/search?propertyGroup=apartments&dealType=2&city={CITY_CODE}",
-        f"https://gw.yad2.co.il/realestate-3/feed?propertyGroup=apartments&dealType=2&city={CITY_CODE}",
         f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}&propertyGroup=apartments&dealType=2",
         f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}",
-        f"https://gw.yad2.co.il/realestate/rent?city={CITY_CODE}&propertyGroup=apartments",
     ]
 
     data = None
     for yad2_url in candidate_paths:
-        for render_mode in (["false", "true"] if scraper_key else [None]):
-            print(f"  ⤷ מנסה: {yad2_url} (render={render_mode})")
-            if scraper_key:
-                url = "http://api.scraperapi.com"
-                params = {"api_key": scraper_key, "url": yad2_url, "render": render_mode}
-                timeout = 60
-            else:
-                url, params, timeout = yad2_url, {}, 20
+        # נסה עם premium residential IPs (עוקף Radware) ואז בלי
+        scraper_configs = []
+        if scraper_key:
+            scraper_configs = [
+                {"api_key": scraper_key, "url": yad2_url, "render": "false",
+                 "premium": "true", "country_code": "il"},
+                {"api_key": scraper_key, "url": yad2_url, "render": "false"},
+            ]
+        else:
+            scraper_configs = [{"_direct": yad2_url}]
 
+        for cfg in scraper_configs:
+            if "_direct" in cfg:
+                url, params, timeout = cfg["_direct"], {}, 20
+                label = "ישיר"
+            else:
+                url, params, timeout = "http://api.scraperapi.com", cfg, 60
+                label = f"premium={cfg.get('premium','false')}"
+            print(f"  ⤷ מנסה: {yad2_url} ({label})")
             data = _try_fetch_url(url, params, timeout)
             if data:
                 print(f"  ✅ הצליח!")
