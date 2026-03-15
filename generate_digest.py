@@ -57,53 +57,86 @@ def get_issue_number():
     return max(1, (now - base).days + 1)
 
 
-def fetch_yad2_listings():
-    """שולף מודעות להשכרה ברמת גן ישירות מ-API של יד2."""
-    print("🏠 שולף מודעות מיד2...")
-
-    session = requests.Session()
-
-    # שלב 1: פנייה לדף הבית כדי לקבל cookies כמו דפדפן אמיתי
+def _try_fetch_url(url, params, timeout):
+    """מבצע בקשה ומחזיר JSON, או None אם נכשל."""
     try:
-        session.get(
-            "https://www.yad2.co.il/realestate/rent",
-            headers={**YAD2_HEADERS, "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
-            timeout=15
-        )
-    except Exception:
-        pass  # גם בלי cookies נמשיך לנסות
-
-    # שלב 2: פנייה ל-API
-    url = "https://gw.yad2.co.il/feed-search-legacy/realestate/rent"
-    params = {
-        "city":        CITY_CODE,
-        "priceOnly":   1,
-        "forceLdLoad": "true",
-    }
-
-    try:
-        resp = session.get(url, params=params, headers=YAD2_HEADERS, timeout=20)
+        resp = requests.get(url, params=params, headers=YAD2_HEADERS, timeout=timeout)
         resp.raise_for_status()
-        data = resp.json()
+        return resp.json()
     except requests.RequestException as e:
-        print(f"⚠️ שגיאה בשליפת יד2: {e}")
+        print(f"  ↳ נכשל: {e}")
+        return None
+
+
+def fetch_yad2_listings():
+    """שולף מודעות להשכרה ברמת גן — מנסה מספר נתיבי API ו-ScraperAPI."""
+    scraper_key = os.environ.get("SCRAPER_API_KEY", "").strip()
+    print(f"🏠 שולף מודעות מיד2... (ScraperAPI: {'כן' if scraper_key else 'לא'})")
+
+    # רשימת נתיבי API לניסיון — מהחדש לישן
+    candidate_paths = [
+        f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}&propertyGroup=apartments&dealType=2",
+        f"https://gw.yad2.co.il/feed-search-legacy/realestate/rent?city={CITY_CODE}",
+        f"https://gw.yad2.co.il/realestate/rent?city={CITY_CODE}&propertyGroup=apartments",
+        f"https://gw.yad2.co.il/realestate/feed?city={CITY_CODE}&dealType=2",
+    ]
+
+    data = None
+    for yad2_url in candidate_paths:
+        print(f"  ⤷ מנסה: {yad2_url}")
+        if scraper_key:
+            url = "http://api.scraperapi.com"
+            params = {"api_key": scraper_key, "url": yad2_url, "render": "false"}
+            timeout = 45
+        else:
+            url, params, timeout = yad2_url, {}, 20
+
+        data = _try_fetch_url(url, params, timeout)
+        if data:
+            print(f"  ✅ הצליח!")
+            break
+
+    if not data:
+        print("⚠️ כל נתיבי יד2 נכשלו. מחזיר רשימה ריקה.")
         return []
 
-    listings = []
-    feed = data.get("data", {}).get("feed", {}).get("feed_items", [])
+    # — debug: הדפסת מבנה ה-JSON (3 רמות ראשונות) —
+    def _preview(obj, depth=0):
+        if depth > 2:
+            return "..."
+        if isinstance(obj, dict):
+            return {k: _preview(v, depth+1) for k, v in list(obj.items())[:5]}
+        if isinstance(obj, list):
+            return [_preview(obj[0], depth+1)] if obj else []
+        return obj
+    print(f"  📦 מבנה JSON: {json.dumps(_preview(data), ensure_ascii=False)}")
 
-    for item in feed:
-        if item.get("type") != "ad":
+    listings = []
+
+    # נסה נתיבים שונים לרשימת המודעות
+    feed_items = (
+        data.get("data", {}).get("feed", {}).get("feed_items")
+        or data.get("data", {}).get("feed_items")
+        or data.get("feed_items")
+        or data.get("data", {}).get("items")
+        or data.get("items")
+        or []
+    )
+
+    print(f"  🔢 סה\"כ פריטים ב-feed: {len(feed_items)}")
+
+    for item in feed_items:
+        if item.get("type") not in ("ad", "listing", None):
             continue
 
-        item_id = item.get("id", "")
+        item_id = item.get("id", "") or item.get("token", "")
         price   = item.get("price", "")
         rooms   = item.get("rooms", "")
         street  = item.get("street", "")
         hood    = item.get("neighborhood", "")
         floor   = item.get("floor", "")
-        sqm     = item.get("square_meters", "")
-        date    = item.get("date", "")
+        sqm     = item.get("square_meters", "") or item.get("squareMeter", "")
+        date    = item.get("date", "") or item.get("updated_at", "")
         title   = item.get("title", "")
         row2    = item.get("row2", "")
 
