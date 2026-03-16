@@ -56,140 +56,74 @@ def get_issue_number():
     return max(1, (now - base).days + 1)
 
 
-def fetch_yad2_listings(client):
-    """שולף מודעות להשכרה ברמת גן דרך חיפוש אינטרנט של Claude."""
-    print("🔍 מחפש מודעות ביד2 דרך חיפוש אינטרנט...")
+def generate_html_with_search(client, date_str, issue):
+    """מחפש מודעות ומייצר HTML בקריאה אחת עם web_search."""
+    print("🔍 מחפש מודעות ומייצר דף HTML...")
 
-    searches = [
-        'yad2.co.il "רמת גן" "להשכרה" דירה',
-        'site:yad2.co.il/item "רמת גן"',
-        'yad2 דירות להשכרה רמת גן חדרים שקל',
-    ]
+    prompt = f"""You have access to web search. Search for rental apartments in Ramat Gan, Israel.
 
-    all_listings = []
+Search for:
+1. "דירות להשכרה רמת גן" yad2 OR madlan
+2. yad2.co.il apartments rent "רמת גן" 2026
+3. madlan.co.il דירות להשכרה רמת גן
 
-    for query in searches:
-        try:
-            response = client.messages.create(
-                model="claude-sonnet-4-6",
-                max_tokens=4000,
-                tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 1}],
-                messages=[
-                    {
-                        "role": "user",
-                        "content": (
-                            f'Search for: {query}\n\n'
-                            "From the search results, extract every rental apartment listing you find. "
-                            "Return ONLY a JSON array. No explanations. No markdown. Just raw JSON.\n"
-                            "If you find zero listings, return exactly: []\n"
-                            "Format: "
-                            '[{"title":"3 rooms Ramat Gan","price":6500,"rooms":3,'
-                            '"address":"Bialik St","floor":2,"sqm":75,'
-                            '"date":"2026-03-15","link":"https://www.yad2.co.il/item/XXXXX"}]'
-                        )
-                    }
-                ]
-            )
+Collect all rental listings you find. Then create a complete Hebrew HTML page.
 
-            for block in response.content:
-                if not (hasattr(block, "text") and block.text):
-                    continue
-                text = block.text.strip()
-                # מצא JSON array בתשובה
-                start = text.find("[")
-                end   = text.rfind("]") + 1
-                if start < 0 or end <= start:
-                    print(f"  ↳ לא נמצא JSON בתשובה: {text[:120]}")
-                    continue
-                try:
-                    raw = json.loads(text[start:end])
-                    for item in raw:
-                        price = item.get("price", "")
-                        listing = {
-                            "id":      "",
-                            "title":   item.get("title", "דירה להשכרה"),
-                            "price":   f"₪{price:,}" if isinstance(price, int) else (f"₪{price}" if price else "מחיר לא צוין"),
-                            "rooms":   str(item.get("rooms", "")) or "לא צוין",
-                            "address": item.get("address", "רמת גן"),
-                            "floor":   str(item.get("floor", "")) if item.get("floor") else "",
-                            "sqm":     str(item.get("sqm", "")) if item.get("sqm") else "",
-                            "date":    item.get("date", ""),
-                            "link":    item.get("link", ""),
-                        }
-                        # הוסף רק אם לא כפול
-                        if listing["link"] not in [l["link"] for l in all_listings]:
-                            all_listings.append(listing)
-                    print(f"  ✅ חיפוש '{query[:40]}': {len(raw)} מודעות")
-                except json.JSONDecodeError as e:
-                    print(f"  ↳ שגיאת JSON: {e} | {text[:120]}")
+Page requirements:
+- Full RTL HTML page, dir="rtl" lang="he"
+- Dark background: #0d0d14, cards: #1e1e2e with border #2a2a3e
+- Primary color: #4a9eff (blue), accent: #e94560 (red)
+- Sticky navbar: "{DIGEST_TITLE}" + {date_str}
+- Hero section: title "דירות להשכרה ברמת גן", issue #{issue}, stats (count, price range, average)
+- Filter tabs: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים
+- Mobile-responsive cards
+- All CSS and JS embedded in one file
 
-        except Exception as e:
-            print(f"  ↳ שגיאה בחיפוש '{query[:40]}': {e}")
+For each listing found, create a card with:
+- Title + address (direct link to listing — use actual URL from search results)
+- Tags: price, rooms, floor (if available), sqm (if available)
+- Button "לצפייה במודעה ←" with href to listing
+- Badge "🆕 חדש!" if published today or yesterday
 
-        if len(all_listings) >= MAX_LISTINGS:
-            break
-
-    print(f"✅ סה\"כ נמצאו {len(all_listings)} מודעות")
-    return all_listings[:MAX_LISTINGS]
-
-
-def generate_html(client, listings, date_str, issue):
-    print("🎨 מייצר דף HTML...")
-
-    if listings:
-        listings_text = json.dumps(listings, ensure_ascii=False, indent=2)
-        data_section = f"נמצאו {len(listings)} מודעות ביד2. הנה הנתונים:\n{listings_text}"
-    else:
-        data_section = "לא נמצאו מודעות ביד2 כרגע. צור דף עם הסבר ידידותי וקישורים לחיפוש ידני."
-
-    prompt = f"""צור עמוד HTML מלא ומושלם בעברית עבור דירות להשכרה ברמת גן.
-
-{data_section}
-
-דרישות עיצוב:
-- כיוון RTL, dir="rtl" lang="he", כל הטקסט בעברית
-- רקע כהה: #0d0d14, כרטיסים: #1e1e2e עם גבול #2a2a3e
-- צבע ראשי: #4a9eff (כחול), משני: #e94560 (אדום)
-- Navbar דביק: "{DIGEST_TITLE}" + {date_str}
-- Hero section: כותרת, עדכון #{issue}, סטטיסטיקות (מספר מודעות, טווח מחירים, ממוצע)
-- טאבים לפילטור: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים
-- כרטיסים מגיבים למובייל
-- כל CSS ו-JS מוטמעים בקובץ אחד
-
-לכל מודעה צור כרטיס עם:
-- כותרת + כתובת (קישור ישיר לדף המודעה ביד2 — חובה! השתמש ב-link מהנתונים)
-- תגיות: מחיר, מספר חדרים, קומה (אם יש), שטח במ"ר (אם יש)
-- כפתור "לצפייה במודעה ←" עם href לקישור
-- תגית "🆕 חדש!" אם המודעה מהיום או אתמול
-
-מבנה:
+Page structure:
 1. Navbar (sticky)
-2. Hero עם סטטיסטיקות
-3. טאבים
-4. כרטיסי מודעות ממוינים לפי תאריך (חדש ראשון)
-5. Footer: "מקור: יד2 · נוצר אוטומטית על ידי Claude · {date_str}"
+2. Hero with stats
+3. Filter tabs
+4. Listing cards sorted by date (newest first)
+5. Footer: "מקור: יד2/מדלן · נוצר אוטומטית על ידי Claude · {date_str}"
 
-החזר אך ורק HTML מלא מ-<!DOCTYPE html> עד </html>, ללא שום טקסט אחר."""
+If you find NO listings, show a friendly message with links to:
+- https://www.yad2.co.il/realestate/rent?city=8600
+- https://www.madlan.co.il/for-rent/רמת-גן
+
+Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
 
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=16000,
+        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
         messages=[{"role": "user", "content": prompt}]
     )
 
-    html = response.content[0].text if response.content else ""
+    html = ""
+    listing_count = 0
+    for block in response.content:
+        if hasattr(block, "text") and block.text:
+            text = block.text
+            if "<!DOCTYPE" in text:
+                start = text.find("<!DOCTYPE")
+                end   = text.rfind("</html>") + 7
+                if end > start:
+                    html = text[start:end]
 
-    if "<!DOCTYPE" in html:
-        start = html.find("<!DOCTYPE")
-        end   = html.rfind("</html>") + 7
-        if end > start:
-            html = html[start:end]
-
-    if "<!DOCTYPE" not in html or "</html>" not in html:
-        print(f"❌ לא נוצר HTML תקין\nתצוגה מקדימה: {html[:300]}")
+    if not html or "<!DOCTYPE" not in html:
+        print(f"❌ לא נוצר HTML תקין")
         sys.exit(1)
 
-    return html
+    # ספור כרטיסים כדי לדווח בנושא המייל
+    listing_count = html.count('לצפייה במודעה')
+    print(f"✅ HTML נוצר עם ~{listing_count} מודעות")
+    return html, listing_count
 
 
 def send_notification_email(date_str, issue, listing_count, app_password):
@@ -256,17 +190,14 @@ def main():
 
     print(f"📅 מייצר עדכון — {date_str} (עדכון #{issue})")
 
-    # 1. שליפת מודעות מיד2
-    listings = fetch_yad2_listings(client)
-
-    # 2. יצירת HTML עם Claude
-    html = generate_html(client, listings, date_str, issue)
+    # 1. חיפוש + ייצור HTML בקריאה אחת
+    html, listing_count = generate_html_with_search(client, date_str, issue)
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html)
     print(f"✅ index.html נשמר ({len(html):,} תווים)")
 
-    # 3. שליחת מייל
-    send_notification_email(date_str, issue, len(listings), app_password)
+    # 2. שליחת מייל
+    send_notification_email(date_str, issue, listing_count, app_password)
 
 
 if __name__ == "__main__":
