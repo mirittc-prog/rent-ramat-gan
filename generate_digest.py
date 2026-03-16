@@ -44,32 +44,39 @@ def generate_html_with_search(client, date_str, issue):
         "You have access to web search. Your task: find REAL rental apartment listings "
         "in Ramat Gan, Israel, with DIRECT LINKS to specific posts/listings.\n\n"
 
-        "=== SEARCH STRATEGY (run ALL of these — more searches = more listings) ===\n"
-        '1. facebook.com "רמת גן" "להשכרה" דירה חדרים שקל\n'
-        '2. facebook.com/groups "רמת גן" דירה להשכרה 2026\n'
-        '3. site:facebook.com "רמת גן" "להשכרה" "חדרים"\n'
-        '4. madlan.co.il רמת גן דירה להשכרה\n'
-        '5. homeless.co.il דירה להשכרה רמת גן\n'
-        '6. winwin.co.il דירה להשכרה רמת גן\n'
-        '7. "להשכרה" "רמת גן" דירה חדרים ₪ 2026\n'
-        '8. komo.co.il דירה להשכרה רמת גן\n\n'
-        "Aim for at least 20 listings total. Keep searching until you have as many as possible.\n\n"
+        "=== SEARCH STRATEGY (run ALL of these) ===\n"
+        "Search for specific posts inside these Facebook rental groups:\n"
+        '1. site:facebook.com/groups/1870209196564360 דירה חדרים שקל\n'
+        '2. site:facebook.com/groups/1424244737803677 דירה חדרים שקל\n'
+        '3. site:facebook.com/groups/647901439404148 דירה חדרים שקל\n'
+        '4. site:facebook.com/groups/253957624766723 דירה חדרים שקל\n'
+        '5. site:facebook.com/groups/1774413905909921 דירה חדרים שקל\n'
+        '6. madlan.co.il רמת גן דירה להשכרה\n'
+        '7. homeless.co.il דירה להשכרה רמת גן\n'
+        '8. winwin.co.il דירה להשכרה רמת גן\n\n'
+        "Aim for at least 20 listings. Keep searching.\n\n"
 
         "=== CRITICAL RULES ===\n"
-        "- For EACH listing, you MUST have a direct URL to that specific post or listing page.\n"
-        "- Facebook posts: use the actual facebook.com/groups/xxx/posts/yyy URL from search results.\n"
-        "- Madlan listings: use the actual madlan.co.il/listing/xxx URL from search results.\n"
-        "- Homeless listings: use the actual homeless.co.il URL from search results.\n"
-        "- Do NOT invent or fabricate URLs. Only use URLs that appeared in your search results.\n"
-        "- Do NOT link to search pages or category pages.\n"
-        "- Extract: title, price (in ILS), rooms, address, source (facebook/madlan/homeless), direct URL.\n"
-        "- Include as many listings as you can find. More = better.\n\n"
+        "- For Facebook: use the direct post URL (facebook.com/groups/xxx/posts/yyy) from search results.\n"
+        "- For Madlan/Homeless/Winwin: use the direct listing URL from search results.\n"
+        "- Do NOT fabricate URLs. Only use URLs that appeared in your search results.\n"
+        "- Do NOT link to group pages or category pages — only specific posts/listings.\n"
+        "- Extract: title, price (ILS), rooms, address, source, direct URL.\n"
+        "- Include ALL listings found. More = better.\n\n"
 
         "=== NOW BUILD THE HTML PAGE ===\n"
         "Create a complete Hebrew RTL HTML page with these sections:\n\n"
 
         "SECTION 1: מודעות שנמצאו (all listings with direct links)\n"
-        "SECTION 2: חיפוש ביד2 (ONE card linking to: "
+        "SECTION 2: קבוצות פייסבוק (ALWAYS show these 5 static cards):\n"
+        "  Link directly to each group's feed (newest posts first):\n"
+        "  1. https://www.facebook.com/groups/1870209196564360/?sorting_setting=RECENT_ACTIVITY\n"
+        "  2. https://www.facebook.com/groups/1424244737803677/?sorting_setting=RECENT_ACTIVITY\n"
+        "  3. https://www.facebook.com/groups/647901439404148/?sorting_setting=RECENT_ACTIVITY\n"
+        "  4. https://www.facebook.com/groups/253957624766723/?sorting_setting=RECENT_ACTIVITY\n"
+        "  5. https://www.facebook.com/groups/1774413905909921/?sorting_setting=RECENT_ACTIVITY\n"
+        "  For each card: search the web for the group name, show it, button 'לפוסטים החדשים ←'.\n\n"
+        "SECTION 3: חיפוש ביד2 (ONE card linking to: "
         "https://www.yad2.co.il/realestate/rent?city=8600 "
         "with text: 'יד2 חוסמת גישה אוטומטית. לחצו כאן לחיפוש ישיר באתר יד2')\n\n"
 
