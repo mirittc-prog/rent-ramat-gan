@@ -7,468 +7,313 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: #0d0d14;
-    color: #e0e0f0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    direction: rtl;
-    min-height: 100vh;
+  :root {
+    --bg: #0d0d14;
+    --card: #1e1e2e;
+    --border: #2a2a3e;
+    --primary: #4a9eff;
+    --secondary: #e94560;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --success: #3dd68c;
   }
 
-  a { color: inherit; text-decoration: none; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
 
   /* NAVBAR */
   .navbar {
     position: sticky;
     top: 0;
-    z-index: 100;
-    background: #12121e;
-    border-bottom: 2px solid #2a2a3e;
-    padding: 0 24px;
-    height: 60px;
+    z-index: 1000;
+    background: rgba(13,13,20,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    height: 60px;
   }
-
   .navbar-brand {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #4a9eff;
+    color: var(--primary);
+    text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.4rem;
   }
-
   .navbar-date {
     font-size: 0.85rem;
-    color: #888;
-    background: #1e1e2e;
-    padding: 4px 12px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    border: 1px solid #2a2a3e;
   }
 
   /* HERO */
   .hero {
-    background: linear-gradient(135deg, #12121e 0%, #1a1a2e 50%, #0d0d14 100%);
-    border-bottom: 1px solid #2a2a3e;
-    padding: 48px 24px 36px;
+    background: linear-gradient(135deg, #0d0d14 0%, #1a1a2e 50%, #0d0d14 100%);
+    padding: 3.5rem 1.5rem 2.5rem;
     text-align: center;
     position: relative;
     overflow: hidden;
   }
-
   .hero::before {
     content: '';
     position: absolute;
-    top: -60px;
+    top: -50%;
     left: 50%;
     transform: translateX(-50%);
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(74,158,255,0.07) 0%, transparent 70%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(74,158,255,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
-
-  .hero h1 {
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 10px;
-    position: relative;
-  }
-
-  .hero h1 span {
-    color: #4a9eff;
-  }
-
-  .update-badge {
+  .hero-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
+    gap: 0.4rem;
+    background: rgba(74,158,255,0.12);
+    border: 1px solid rgba(74,158,255,0.3);
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.3rem 0.9rem;
     border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 0.82rem;
-    color: #aaa;
-    margin-bottom: 32px;
+    margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .hero h1 span { color: var(--primary); }
+  .hero-subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
 
-  .update-badge .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #e94560;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(1.3); }
-  }
-
+  /* STATS */
   .stats-grid {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
   }
-
   .stat-card {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
+    background: var(--card);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 16px 28px;
-    min-width: 140px;
-    transition: border-color 0.2s;
+    padding: 1.1rem 0.75rem;
+    position: relative;
+    overflow: hidden;
   }
-
-  .stat-card:hover { border-color: #4a9eff; }
-
-  .stat-card .stat-value {
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 2px;
+    background: var(--primary);
+    opacity: 0.6;
+  }
+  .stat-value {
     font-size: 1.6rem;
     font-weight: 800;
-    color: #4a9eff;
+    color: var(--primary);
     display: block;
   }
-
-  .stat-card .stat-label {
-    font-size: 0.78rem;
-    color: #888;
-    margin-top: 2px;
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
   }
 
-  /* EMPTY STATE */
-  .empty-section {
-    max-width: 680px;
-    margin: 48px auto 24px;
-    padding: 0 24px;
-    text-align: center;
-  }
-
-  .empty-icon {
-    font-size: 4rem;
-    margin-bottom: 16px;
-    display: block;
-  }
-
-  .empty-section h2 {
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 12px;
-    font-weight: 700;
-  }
-
-  .empty-section p {
-    color: #999;
-    line-height: 1.7;
-    font-size: 0.97rem;
-    margin-bottom: 8px;
-  }
+  /* MAIN */
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 
   /* TABS */
   .tabs-container {
-    max-width: 1100px;
-    margin: 40px auto 0;
-    padding: 0 24px;
-  }
-
-  .tabs {
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
     flex-wrap: wrap;
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
+    margin-bottom: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 8px;
-    margin-bottom: 28px;
+    padding: 0.5rem;
   }
-
   .tab-btn {
     background: transparent;
-    border: none;
-    color: #aaa;
-    padding: 8px 18px;
+    border: 1px solid transparent;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1.1rem;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.9rem;
-    font-family: inherit;
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
+    font-family: inherit;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
   }
-
-  .tab-btn:hover { background: #2a2a3e; color: #ddd; }
-
+  .tab-btn:hover { color: var(--text); background: rgba(74,158,255,0.08); }
   .tab-btn.active {
-    background: #4a9eff;
-    color: #fff;
+    background: rgba(74,158,255,0.15);
+    border-color: rgba(74,158,255,0.4);
+    color: var(--primary);
   }
 
-  .tab-btn .count {
-    background: rgba(255,255,255,0.15);
-    border-radius: 10px;
-    padding: 1px 7px;
-    font-size: 0.75rem;
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .empty-state h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .empty-state p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.7;
   }
 
   /* SEARCH LINKS */
-  .search-links-section {
-    max-width: 680px;
-    margin: 0 auto 48px;
-    padding: 0 24px;
-  }
-
-  .search-links-section h3 {
-    color: #fff;
-    font-size: 1.05rem;
-    margin-bottom: 14px;
-    text-align: center;
-  }
-
-  .search-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-  }
-
-  .search-link-card {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    transition: all 0.25s;
-    cursor: pointer;
-    display: block;
-  }
-
-  .search-link-card:hover {
-    border-color: #4a9eff;
-    background: #252538;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(74,158,255,0.12);
-  }
-
-  .search-link-card .link-icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
-  .search-link-card .link-title { color: #fff; font-weight: 700; font-size: 0.92rem; display: block; margin-bottom: 4px; }
-  .search-link-card .link-desc { color: #888; font-size: 0.78rem; }
-
-  /* CARDS GRID */
-  .cards-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px 24px;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
-
-  .no-results {
-    text-align: center;
-    padding: 48px 24px;
-    color: #666;
-    font-size: 1rem;
-    grid-column: 1/-1;
-  }
-
-  /* PROPERTY CARD */
-  .property-card {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 14px;
-    padding: 20px;
-    transition: all 0.25s;
-    position: relative;
+  .search-links { display: flex; flex-direction: column; gap: 0.75rem; }
+  .search-link {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .property-card:hover {
-    border-color: #4a9eff;
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(74,158,255,0.1);
-  }
-
-  .card-header {
-    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .card-title-block { flex: 1; }
-
-  .card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-    line-height: 1.4;
-  }
-
-  .card-title a:hover { color: #4a9eff; }
-
-  .card-address {
-    font-size: 0.8rem;
-    color: #888;
-  }
-
-  .badge-new {
-    background: linear-gradient(135deg, #e94560, #c73652);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    border: 1px solid transparent;
-  }
-
-  .tag-price {
-    background: rgba(74,158,255,0.12);
-    color: #4a9eff;
-    border-color: rgba(74,158,255,0.25);
-    font-size: 0.85rem;
-  }
-
-  .tag-rooms {
-    background: rgba(233,69,96,0.1);
-    color: #e94560;
-    border-color: rgba(233,69,96,0.2);
-  }
-
-  .tag-floor {
-    background: rgba(255,200,60,0.1);
-    color: #f0b429;
-    border-color: rgba(255,200,60,0.15);
-  }
-
-  .tag-size {
-    background: rgba(80,200,120,0.1);
-    color: #50c878;
-    border-color: rgba(80,200,120,0.15);
-  }
-
-  .card-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background: transparent;
-    border: 1.5px solid #4a9eff;
-    color: #4a9eff;
-    padding: 9px 16px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-    margin-top: auto;
+    background: rgba(74,158,255,0.06);
+    border: 1px solid rgba(74,158,255,0.2);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
     text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    gap: 0.75rem;
   }
-
-  .card-btn:hover {
-    background: #4a9eff;
-    color: #fff;
+  .search-link:hover {
+    background: rgba(74,158,255,0.12);
+    border-color: rgba(74,158,255,0.4);
+    transform: translateX(-3px);
   }
+  .search-link-info { display: flex; align-items: center; gap: 0.6rem; }
+  .search-link-icon { font-size: 1.3rem; }
+  .search-link-title { font-weight: 600; font-size: 0.95rem; }
+  .search-link-desc { font-size: 0.78rem; color: var(--muted); }
+  .search-link-arrow { color: var(--primary); font-size: 1rem; flex-shrink: 0; }
 
-  /* INFO BOX */
-  .info-box {
-    max-width: 680px;
-    margin: 0 auto 36px;
-    padding: 0 24px;
-  }
-
-  .info-box-inner {
-    background: #1a1a2e;
-    border: 1px solid #2a2a3e;
-    border-right: 4px solid #4a9eff;
+  /* TIPS BOX */
+  .tips-box {
+    background: rgba(61,214,140,0.06);
+    border: 1px solid rgba(61,214,140,0.2);
     border-radius: 12px;
-    padding: 18px 20px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    margin-top: 2rem;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
   }
+  .tips-box h3 {
+    color: var(--success);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .tips-list { list-style: none; }
+  .tips-list li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .tips-list li::before { content: '✓'; color: var(--success); flex-shrink: 0; margin-top: 0.05rem; }
 
-  .info-box-icon { font-size: 1.4rem; flex-shrink: 0; }
-
-  .info-box-text { font-size: 0.87rem; color: #aaa; line-height: 1.7; }
-  .info-box-text strong { color: #ddd; }
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .count-badge {
+    background: rgba(233,69,96,0.15);
+    border: 1px solid rgba(233,69,96,0.3);
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+  }
 
   /* FOOTER */
   footer {
-    background: #12121e;
-    border-top: 1px solid #2a2a3e;
-    padding: 24px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 1.5rem;
     text-align: center;
-    color: #555;
+    color: var(--muted);
     font-size: 0.82rem;
-    margin-top: 48px;
+    line-height: 1.8;
   }
-
-  footer span { color: #4a9eff; }
-
-  /* DIVIDER */
-  .section-divider {
-    max-width: 1100px;
-    margin: 0 auto 28px;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-divider h2 {
-    color: #fff;
-    font-size: 1.05rem;
-    white-space: nowrap;
-  }
-
-  .divider-line {
-    flex: 1;
-    height: 1px;
-    background: #2a2a3e;
-  }
+  footer span { color: var(--primary); }
 
   /* RESPONSIVE */
-  @media (max-width: 600px) {
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid .stat-card:last-child { grid-column: 1 / -1; }
     .navbar-brand { font-size: 0.95rem; }
-    .hero { padding: 32px 16px 28px; }
-    .stat-card { padding: 12px 18px; min-width: 110px; }
-    .stat-card .stat-value { font-size: 1.3rem; }
-    .tabs { gap: 4px; }
-    .tab-btn { padding: 7px 12px; font-size: 0.82rem; }
-    .cards-section, .tabs-container, .empty-section, .search-links-section, .info-box { padding: 0 14px; }
   }
 </style>
 </head>
@@ -476,219 +321,166 @@
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <div class="navbar-brand">🏠 דירות להשכרה ברמת גן</div>
-  <div class="navbar-date">📅 15 במרץ 2026</div>
+  <a href="#" class="navbar-brand">🏠 דירות להשכרה ברמת גן</a>
+  <span class="navbar-date">📅 16 במרץ 2026</span>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-badge">🔄 עדכון מספר 2</div>
   <h1>דירות להשכרה ב<span>רמת גן</span></h1>
-  <div class="update-badge">
-    <span class="dot"></span>
-    עדכון מספר 1 · 15 במרץ 2026 · ריסוף אוטומטי
-  </div>
+  <p class="hero-subtitle">עדכון אוטומטי ממאגר יד2 · 16 במרץ 2026</p>
   <div class="stats-grid">
     <div class="stat-card">
       <span class="stat-value">0</span>
-      <span class="stat-label">מודעות פעילות</span>
+      <div class="stat-label">מודעות פעילות</div>
     </div>
     <div class="stat-card">
       <span class="stat-value">—</span>
-      <span class="stat-label">טווח מחירים</span>
+      <div class="stat-label">טווח מחירים</div>
     </div>
     <div class="stat-card">
       <span class="stat-value">—</span>
-      <span class="stat-label">מחיר ממוצע</span>
+      <div class="stat-label">מחיר ממוצע</div>
     </div>
   </div>
 </section>
 
-<!-- TABS -->
-<div class="tabs-container">
-  <div class="tabs">
-    <button class="tab-btn active" data-filter="all">
-      הכל <span class="count">0</span>
-    </button>
-    <button class="tab-btn" data-filter="1-2">
-      🛏 1–2 חדרים <span class="count">0</span>
-    </button>
-    <button class="tab-btn" data-filter="3-4">
-      🛏 3–4 חדרים <span class="count">0</span>
-    </button>
-    <button class="tab-btn" data-filter="5plus">
-      🛏 5+ חדרים <span class="count">0</span>
-    </button>
+<!-- MAIN -->
+<main class="main">
+
+  <!-- TABS -->
+  <div class="tabs-container">
+    <button class="tab-btn active" onclick="filterTab(this, 'all')">🏘️ הכל</button>
+    <button class="tab-btn" onclick="filterTab(this, '1-2')">🛏️ 1–2 חדרים</button>
+    <button class="tab-btn" onclick="filterTab(this, '3-4')">🛏️ 3–4 חדרים</button>
+    <button class="tab-btn" onclick="filterTab(this, '5+')">🏠 5+ חדרים</button>
   </div>
-</div>
 
-<!-- EMPTY STATE -->
-<div class="empty-section">
-  <span class="empty-icon">🔍</span>
-  <h2>לא נמצאו מודעות כרגע</h2>
-  <p>
-    בעת עדכון זה לא נמצאו מודעות פעילות להשכרת דירות ברמת גן בפלטפורמת יד2.
-    ייתכן שהמודעות עודכנו או הוסרו לאחרונה.
-  </p>
-  <p>
-    תוכלו לחפש ישירות באתרי הנדל"ן הבאים ולמצוא עשרות מודעות מעודכנות:
-  </p>
-</div>
-
-<!-- INFO BOX -->
-<div class="info-box">
-  <div class="info-box-inner">
-    <span class="info-box-icon">💡</span>
-    <div class="info-box-text">
-      <strong>טיפ לחיפוש:</strong> השתמשו בפילטרים באתרי ההשכרה כדי לצמצם לפי מספר חדרים, מחיר מקסימלי וקומה. באתר יד2 ניתן גם להגדיר התראות למייל לכל מודעה חדשה ברמת גן.
+  <!-- SECTION HEADER -->
+  <div class="section-header">
+    <div class="section-title">
+      📋 מודעות להשכרה
+      <span class="count-badge" id="count-badge">0 מודעות</span>
     </div>
   </div>
-</div>
 
-<!-- SEARCH LINKS -->
-<div class="search-links-section">
-  <h3>🔗 חפשו מודעות ישירות באתרים אלה</h3>
-  <div class="search-links-grid">
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="empty-state">
+    <span class="empty-icon">🔍</span>
+    <h2>לא נמצאו מודעות כרגע</h2>
+    <p>
+      המערכת לא מצאה מודעות פעילות ברמת גן בעת יצירת הדף הזה.<br>
+      יד2 מתעדכנת מדי יום — כדאי לחפש ישירות באתר לתוצאות עדכניות.
+    </p>
 
-    <a class="search-link-card" href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" rel="noopener">
-      <span class="link-icon">🏡</span>
-      <span class="link-title">יד2 – השכרה ברמת גן</span>
-      <span class="link-desc">כל המודעות העדכניות</span>
-    </a>
+    <div class="search-links">
+      <a class="search-link"
+         href="https://www.yad2.co.il/realestate/rent?city=8600"
+         target="_blank" rel="noopener">
+        <div class="search-link-info">
+          <span class="search-link-icon">🏙️</span>
+          <div>
+            <div class="search-link-title">כל הדירות להשכרה ברמת גן</div>
+            <div class="search-link-desc">חיפוש כללי — yad2.co.il</div>
+          </div>
+        </div>
+        <span class="search-link-arrow">←</span>
+      </a>
 
-    <a class="search-link-card" href="https://www.madlan.co.il/for-rent/ramat-gan" target="_blank" rel="noopener">
-      <span class="link-icon">🗺️</span>
-      <span class="link-title">מדלן – רמת גן</span>
-      <span class="link-desc">חיפוש על מפה</span>
-    </a>
+      <a class="search-link"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=1-2"
+         target="_blank" rel="noopener">
+        <div class="search-link-info">
+          <span class="search-link-icon">🛏️</span>
+          <div>
+            <div class="search-link-title">דירות 1–2 חדרים ברמת גן</div>
+            <div class="search-link-desc">מתאים לזוגות ורווקים</div>
+          </div>
+        </div>
+        <span class="search-link-arrow">←</span>
+      </a>
 
-    <a class="search-link-card" href="https://www.homeless.co.il/rent/results/?city=rg" target="_blank" rel="noopener">
-      <span class="link-icon">🏘️</span>
-      <span class="link-title">Homeless – רמת גן</span>
-      <span class="link-desc">מנוע השכרה ישראלי</span>
-    </a>
+      <a class="search-link"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=3-4"
+         target="_blank" rel="noopener">
+        <div class="search-link-info">
+          <span class="search-link-icon">🏡</span>
+          <div>
+            <div class="search-link-title">דירות 3–4 חדרים ברמת גן</div>
+            <div class="search-link-desc">מתאים למשפחות</div>
+          </div>
+        </div>
+        <span class="search-link-arrow">←</span>
+      </a>
 
-    <a class="search-link-card" href="https://www.winwin.co.il/RealEstate/Rentals?cityId=8600" target="_blank" rel="noopener">
-      <span class="link-icon">🏙️</span>
-      <span class="link-title">WinWin – רמת גן</span>
-      <span class="link-desc">נדל"ן להשכרה</span>
-    </a>
+      <a class="search-link"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&rooms=5-"
+         target="_blank" rel="noopener">
+        <div class="search-link-info">
+          <span class="search-link-icon">🏰</span>
+          <div>
+            <div class="search-link-title">דירות 5+ חדרים ברמת גן</div>
+            <div class="search-link-desc">דירות גדולות ווילות</div>
+          </div>
+        </div>
+        <span class="search-link-arrow">←</span>
+      </a>
 
-    <a class="search-link-card" href="https://www.facebook.com/groups/ramatgan.rent" target="_blank" rel="noopener">
-      <span class="link-icon">👥</span>
-      <span class="link-title">קבוצות פייסבוק</span>
-      <span class="link-desc">מודעות מבעלים ישירים</span>
-    </a>
-
-    <a class="search-link-card" href="https://www.komo.co.il/rentapartment/Ramat-Gan" target="_blank" rel="noopener">
-      <span class="link-icon">🔎</span>
-      <span class="link-title">Komo – רמת גן</span>
-      <span class="link-desc">השוואת דירות</span>
-    </a>
-
-  </div>
-</div>
-
-<!-- SECTION DIVIDER -->
-<div class="section-divider">
-  <h2>מודעות אחרונות</h2>
-  <div class="divider-line"></div>
-</div>
-
-<!-- CARDS GRID -->
-<div class="cards-section">
-  <div class="cards-grid" id="cards-grid">
-    <div class="no-results">
-      😔 אין מודעות להצגה כרגע. חזרו מאוחר יותר או חפשו ישירות ביד2.
+      <a class="search-link"
+         href="https://www.yad2.co.il/realestate/rent?city=8600&priceMin=3000&priceMax=6000"
+         target="_blank" rel="noopener">
+        <div class="search-link-info">
+          <span class="search-link-icon">💰</span>
+          <div>
+            <div class="search-link-title">דירות בתקציב 3,000–6,000 ₪</div>
+            <div class="search-link-desc">סינון לפי מחיר</div>
+          </div>
+        </div>
+        <span class="search-link-arrow">←</span>
+      </a>
     </div>
   </div>
-</div>
+
+  <!-- TIPS -->
+  <div class="tips-box">
+    <h3>💡 טיפים לחיפוש דירה ברמת גן</h3>
+    <ul class="tips-list">
+      <li>הירשמו להתראות ביד2 כדי לקבל עדכון מיידי על מודעות חדשות</li>
+      <li>בדקו את אזורי הביקוש: בורוכוב, נווה עופר, קריית קריניצי</li>
+      <li>צרו קשר עם הדירה תוך שעות מפרסומה — הדירות הטובות נתפסות מהר</li>
+      <li>וודאו שהחוזה כולל פירוט מלא של מה כלול בשכר הדירה</li>
+      <li>בקשו לראות את הדירה בשעות שונות לבדיקת אור טבעי ורעש</li>
+    </ul>
+  </div>
+
+</main>
 
 <!-- FOOTER -->
 <footer>
-  <p>מקור: <span>יד2</span> · נוצר אוטומטית על ידי <span>Claude</span> · 15 במרץ 2026</p>
-  <p style="margin-top:6px; font-size:0.75rem; color:#444;">המידע מוצג לצרכי נוחות בלבד. לאישור פרטים יש לפנות ישירות לאתר המקור.</p>
+  <div>מקור: <span>יד2</span> · נוצר אוטומטית על ידי <span>Claude</span> · 16 במרץ 2026</div>
+  <div style="margin-top:0.4rem; font-size:0.78rem;">
+    המידע מוצג לצורך נוחות בלבד · לפרטים עדכניים גשו ישירות לאתר יד2
+  </div>
 </footer>
 
 <script>
-  // Listings data (empty for this run)
-  const listings = [];
-
-  // Tab filtering logic
-  function getRoomCategory(rooms) {
-    if (!rooms) return 'unknown';
-    const r = parseFloat(rooms);
-    if (r <= 2) return '1-2';
-    if (r <= 4) return '3-4';
-    return '5plus';
+  function filterTab(btn, type) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // No listings to filter — empty state stays visible
+    updateCount(0);
   }
 
-  function updateCounts() {
-    const all = listings.length;
-    const r12 = listings.filter(l => getRoomCategory(l.rooms) === '1-2').length;
-    const r34 = listings.filter(l => getRoomCategory(l.rooms) === '3-4').length;
-    const r5  = listings.filter(l => getRoomCategory(l.rooms) === '5plus').length;
-
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      const f = btn.dataset.filter;
-      const countEl = btn.querySelector('.count');
-      if (!countEl) return;
-      if (f === 'all')   countEl.textContent = all;
-      if (f === '1-2')   countEl.textContent = r12;
-      if (f === '3-4')   countEl.textContent = r34;
-      if (f === '5plus') countEl.textContent = r5;
-    });
+  function updateCount(n) {
+    const badge = document.getElementById('count-badge');
+    if (n === 0) badge.textContent = '0 מודעות';
+    else if (n === 1) badge.textContent = 'מודעה אחת';
+    else badge.textContent = n + ' מודעות';
   }
-
-  function renderCards(filter) {
-    const grid = document.getElementById('cards-grid');
-    let filtered = filter === 'all'
-      ? listings
-      : listings.filter(l => getRoomCategory(l.rooms) === filter);
-
-    if (filtered.length === 0) {
-      grid.innerHTML = `<div class="no-results">😔 אין מודעות להצגה כרגע. חזרו מאוחר יותר או חפשו ישירות ביד2.</div>`;
-      return;
-    }
-
-    grid.innerHTML = filtered.map(l => {
-      const isNew = l.isNew ? '<span class="badge-new">🆕 חדש!</span>' : '';
-      const priceTag = l.price ? `<span class="tag tag-price">💰 ${l.price}</span>` : '';
-      const roomsTag = l.rooms ? `<span class="tag tag-rooms">🛏 ${l.rooms} חדרים</span>` : '';
-      const floorTag = l.floor ? `<span class="tag tag-floor">🏢 קומה ${l.floor}</span>` : '';
-      const sizeTag  = l.size  ? `<span class="tag tag-size">📐 ${l.size} מ"ר</span>` : '';
-
-      return `
-        <div class="property-card">
-          <div class="card-header">
-            <div class="card-title-block">
-              <div class="card-title"><a href="${l.link}" target="_blank" rel="noopener">${l.title}</a></div>
-              <div class="card-address">📍 ${l.address}</div>
-            </div>
-            ${isNew}
-          </div>
-          <div class="card-tags">
-            ${priceTag}${roomsTag}${floorTag}${sizeTag}
-          </div>
-          <a class="card-btn" href="${l.link}" target="_blank" rel="noopener">
-            לצפייה במודעה ←
-          </a>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // Tab click handlers
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderCards(btn.dataset.filter);
-    });
-  });
 
   // Init
-  updateCounts();
-  renderCards('all');
+  updateCount(0);
 </script>
 </body>
 </html>
