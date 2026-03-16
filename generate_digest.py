@@ -111,6 +111,7 @@ def generate_html_with_search(client, date_str, issue):
     for block in response.content:
         if hasattr(block, "text") and block.text:
             text = block.text
+            print(f"  [block] {text[:120]}")
             if "<!DOCTYPE" in text:
                 start = text.find("<!DOCTYPE")
                 end   = text.rfind("</html>") + 7
@@ -118,7 +119,7 @@ def generate_html_with_search(client, date_str, issue):
                     html = text[start:end]
 
     if not html or "<!DOCTYPE" not in html:
-        print("❌ לא נוצר HTML תקין")
+        print(f"❌ לא נוצר HTML תקין. blocks: {len(response.content)}")
         sys.exit(1)
 
     listing_count = html.count('לצפייה במודעה')
