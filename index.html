@@ -1,494 +1,300 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html dir="rtl" lang="he">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>דירות להשכרה ברמת גן | 16 במרץ 2026</title>
+<title>דירות להשכרה ברמת גן</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: #0d0d14;
-    color: #e0e0f0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    min-height: 100vh;
-    direction: rtl;
-  }
-  a { color: inherit; text-decoration: none; }
+  body { background: #0d0d14; color: #e0e0e0; font-family: 'Segoe UI', Arial, sans-serif; direction: rtl; min-height: 100vh; }
+  a { text-decoration: none; color: inherit; }
 
   /* NAVBAR */
   .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    position: sticky; top: 0; z-index: 100;
     background: rgba(13,13,20,0.97);
     border-bottom: 1px solid #2a2a3e;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
     backdrop-filter: blur(8px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 28px;
-    height: 58px;
   }
-  .navbar-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #4a9eff;
-    letter-spacing: 0.01em;
-  }
-  .navbar-date {
-    font-size: 0.85rem;
-    color: #888;
-    white-space: nowrap;
-  }
+  .navbar-title { font-size: 1rem; font-weight: 700; color: #4a9eff; }
+  .navbar-date { font-size: 0.85rem; color: #888; }
 
   /* HERO */
   .hero {
-    background: linear-gradient(135deg, #0d0d14 0%, #1a1a2e 50%, #0d0d14 100%);
-    padding: 56px 20px 44px;
+    background: linear-gradient(135deg, #12122a 0%, #1a1a30 60%, #0d0d14 100%);
+    padding: 3.5rem 2rem 2.5rem;
     text-align: center;
     border-bottom: 1px solid #2a2a3e;
   }
-  .hero-badge {
-    display: inline-block;
-    background: #e94560;
-    color: #fff;
-    font-size: 0.78rem;
-    font-weight: 700;
-    border-radius: 20px;
-    padding: 3px 14px;
-    margin-bottom: 16px;
-    letter-spacing: 0.03em;
-  }
-  .hero h1 {
-    font-size: clamp(1.6rem, 4vw, 2.6rem);
-    font-weight: 800;
-    color: #fff;
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-  .hero h1 span { color: #4a9eff; }
-  .hero-sub {
-    color: #888;
-    font-size: 0.95rem;
-    margin-bottom: 36px;
-  }
-  .stats-row {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 0.4rem; }
+  .hero .subtitle { font-size: 1.1rem; color: #4a9eff; margin-bottom: 2rem; font-weight: 500; }
+  .stats { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
   .stat-box {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 14px;
-    padding: 20px 32px;
-    min-width: 150px;
-    flex: 1 1 140px;
-    max-width: 200px;
+    background: #1e1e2e; border: 1px solid #2a2a3e;
+    border-radius: 12px; padding: 1rem 1.6rem;
+    min-width: 140px; text-align: center;
   }
-  .stat-box .stat-num {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #4a9eff;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .stat-box .stat-label {
-    font-size: 0.8rem;
-    color: #888;
-  }
+  .stat-box .stat-val { font-size: 1.3rem; font-weight: 700; color: #4a9eff; }
+  .stat-box .stat-label { font-size: 0.78rem; color: #888; margin-top: 0.2rem; }
 
   /* FILTERS */
-  .filters-wrap {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 28px 20px 12px;
+  .filters {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    justify-content: center; padding: 1.8rem 2rem 1rem;
   }
-  .filter-tab {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    color: #b0b0c8;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border-radius: 24px;
-    padding: 8px 22px;
-    cursor: pointer;
-    transition: all 0.2s;
+  .filter-btn {
+    background: #1e1e2e; border: 1px solid #2a2a3e;
+    color: #e0e0e0; border-radius: 999px;
+    padding: 0.45rem 1.2rem; font-size: 0.9rem; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
     font-family: inherit;
   }
-  .filter-tab:hover {
-    border-color: #4a9eff;
-    color: #4a9eff;
-  }
-  .filter-tab.active {
-    background: #4a9eff;
-    border-color: #4a9eff;
-    color: #fff;
-  }
+  .filter-btn:hover { border-color: #4a9eff; color: #4a9eff; }
+  .filter-btn.active { background: #4a9eff; border-color: #4a9eff; color: #0d0d14; font-weight: 700; }
 
-  /* MAIN */
-  .main-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-  }
-
-  /* CARDS GRID */
-  .cards-grid {
+  /* GRID */
+  .grid-container { padding: 1.2rem 2rem 2.5rem; max-width: 1300px; margin: 0 auto; }
+  .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
   }
 
   /* CARD */
   .card {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 16px;
-    padding: 22px 20px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    background: #1e1e2e; border: 1px solid #2a2a3e;
+    border-radius: 14px; padding: 1.3rem 1.2rem 1.1rem;
+    display: flex; flex-direction: column; gap: 0.7rem;
+    position: relative; transition: border-color 0.2s, transform 0.2s;
   }
-  .card:hover {
-    border-color: #4a9eff;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 32px rgba(74,158,255,0.10);
-  }
-  .badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
+  .card:hover { border-color: #4a9eff; transform: translateY(-2px); }
+  .card.hidden { display: none; }
+
   .badge {
-    font-size: 0.74rem;
-    font-weight: 700;
-    border-radius: 8px;
-    padding: 3px 10px;
-    display: inline-block;
+    position: absolute; top: 1rem; left: 1rem;
+    font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem;
+    border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em;
   }
-  .src-fb   { background: rgba(74,158,255,0.18); color: #4a9eff; border: 1px solid rgba(74,158,255,0.35); }
-  .src-madlan { background: rgba(39,174,96,0.18); color: #27ae60; border: 1px solid rgba(39,174,96,0.35); }
-  .src-homeless { background: rgba(230,126,34,0.18); color: #e67e22; border: 1px solid rgba(230,126,34,0.35); }
-  .src-yad2 { background: rgba(233,69,96,0.18); color: #e94560; border: 1px solid rgba(233,69,96,0.35); }
-  .card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.4;
-  }
-  .card-address {
-    font-size: 0.85rem;
-    color: #888;
-    margin-top: -6px;
-  }
-  .card-sub {
-    font-size: 0.83rem;
-    color: #888;
-    line-height: 1.5;
-  }
-  .tags-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .badge-madlan { background: rgba(39,174,96,0.18); color: #27ae60; border: 1px solid #27ae60; }
+  .badge-homeless { background: rgba(230,126,34,0.18); color: #e67e22; border: 1px solid #e67e22; }
+  .badge-default { background: rgba(150,150,150,0.18); color: #aaa; border: 1px solid #aaa; }
+
+  .card-title { font-size: 0.97rem; font-weight: 700; color: #fff; padding-left: 3.5rem; line-height: 1.4; }
+  .card-address { font-size: 0.82rem; color: #888; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
   .tag {
-    font-size: 0.8rem;
-    background: rgba(42,42,62,0.8);
-    border: 1px solid #2a2a3e;
-    border-radius: 8px;
-    padding: 3px 10px;
-    color: #c0c0d8;
+    font-size: 0.78rem; padding: 0.22rem 0.7rem; border-radius: 999px;
+    font-weight: 600;
   }
-  .tag.price { color: #4a9eff; border-color: rgba(74,158,255,0.3); }
-  .tag.rooms { color: #a0e0a0; border-color: rgba(39,174,96,0.3); }
-  .tag.date  { color: #ffcc80; border-color: rgba(255,160,0,0.3); }
-  .btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #4a9eff, #2176cc);
-    color: #fff;
-    font-size: 0.88rem;
-    font-weight: 700;
-    border-radius: 10px;
-    padding: 10px 18px;
-    text-align: center;
-    margin-top: auto;
-    transition: opacity 0.2s, transform 0.15s;
+  .tag-price { background: rgba(74,158,255,0.12); color: #4a9eff; border: 1px solid rgba(74,158,255,0.3); }
+  .tag-rooms { background: rgba(233,69,96,0.12); color: #e94560; border: 1px solid rgba(233,69,96,0.3); }
+  .tag-date { background: rgba(255,255,255,0.06); color: #aaa; border: 1px solid #2a2a3e; }
+
+  .card-btn {
+    display: inline-block; margin-top: auto;
+    background: transparent; border: 1px solid #4a9eff;
+    color: #4a9eff; border-radius: 8px;
+    padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600;
+    text-align: center; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
     font-family: inherit;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
   }
-  .btn:hover { opacity: 0.88; transform: scale(1.02); }
-
-  /* EMPTY STATE */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    color: #555;
-  }
-  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; }
-  .empty-state p { font-size: 1.05rem; color: #666; }
-
-  /* SECTION HEADINGS */
-  .section-heading {
-    color: #4a9eff;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.25rem;
-  }
+  .card-btn:hover { background: #4a9eff; color: #0d0d14; }
 
   /* FOOTER */
-  .footer {
-    background: #1e1e2e;
-    border-top: 1px solid #2a2a3e;
-    text-align: center;
-    padding: 22px 16px;
-    color: #666;
-    font-size: 0.82rem;
-    line-height: 1.7;
+  footer {
+    background: #1e1e2e; border-top: 1px solid #2a2a3e;
+    text-align: center; padding: 1.2rem 1rem;
+    font-size: 0.8rem; color: #666;
   }
-  .footer span { color: #4a9eff; }
 
-  /* HIDDEN */
-  .hidden { display: none !important; }
-
-  /* RESPONSIVE */
   @media (max-width: 600px) {
-    .navbar { padding: 0 14px; }
-    .navbar-title { font-size: 0.95rem; }
-    .hero { padding: 36px 14px 30px; }
-    .stat-box { padding: 16px 18px; min-width: 110px; }
-    .stat-box .stat-num { font-size: 1.5rem; }
-    .filters-wrap { padding: 18px 12px 8px; gap: 8px; }
-    .filter-tab { font-size: 0.82rem; padding: 7px 14px; }
-    .main-content { padding: 16px 10px 32px; }
-    .cards-grid { grid-template-columns: 1fr; gap: 14px; }
+    .navbar { padding: 0 1rem; }
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .grid-container { padding: 1rem 1rem 2rem; }
+    .filters { padding: 1.4rem 1rem 0.8rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-  <span class="navbar-title">🏠 דירות להשכרה ברמת גן</span>
+  <span class="navbar-title">דירות להשכרה ברמת גן</span>
   <span class="navbar-date">16 במרץ 2026</span>
 </nav>
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-badge">עדכון #2</div>
-  <h1>דירות להשכרה ב<span>רמת גן</span></h1>
-  <p class="hero-sub">עדכון אוטומטי · 16 במרץ 2026</p>
-  <div class="stats-row">
+<section class="hero">
+  <h1>דירות להשכרה ברמת גן</h1>
+  <p class="subtitle">עדכון #2</p>
+  <div class="stats">
     <div class="stat-box">
-      <div class="stat-num" id="stat-count">0</div>
-      <div class="stat-label">מודעות פעילות</div>
+      <div class="stat-val">9 מודעות</div>
+      <div class="stat-label">סה"כ נמצאו</div>
     </div>
     <div class="stat-box">
-      <div class="stat-num" id="stat-range">—</div>
-      <div class="stat-label">טווח מחירים (₪)</div>
+      <div class="stat-val">₪4,200–₪6,990</div>
+      <div class="stat-label">טווח מחירים</div>
     </div>
     <div class="stat-box">
-      <div class="stat-num" id="stat-avg">—</div>
-      <div class="stat-label">מחיר ממוצע (₪)</div>
+      <div class="stat-val">ממוצע ₪5,812</div>
+      <div class="stat-label">מחיר ממוצע</div>
     </div>
   </div>
-</header>
+</section>
 
-<!-- FILTERS -->
-<div class="filters-wrap">
-  <button class="filter-tab active" data-filter="all">הכל</button>
-  <button class="filter-tab" data-filter="1-2">1-2 חדרים</button>
-  <button class="filter-tab" data-filter="3-4">3-4 חדרים</button>
-  <button class="filter-tab" data-filter="5+">5+ חדרים</button>
-  <button class="filter-tab" data-filter="30days">30 יום אחרונים</button>
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">הכל</button>
+  <button class="filter-btn" data-filter="1-2">1-2 חדרים</button>
+  <button class="filter-btn" data-filter="3-4">3-4 חדרים</button>
+  <button class="filter-btn" data-filter="5+">5+ חדרים</button>
 </div>
 
-<!-- MAIN -->
-<main class="main-content">
+<div class="grid-container">
+  <div class="grid" id="listings-grid">
 
-  <!-- LISTINGS GRID -->
-  <div class="cards-grid" id="listings-grid">
-    <!-- Empty state since listings JSON is empty -->
-    <div class="empty-state" id="empty-state">
-      <div class="empty-icon">🔍</div>
-      <p>אין מודעות להצגה כרגע.<br>בדקו את קבוצות הפייסבוק ואת האתרים למטה.</p>
+    <div class="card" data-rooms="4">
+      <span class="badge badge-madlan">מדלן</span>
+      <div class="card-title">דירה 4 חדרים - מגדים 3, רמת גן</div>
+      <div class="card-address">מגדים 3 רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪6,500</span>
+        <span class="tag tag-rooms">4 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://www.madlan.co.il/listings/dY7PLbM70WO" target="_blank" rel="noopener">לצפייה במודעה ←</a>
     </div>
+
+    <div class="card" data-rooms="3">
+      <span class="badge badge-madlan">מדלן</span>
+      <div class="card-title">דירה 3 חדרים - מיכאל 20, רמת גן</div>
+      <div class="card-address">מיכאל 20 רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪6,000</span>
+        <span class="tag tag-rooms">3 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://www.madlan.co.il/listings/83753G7oIV5" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="4">
+      <span class="badge badge-madlan">מדלן</span>
+      <div class="card-title">דירה 4 חדרים - בילוים 48, הבילויים, רמת גן</div>
+      <div class="card-address">בילוים 48 הבילויים רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪5,500</span>
+        <span class="tag tag-rooms">4 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://www.madlan.co.il/listings/ZAMIENvdQAk" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="3">
+      <span class="badge badge-homeless">Homeless</span>
+      <div class="card-title">דירה 3 חדרים - שדרות הילד 4, רמת גן</div>
+      <div class="card-address">שדרות הילד 4 רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-rooms">3 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://www.homeless.co.il/rent/viewad,584749.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="2">
+      <span class="badge badge-homeless">Homeless</span>
+      <div class="card-title">דירה 2 חדרים - המעגל, מרכז העיר, רמת גן</div>
+      <div class="card-address">המעגל מרכז העיר רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪4,200</span>
+        <span class="tag tag-rooms">2 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://www.homeless.co.il/rent/viewad,664473.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="3">
+      <span class="badge badge-homeless">Homeless</span>
+      <div class="card-title">דירה 3 חדרים - פתייה, רמת גן</div>
+      <div class="card-address">פתייה רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪5,000</span>
+        <span class="tag tag-rooms">3 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,674567.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="3">
+      <span class="badge badge-homeless">Homeless</span>
+      <div class="card-title">דירה 3.5 חדרים - שרה אהרונסון, רמת גן</div>
+      <div class="card-address">שרה אהרונסון רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪6,500</span>
+        <span class="tag tag-rooms">3.5 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/shortterm?inumber1=3" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="4">
+      <span class="badge badge-homeless">Homeless</span>
+      <div class="card-title">דירה 4 חדרים - המתמיד, הראשונים, רמת גן</div>
+      <div class="card-address">המתמיד הראשונים רמת גן</div>
+      <div class="tags">
+        <span class="tag tag-price">₪6,990</span>
+        <span class="tag tag-rooms">4 חדרים</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/renttivuch/viewad,79744.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <div class="card" data-rooms="0">
+      <span class="badge badge-default">Komo</span>
+      <div class="card-title">דירות להשכרה ברמת גן - לוח קומו</div>
+      <div class="card-address">רמת גן</div>
+      <div class="tags">
+      </div>
+      <a class="card-btn" href="https://www.komo.co.il/code/nadlan/apartments-for-rent.asp?nehes=1&cityName=%D7%A8%D7%9E%D7%AA+%D7%92%D7%9F" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
   </div>
+</div>
 
-  <!-- FACEBOOK GROUPS -->
-  <section style='margin:40px 0'><h2 style='color:#4a9eff;text-align:center;margin-bottom:20px'>🔵 קבוצות פייסבוק</h2><div class='cards-grid'><div class="card fb-card" data-source="facebook"><div class="badges"><span class="badge src-fb">🔵 פייסבוק</span></div><div class="card-title">קבוצת דירות להשכרה ברמת גן</div><a href="https://www.facebook.com/groups/1870209196564360/?sorting_setting=RECENT_ACTIVITY" target="_blank" class="btn">לפוסטים החדשים ←</a></div><div class="card fb-card" data-source="facebook"><div class="badges"><span class="badge src-fb">🔵 פייסבוק</span></div><div class="card-title">קבוצת דירות רמת גן</div><a href="https://www.facebook.com/groups/1424244737803677/?sorting_setting=RECENT_ACTIVITY" target="_blank" class="btn">לפוסטים החדשים ←</a></div><div class="card fb-card" data-source="facebook"><div class="badges"><span class="badge src-fb">🔵 פייסבוק</span></div><div class="card-title">קבוצת שכירות רמת גן</div><a href="https://www.facebook.com/groups/647901439404148/?sorting_setting=RECENT_ACTIVITY" target="_blank" class="btn">לפוסטים החדשים ←</a></div><div class="card fb-card" data-source="facebook"><div class="badges"><span class="badge src-fb">🔵 פייסבוק</span></div><div class="card-title">קבוצת דירות להשכרה גוש דן</div><a href="https://www.facebook.com/groups/253957624766723/?sorting_setting=RECENT_ACTIVITY" target="_blank" class="btn">לפוסטים החדשים ←</a></div><div class="card fb-card" data-source="facebook"><div class="badges"><span class="badge src-fb">🔵 פייסבוק</span></div><div class="card-title">קבוצת דירות רמת גן והסביבה</div><a href="https://www.facebook.com/groups/1774413905909921/?sorting_setting=RECENT_ACTIVITY" target="_blank" class="btn">לפוסטים החדשים ←</a></div></div></section>
-  <section style='margin:40px 0;text-align:center'><div class='cards-grid'><div class="card yad2-card"><div class="badges"><span class="badge src-yad2">יד2</span></div><div class="card-title">חיפוש דירות ביד2 — רמת גן</div><div class="card-sub">יד2 חוסמת גישה אוטומטית. לחצו לחיפוש ישיר.</div><a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" class="btn">לחיפוש ביד2 ←</a></div></div></section>
+<section style="max-width:1200px;margin:48px auto;padding:0 20px;"><h2 style="color:#4a9eff;text-align:center;margin-bottom:24px;">🔵 קבוצות פייסבוק</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;"><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות להשכרה ברמת גן</div><a href="https://www.facebook.com/groups/1870209196564360/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות רמת גן</div><a href="https://www.facebook.com/groups/1424244737803677/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת שכירות רמת גן</div><a href="https://www.facebook.com/groups/647901439404148/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות להשכרה גוש דן</div><a href="https://www.facebook.com/groups/253957624766723/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות רמת גן והסביבה</div><a href="https://www.facebook.com/groups/1774413905909921/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div></div></section><section style="max-width:420px;margin:0 auto 48px;"><div style="padding:0 20px;"><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;text-align:center;"><div style="margin-bottom:10px;"><span style="background:#e94560;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">יד2</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:8px;">חיפוש דירות ביד2 — רמת גן</div><div style="font-size:13px;color:#888;margin-bottom:16px;">יד2 חוסמת גישה אוטומטית. לחצו לחיפוש ישיר.</div><a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" style="display:block;background:#e94560;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לחיפוש ביד2 ←</a></div></div></section>
 
-</main>
-
-<!-- FOOTER -->
-<footer class="footer">
-  מקור: <span>פייסבוק · מדלן · יד2</span> · נוצר אוטומטית על ידי Claude · 16 במרץ 2026
+<footer>
+  מקור: פייסבוק · מדלן · יד2 · Claude · 16 במרץ 2026
 </footer>
 
 <script>
-(function() {
-  // ── Listings data ──────────────────────────────────────────────
-  var listings = [];
+  (function () {
+    var btns = document.querySelectorAll('.filter-btn');
+    var cards = document.querySelectorAll('#listings-grid .card');
 
-  // ── Build listing cards ────────────────────────────────────────
-  var grid = document.getElementById('listings-grid');
-  var emptyState = document.getElementById('empty-state');
-
-  function srcBadgeClass(source) {
-    if (!source) return '';
-    var s = source.toLowerCase();
-    if (s === 'facebook' || s === 'פייסבוק') return 'src-fb';
-    if (s === 'madlan' || s === 'מדלן') return 'src-madlan';
-    if (s === 'homeless') return 'src-homeless';
-    return 'src-fb';
-  }
-  function srcBadgeLabel(source) {
-    if (!source) return '';
-    var s = source.toLowerCase();
-    if (s === 'facebook' || s === 'פייסבוק') return '🔵 פייסבוק';
-    if (s === 'madlan' || s === 'מדלן') return '🟢 מדלן';
-    if (s === 'homeless') return '🟠 homeless';
-    return source;
-  }
-  function roomsRange(rooms) {
-    var r = parseFloat(rooms);
-    if (isNaN(r)) return 'unknown';
-    if (r <= 2) return '1-2';
-    if (r <= 4) return '3-4';
-    return '5+';
-  }
-  function formatPrice(p) {
-    if (!p && p !== 0) return '—';
-    return Number(p).toLocaleString('he-IL');
-  }
-
-  var listingCards = [];
-
-  if (listings.length === 0) {
-    emptyState.style.display = 'block';
-  } else {
-    emptyState.style.display = 'none';
-    listings.forEach(function(item) {
-      var card = document.createElement('div');
-      card.className = 'card listing-card';
-      card.setAttribute('data-rooms', roomsRange(item.rooms));
-      card.setAttribute('data-date', item.date || '');
-
-      var badgeClass = srcBadgeClass(item.source);
-      var badgeLabel = srcBadgeLabel(item.source);
-
-      var html = '';
-      html += '<div class="badges">';
-      if (badgeClass) html += '<span class="badge ' + badgeClass + '">' + badgeLabel + '</span>';
-      html += '</div>';
-      html += '<div class="card-title">' + (item.title || 'דירה להשכרה') + '</div>';
-      if (item.address) html += '<div class="card-address">📍 ' + item.address + '</div>';
-      html += '<div class="tags-row">';
-      if (item.price) html += '<span class="tag price">₪' + formatPrice(item.price) + '</span>';
-      if (item.rooms) html += '<span class="tag rooms">' + item.rooms + ' חדרים</span>';
-      if (item.date) html += '<span class="tag date">📅 ' + item.date + '</span>';
-      html += '</div>';
-      if (item.link) {
-        html += '<a href="' + item.link + '" target="_blank" class="btn">לצפייה במודעה ←</a>';
-      }
-
-      card.innerHTML = html;
-      grid.insertBefore(card, emptyState);
-      listingCards.push(card);
-    });
-  }
-
-  // ── Stats ──────────────────────────────────────────────────────
-  function calcStats() {
-    if (listings.length === 0) {
-      document.getElementById('stat-count').textContent = '0';
-      document.getElementById('stat-range').textContent = '—';
-      document.getElementById('stat-avg').textContent = '—';
-      return;
+    function getRoomsNum(val) {
+      return parseFloat(val) || 0;
     }
-    var prices = listings.map(function(l) { return parseFloat(l.price); }).filter(function(p) { return !isNaN(p) && p > 0; });
-    document.getElementById('stat-count').textContent = listings.length;
-    if (prices.length > 0) {
-      var mn = Math.min.apply(null, prices);
-      var mx = Math.max.apply(null, prices);
-      var avg = Math.round(prices.reduce(function(a,b){return a+b;},0) / prices.length);
-      document.getElementById('stat-range').textContent = formatPrice(mn) + '–' + formatPrice(mx);
-      document.getElementById('stat-avg').textContent = formatPrice(avg);
-    } else {
-      document.getElementById('stat-range').textContent = '—';
-      document.getElementById('stat-avg').textContent = '—';
-    }
-  }
-  calcStats();
 
-  // ── Filter tabs ────────────────────────────────────────────────
-  var today = new Date('2026-03-16');
-  var thirtyDaysAgo = new Date(today);
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  function applyFilter(filter) {
-    var visibleCount = 0;
-
-    listingCards.forEach(function(card) {
-      var rooms = card.getAttribute('data-rooms');
-      var dateStr = card.getAttribute('data-date');
-      var show = false;
-
-      if (filter === 'all') {
-        show = true;
-      } else if (filter === '1-2') {
-        show = (rooms === '1-2');
-      } else if (filter === '3-4') {
-        show = (rooms === '3-4');
-      } else if (filter === '5+') {
-        show = (rooms === '5+');
-      } else if (filter === '30days') {
-        if (dateStr) {
-          var d = new Date(dateStr);
-          show = (!isNaN(d.getTime()) && d >= thirtyDaysAgo);
-        } else {
-          show = false;
+    function filterCards(filterVal) {
+      cards.forEach(function (card) {
+        var rooms = getRoomsNum(card.getAttribute('data-rooms'));
+        var show = false;
+        if (filterVal === 'all') {
+          show = true;
+        } else if (filterVal === '1-2') {
+          show = rooms >= 1 && rooms <= 2;
+        } else if (filterVal === '3-4') {
+          show = rooms >= 3 && rooms <= 4;
+        } else if (filterVal === '5+') {
+          show = rooms >= 5;
         }
-      }
-
-      if (show) {
-        card.classList.remove('hidden');
-        visibleCount++;
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-
-    // Show empty state if no listing cards visible
-    if (listings.length === 0) {
-      emptyState.style.display = 'block';
-    } else if (visibleCount === 0) {
-      emptyState.style.display = 'block';
-    } else {
-      emptyState.style.display = 'none';
+        card.classList.toggle('hidden', !show);
+      });
     }
-  }
 
-  var tabs = document.querySelectorAll('.filter-tab');
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      tabs.forEach(function(t) { t.classList.remove('active'); });
-      tab.classList.add('active');
-      applyFilter(tab.getAttribute('data-filter'));
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        filterCards(btn.getAttribute('data-filter'));
+      });
     });
-  });
-
-  // Initial filter
-  applyFilter('all');
-})();
+  })();
 </script>
+
 </body>
 </html>
