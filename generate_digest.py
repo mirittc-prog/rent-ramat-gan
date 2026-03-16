@@ -62,41 +62,51 @@ def generate_html_with_search(client, date_str, issue):
 
     prompt = f"""You have access to web search. Search for rental apartments in Ramat Gan, Israel.
 
-Search for:
-1. "דירות להשכרה רמת גן" yad2 OR madlan
-2. yad2.co.il apartments rent "רמת גן" 2026
-3. madlan.co.il דירות להשכרה רמת גן
-4. facebook.com "דירות להשכרה" "רמת גן" 2026
-5. "להשכרה רמת גן" פייסבוק קבוצה דירה חדרים
+Run these searches:
+1. yad2.co.il "להשכרה" "רמת גן" דירה חדרים שקל
+2. madlan.co.il "להשכרה" "רמת גן" דירה
 
-Collect all rental listings you find. Then create a complete Hebrew HTML page.
+IMPORTANT RULES FOR LISTINGS:
+- Only include listings with a DIRECT URL to a specific listing page (e.g. yad2.co.il/item/XXXXX or madlan.co.il/listing/XXXXX)
+- Do NOT include links to search/category pages like yad2.co.il/realestate/rent or madlan.co.il/for-rent
+- If you cannot find the direct URL of a listing, skip it entirely
+
+Then create a complete Hebrew HTML page with two sections:
+
+SECTION 1 — מודעות מיד2 ומדלן (listings you found with direct URLs)
+SECTION 2 — קבוצות פייסבוק (static links, always shown):
+  - קבוצת "דירות להשכרה רמת גן": https://www.facebook.com/groups/dirot.ramat.gan
+  - קבוצת "דירות רמת גן": https://www.facebook.com/groups/ramtganrent
+  - חיפוש בפייסבוק: https://www.facebook.com/search/posts?q=להשכרה+רמת+גן+דירה
 
 Page requirements:
 - Full RTL HTML page, dir="rtl" lang="he"
 - Dark background: #0d0d14, cards: #1e1e2e with border #2a2a3e
 - Primary color: #4a9eff (blue), accent: #e94560 (red)
 - Sticky navbar: "{DIGEST_TITLE}" + {date_str}
-- Hero section: title "דירות להשכרה ברמת גן", issue #{issue}, stats (count, price range, average)
-- Filter tabs: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים
+- Hero section: title "דירות להשכרה ברמת גן", issue #{issue}, stats (count of Section 1 listings, price range, average)
+- Filter tabs: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים (applies to Section 1)
 - Mobile-responsive cards
 - All CSS and JS embedded in one file
 
-For each listing found, create a card with:
-- Title + address (direct link to listing — use actual URL from search results)
+For each listing in Section 1:
+- Title + address as clickable link (MUST be direct listing URL)
 - Tags: price, rooms, floor (if available), sqm (if available)
-- Button "לצפייה במודעה ←" with href to listing
+- Button "לצפייה במודעה ←" linking directly to the listing
+- Source badge: "יד2" or "מדלן"
 - Badge "🆕 חדש!" if published today or yesterday
+
+For Section 2 (Facebook):
+- Section title: "🔵 קבוצות פייסבוק"
+- Show 3 cards, one per group above, each with a "לכניסה לקבוצה ←" button
 
 Page structure:
 1. Navbar (sticky)
 2. Hero with stats
 3. Filter tabs
-4. Listing cards sorted by date (newest first)
-5. Footer: "מקור: יד2 · מדלן · פייסבוק · נוצר אוטומטית על ידי Claude · {date_str}"
-
-If you find NO listings, show a friendly message with links to:
-- https://www.yad2.co.il/realestate/rent?city=8600
-- https://www.madlan.co.il/for-rent/רמת-גן
+4. Section 1: listing cards
+5. Section 2: Facebook group cards
+6. Footer: "מקור: יד2 · מדלן · פייסבוק · נוצר אוטומטית על ידי Claude · {date_str}"
 
 Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
 
