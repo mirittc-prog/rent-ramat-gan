@@ -44,12 +44,16 @@ def generate_html_with_search(client, date_str, issue):
         "You have access to web search. Your task: find REAL rental apartment listings "
         "in Ramat Gan, Israel, with DIRECT LINKS to specific posts/listings.\n\n"
 
-        "=== SEARCH STRATEGY (run ALL of these) ===\n"
-        '1. facebook.com "רמת גן" "להשכרה" דירה חדרים\n'
-        '2. facebook.com/groups דירות להשכרה רמת גן\n'
-        '3. madlan.co.il/listing רמת גן להשכרה\n'
-        '4. homeless.co.il דירה להשכרה רמת גן\n'
-        '5. "רמת גן" "להשכרה" דירה חדרים ש"ח 2026\n\n'
+        "=== SEARCH STRATEGY (run ALL of these — more searches = more listings) ===\n"
+        '1. facebook.com "רמת גן" "להשכרה" דירה חדרים שקל\n'
+        '2. facebook.com/groups "רמת גן" דירה להשכרה 2026\n'
+        '3. site:facebook.com "רמת גן" "להשכרה" "חדרים"\n'
+        '4. madlan.co.il רמת גן דירה להשכרה\n'
+        '5. homeless.co.il דירה להשכרה רמת גן\n'
+        '6. winwin.co.il דירה להשכרה רמת גן\n'
+        '7. "להשכרה" "רמת גן" דירה חדרים ₪ 2026\n'
+        '8. komo.co.il דירה להשכרה רמת גן\n\n'
+        "Aim for at least 20 listings total. Keep searching until you have as many as possible.\n\n"
 
         "=== CRITICAL RULES ===\n"
         "- For EACH listing, you MUST have a direct URL to that specific post or listing page.\n"
@@ -92,7 +96,7 @@ def generate_html_with_search(client, date_str, issue):
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=16000,
-        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 8}],
+        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 12}],
         messages=[{"role": "user", "content": prompt}]
     )
 
