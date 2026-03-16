@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>דירות להשכרה ברמת גן | גיליון #2 | מרץ 2026</title>
+<title>דירות להשכרה ברמת גן | 16 במרץ 2026</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --bg: #0d0d14;
@@ -14,182 +14,181 @@
     --primary: #4a9eff;
     --accent: #e94560;
     --text: #e0e0f0;
-    --muted: #8888aa;
-    --yad2color: #ff6b35;
-    --madlancolor: #00c9a7;
+    --sub: #8888aa;
+    --fb: #1877f2;
+    --madlan: #27ae60;
+    --homeless: #e67e22;
+    --yad2: #7c4dff;
+    --badge-fb-bg: rgba(24,119,242,0.15);
+    --badge-madlan-bg: rgba(39,174,96,0.15);
+    --badge-homeless-bg: rgba(230,126,34,0.15);
   }
+
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Segoe UI', 'Arial Hebrew', Arial, sans-serif;
+    min-height: 100vh;
     direction: rtl;
   }
 
-  /* NAVBAR */
+  /* ===== NAVBAR ===== */
   .navbar {
     position: sticky;
     top: 0;
-    z-index: 1000;
-    background: rgba(13,13,20,0.97);
+    z-index: 100;
+    background: rgba(13,13,20,0.95);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
-    padding: 0 20px;
+    padding: 0 24px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 58px;
+    gap: 12px;
   }
   .navbar-brand {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--primary);
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;
   }
+  .navbar-brand .dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
   .navbar-date {
     font-size: 0.82rem;
-    color: var(--muted);
-    background: var(--border);
-    padding: 4px 12px;
-    border-radius: 20px;
+    color: var(--sub);
+    white-space: nowrap;
   }
 
-  /* HERO */
+  /* ===== HERO ===== */
   .hero {
-    background: linear-gradient(135deg, #12121f 0%, #1a1a30 50%, #12121f 100%);
+    background: linear-gradient(135deg, #0d0d14 0%, #161630 50%, #0d0d14 100%);
     border-bottom: 1px solid var(--border);
-    padding: 50px 20px 40px;
+    padding: 48px 24px 40px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -80px; left: 50%; transform: translateX(-50%);
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(74,158,255,0.08) 0%, transparent 70%);
-    pointer-events: none;
   }
   .hero-badge {
     display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 3px 12px;
+    background: rgba(74,158,255,0.12);
+    border: 1px solid rgba(74,158,255,0.3);
+    color: var(--primary);
+    font-size: 0.75rem;
+    padding: 4px 12px;
     border-radius: 20px;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-    text-transform: uppercase;
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
   }
   .hero h1 {
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
     font-weight: 800;
     color: #fff;
-    margin-bottom: 8px;
-    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+    line-height: 1.2;
   }
   .hero h1 span { color: var(--primary); }
   .hero-sub {
-    color: var(--muted);
+    color: var(--sub);
     font-size: 0.95rem;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
   }
-  .stats-row {
+  .hero-stats {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
   }
-  .stat-box {
+  .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 14px 24px;
-    min-width: 130px;
+    padding: 16px 22px;
+    min-width: 120px;
     text-align: center;
   }
-  .stat-val {
-    font-size: 1.4rem;
+  .stat-card .num {
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--primary);
-    display: block;
+    line-height: 1;
   }
-  .stat-lbl {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 2px;
-    display: block;
+  .stat-card .lbl {
+    font-size: 0.72rem;
+    color: var(--sub);
+    margin-top: 4px;
   }
 
-  /* FILTER TABS */
-  .filter-section {
-    padding: 24px 20px 10px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .filter-tabs {
+  /* ===== MAIN ===== */
+  .main { max-width: 1200px; margin: 0 auto; padding: 32px 16px 60px; }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
     display: flex;
+    align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
   }
-  .tab-btn {
+  .section-title::before {
+    content: '';
+    width: 4px; height: 22px;
+    background: var(--primary);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* ===== FILTERS ===== */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .filter-btn {
     background: var(--card);
     border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 8px 20px;
-    border-radius: 25px;
+    color: var(--sub);
+    padding: 8px 18px;
+    border-radius: 24px;
     cursor: pointer;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     font-family: inherit;
     transition: all 0.2s;
   }
-  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
-  .tab-btn.active {
+  .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .filter-btn.active {
     background: var(--primary);
     border-color: var(--primary);
     color: #fff;
     font-weight: 600;
   }
 
-  /* SECTIONS */
-  .section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 20px 40px;
-  }
-  .section-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .section-title span.cnt {
-    background: var(--primary);
-    color: #fff;
-    font-size: 0.75rem;
-    padding: 2px 9px;
-    border-radius: 12px;
-    font-weight: 700;
-  }
-
-  /* CARDS GRID */
-  .cards-grid {
+  /* ===== LISTING GRID ===== */
+  .listing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 18px;
+    margin-bottom: 48px;
   }
 
-  /* LISTING CARD */
+  /* ===== LISTING CARD ===== */
   .listing-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -200,146 +199,183 @@
     gap: 12px;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
     position: relative;
+    overflow: hidden;
   }
+  .listing-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+  .listing-card.src-facebook::before { background: var(--fb); }
+  .listing-card.src-madlan::before { background: var(--madlan); }
+  .listing-card.src-homeless::before { background: var(--homeless); }
   .listing-card:hover {
     transform: translateY(-3px);
-    border-color: var(--primary);
-    box-shadow: 0 8px 30px rgba(74,158,255,0.12);
+    border-color: rgba(74,158,255,0.4);
+    box-shadow: 0 8px 32px rgba(74,158,255,0.08);
   }
-  .listing-card.hidden { display: none; }
 
-  .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
   .card-title {
-    font-size: 0.97rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: #fff;
-    flex: 1;
     line-height: 1.4;
+    flex: 1;
   }
-  .card-title a { color: inherit; text-decoration: none; }
-  .card-title a:hover { color: var(--primary); }
-
   .source-badge {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 8px;
+    padding: 3px 8px;
+    border-radius: 6px;
     white-space: nowrap;
     flex-shrink: 0;
   }
-  .source-yad2 { background: rgba(255,107,53,0.15); color: var(--yad2color); border: 1px solid rgba(255,107,53,0.3); }
-  .source-madlan { background: rgba(0,201,167,0.12); color: var(--madlancolor); border: 1px solid rgba(0,201,167,0.25); }
+  .badge-facebook { background: var(--badge-fb-bg); color: var(--fb); border: 1px solid rgba(24,119,242,0.3); }
+  .badge-madlan { background: var(--badge-madlan-bg); color: var(--madlan); border: 1px solid rgba(39,174,96,0.3); }
+  .badge-homeless { background: var(--badge-homeless-bg); color: var(--homeless); border: 1px solid rgba(230,126,34,0.3); }
 
   .card-address {
-    font-size: 0.82rem;
-    color: var(--muted);
+    font-size: 0.8rem;
+    color: var(--sub);
     display: flex;
     align-items: center;
     gap: 5px;
   }
+  .card-address::before { content: '📍'; font-size: 0.75rem; }
 
-  .tags-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
   .tag {
     font-size: 0.78rem;
-    padding: 4px 11px;
+    padding: 4px 10px;
     border-radius: 8px;
-    font-weight: 600;
-    border: 1px solid;
+    border: 1px solid var(--border);
+    color: var(--sub);
+    background: rgba(255,255,255,0.03);
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
-  .tag-price { background: rgba(233,69,96,0.1); color: var(--accent); border-color: rgba(233,69,96,0.25); }
-  .tag-rooms { background: rgba(74,158,255,0.1); color: var(--primary); border-color: rgba(74,158,255,0.25); }
-  .tag-floor { background: rgba(160,100,255,0.1); color: #b880ff; border-color: rgba(160,100,255,0.25); }
-  .tag-sqm  { background: rgba(255,200,50,0.1); color: #ffc832; border-color: rgba(255,200,50,0.25); }
+  .tag.price {
+    color: var(--accent);
+    border-color: rgba(233,69,96,0.3);
+    background: rgba(233,69,96,0.07);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .tag.rooms {
+    color: var(--primary);
+    border-color: rgba(74,158,255,0.3);
+    background: rgba(74,158,255,0.07);
+    font-weight: 600;
+  }
 
   .card-btn {
     display: block;
-    background: transparent;
-    border: 1px solid var(--primary);
-    color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), #3a7fd4);
+    color: #fff;
+    text-decoration: none;
     text-align: center;
-    padding: 9px 16px;
+    padding: 10px 16px;
     border-radius: 9px;
     font-size: 0.85rem;
     font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
+    transition: opacity 0.2s, transform 0.1s;
     margin-top: auto;
   }
-  .card-btn:hover { background: var(--primary); color: #fff; }
+  .card-btn:hover { opacity: 0.88; transform: scale(0.99); }
 
-  /* FACEBOOK SECTION */
-  .fb-section { background: rgba(30,30,50,0.5); border-top: 1px solid var(--border); }
-
-  .fb-card {
-    background: var(--card);
-    border: 1px solid var(--border);
+  /* ===== YAD2 SECTION ===== */
+  .yad2-section { margin-bottom: 48px; }
+  .yad2-card {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(124,77,255,0.35);
     border-radius: 14px;
-    padding: 22px;
+    padding: 28px 24px;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: transform 0.2s, border-color 0.2s;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
-  .fb-card:hover {
-    transform: translateY(-3px);
-    border-color: #1877f2;
-    box-shadow: 0 8px 30px rgba(24,119,242,0.15);
-  }
-  .fb-icon {
-    width: 42px; height: 42px;
-    background: #1877f2;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
+  .yad2-icon {
+    font-size: 2.5rem;
     flex-shrink: 0;
   }
-  .fb-card-header { display: flex; align-items: center; gap: 12px; }
-  .fb-card-title { font-size: 0.95rem; font-weight: 700; color: #fff; }
-  .fb-card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
-  .fb-btn {
-    display: block;
-    background: #1877f2;
+  .yad2-content { flex: 1; min-width: 200px; }
+  .yad2-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #fff;
-    text-align: center;
-    padding: 9px 16px;
-    border-radius: 9px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s;
-    margin-top: auto;
+    margin-bottom: 6px;
   }
-  .fb-btn:hover { background: #145dbf; }
+  .yad2-content p {
+    font-size: 0.85rem;
+    color: var(--sub);
+    line-height: 1.5;
+  }
+  .yad2-btn {
+    background: linear-gradient(135deg, #7c4dff, #5c2de8);
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .yad2-btn:hover { opacity: 0.88; }
 
-  /* FOOTER */
+  /* ===== HIDDEN ===== */
+  .listing-card.hidden { display: none; }
+
+  /* ===== FOOTER ===== */
   footer {
-    background: #0a0a10;
     border-top: 1px solid var(--border);
+    padding: 24px 16px;
     text-align: center;
-    padding: 22px 20px;
-    font-size: 0.78rem;
-    color: var(--muted);
+    color: var(--sub);
+    font-size: 0.8rem;
     line-height: 1.8;
   }
   footer a { color: var(--primary); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 
-  /* EMPTY STATE */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 40px;
-    color: var(--muted);
-    font-size: 0.95rem;
-    display: none;
+  /* ===== ALERT BANNER ===== */
+  .alert {
+    background: rgba(74,158,255,0.08);
+    border: 1px solid rgba(74,158,255,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.83rem;
+    color: var(--sub);
+    margin-bottom: 24px;
+    line-height: 1.6;
   }
-  .empty-state.visible { display: block; }
+  .alert strong { color: var(--primary); }
 
   @media (max-width: 600px) {
-    .navbar-brand { font-size: 0.95rem; }
-    .hero h1 { font-size: 1.5rem; }
-    .stat-box { min-width: 100px; padding: 10px 16px; }
-    .cards-grid { grid-template-columns: 1fr; }
+    .navbar { padding: 0 12px; }
+    .hero { padding: 32px 12px 28px; }
+    .listing-grid { grid-template-columns: 1fr; }
+    .stat-card { min-width: 100px; padding: 12px 14px; }
+    .yad2-card { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
@@ -347,381 +383,314 @@
 
 <!-- NAVBAR -->
 <nav class="navbar">
-  <div class="navbar-brand">🏠 דירות להשכרה ברמת גן</div>
-  <div class="navbar-date">📅 16 במרץ 2026</div>
+  <div class="navbar-brand">
+    <span class="dot"></span>
+    דירות להשכרה ברמת גן
+  </div>
+  <div class="navbar-date">16 במרץ 2026</div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">גיליון #2 · מרץ 2026</div>
+<div class="hero">
+  <div class="hero-badge">🔄 עדכון #2 · מרץ 2026</div>
   <h1>דירות להשכרה ב<span>רמת גן</span></h1>
-  <p class="hero-sub">נאסף ממקורות חיים: יד2, מדלן ופייסבוק</p>
-  <div class="stats-row">
-    <div class="stat-box">
-      <span class="stat-val" id="stat-count">12</span>
-      <span class="stat-lbl">מודעות שנמצאו</span>
+  <p class="hero-sub">מודעות אמיתיות עם קישורים ישירים מפייסבוק, הומלס ומדלן</p>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="num">13</div>
+      <div class="lbl">מודעות שנמצאו</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-val">₪3,300</span>
-      <span class="stat-lbl">מחיר מינימום</span>
+    <div class="stat-card">
+      <div class="num">₪4,200</div>
+      <div class="lbl">מחיר מינימום</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-val">₪13,778</span>
-      <span class="stat-lbl">מחיר מקסימום</span>
+    <div class="stat-card">
+      <div class="num">₪10,500</div>
+      <div class="lbl">מחיר מקסימום</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-val">~₪7,600</span>
-      <span class="stat-lbl">ממוצע משוערך</span>
+    <div class="stat-card">
+      <div class="num">₪6,900</div>
+      <div class="lbl">ממוצע משוער</div>
     </div>
-    <div class="stat-box">
-      <span class="stat-val">387</span>
-      <span class="stat-lbl">דירות במדלן</span>
-    </div>
-  </div>
-</section>
-
-<!-- FILTER TABS -->
-<div class="filter-section">
-  <div class="filter-tabs">
-    <button class="tab-btn active" onclick="filterCards('all', this)">הכל</button>
-    <button class="tab-btn" onclick="filterCards('1-2', this)">1–2 חדרים</button>
-    <button class="tab-btn" onclick="filterCards('3-4', this)">3–4 חדרים</button>
-    <button class="tab-btn" onclick="filterCards('5plus', this)">5+ חדרים</button>
   </div>
 </div>
 
-<!-- SECTION 1: LISTINGS -->
-<section class="section">
-  <div class="section-title">
-    🏢 מודעות מיד2 ומדלן
-    <span class="cnt" id="visible-count">12</span>
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SECTION 1: Listings -->
+  <div class="section-title">מודעות שנמצאו</div>
+
+  <div class="alert">
+    <strong>⚠️ שימו לב:</strong> כל הקישורים הם ישירים למודעות שנמצאו בחיפוש אינטרנט. חלק מהמודעות בפייסבוק דורשות התחברות לצפייה. מומלץ לבדוק עדכניות לפני יצירת קשר.
   </div>
-  <div class="cards-grid" id="listings-grid">
 
-    <!-- CARD 1 -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – ההלכה 6, רמת יצחק
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 ההלכה 6, רמת יצחק, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪7,250</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-        <span class="tag tag-floor">קומה 5</span>
-        <span class="tag tag-sqm">76 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 2 -->
-    <div class="listing-card" data-rooms="1">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – האם 47, נווה יהושע
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 האם 47, נווה יהושע, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪3,300</span>
-        <span class="tag tag-rooms">חדר אחד</span>
-        <span class="tag tag-floor">קומת קרקע</span>
-        <span class="tag tag-sqm">15 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 3 -->
-    <div class="listing-card" data-rooms="4">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – שכונת הגפן, רמת גן
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 שכונת הגפן, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪12,500</span>
-        <span class="tag tag-rooms">4 חדרים</span>
-        <span class="tag tag-floor">קומה 35</span>
-        <span class="tag tag-sqm">114 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 4 -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – ראש פינה, נווה יהושע
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 ראש פינה, נווה יהושע, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪4,800</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-        <span class="tag tag-floor">קומה 3</span>
-        <span class="tag tag-sqm">70 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 5 -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – עמל 10, נחלת גנים
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 עמל 10, נחלת גנים, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪5,700</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-        <span class="tag tag-floor">קומה 2</span>
-        <span class="tag tag-sqm">64 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 6 -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">
-            דירה – קרניצי 4, מרכז העיר
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 קרניצי 4, מרכז העיר ב', רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪7,600</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-        <span class="tag tag-floor">קומת קרקע</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 7: Madlan specific listing -->
-    <div class="listing-card" data-rooms="4">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/listings/dY7PLbM70WO" target="_blank">
-            דירה – 3 מגדים, רמת גן
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 רחוב מגדים 3, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪6,500</span>
-        <span class="tag tag-rooms">4 חדרים</span>
-        <span class="tag tag-floor">קומה 3 מתוך 4</span>
-        <span class="tag tag-sqm">105 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/listings/dY7PLbM70WO" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 8: Yad2 listing -->
-    <div class="listing-card" data-rooms="4">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank">
-            דירה – יד שלום 10, תל יהודה
-          </a>
-        </div>
-        <span class="source-badge source-yad2">יד2</span>
-      </div>
-      <div class="card-address">📍 יד שלום 10, תל יהודה, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪8,500</span>
-        <span class="tag tag-rooms">4 חדרים</span>
-        <span class="tag tag-floor">קומה 1</span>
-        <span class="tag tag-sqm">90 מ"ר</span>
-      </div>
-      <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 9: Yad2 listing -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank">
-            דירה – הגפן, שכונת גפן
-          </a>
-        </div>
-        <span class="source-badge source-yad2">יד2</span>
-      </div>
-      <div class="card-address">📍 הגפן, שכונת גפן, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪8,500</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-        <span class="tag tag-floor">קומה 2</span>
-        <span class="tag tag-sqm">75 מ"ר</span>
-      </div>
-      <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 10: Yad2 project -->
-    <div class="listing-card" data-rooms="3">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank">
-            דירות מעוצבות להשכרה – פרויקט חדש, רמת גן
-          </a>
-        </div>
-        <span class="source-badge source-yad2">יד2</span>
-      </div>
-      <div class="card-address">📍 רמת גן – פרויקט חדש</div>
-      <div class="tags-row">
-        <span class="tag tag-price">החל מ-₪13,778</span>
-        <span class="tag tag-rooms">3 חדרים</span>
-      </div>
-      <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 11 -->
-    <div class="listing-card" data-rooms="1">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C/1-bd" target="_blank">
-            דירה – טשרניחובסקי 9, קרית מטלון
-          </a>
-        </div>
-        <span class="source-badge source-madlan">מדלן</span>
-      </div>
-      <div class="card-address">📍 טשרניחובסקי 9, קרית מטלון, רמת גן</div>
-      <div class="tags-row">
-        <span class="tag tag-price">₪3,600</span>
-        <span class="tag tag-rooms">חדר אחד</span>
-        <span class="tag tag-floor">קומת קרקע</span>
-        <span class="tag tag-sqm">30 מ"ר</span>
-      </div>
-      <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C/1-bd" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <!-- CARD 12 -->
-    <div class="listing-card" data-rooms="4">
-      <div class="card-header">
-        <div class="card-title">
-          <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank">
-            דירה להשכרה ברמת גן – שכירות ארוכת טווח
-          </a>
-        </div>
-        <span class="source-badge source-yad2">יד2</span>
-      </div>
-      <div class="card-address">📍 רמת גן – שכירות ארוכת טווח</div>
-      <div class="tags-row">
-        <span class="tag tag-price">החל מ-₪9,100</span>
-        <span class="tag tag-rooms">4 חדרים</span>
-      </div>
-      <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank" class="card-btn">לצפייה במודעה ←</a>
-    </div>
-
-    <div class="empty-state" id="empty-msg">לא נמצאו מודעות בסינון זה</div>
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterCards('all', this)">הכל (13)</button>
+    <button class="filter-btn" onclick="filterCards('1-2', this)">1–2 חדרים</button>
+    <button class="filter-btn" onclick="filterCards('3-4', this)">3–4 חדרים</button>
+    <button class="filter-btn" onclick="filterCards('5plus', this)">5+ חדרים</button>
   </div>
-</section>
 
-<!-- SECTION 2: FACEBOOK -->
-<section class="section fb-section">
-  <div class="section-title">🔵 קבוצות פייסבוק</div>
-  <div class="cards-grid">
+  <!-- GRID -->
+  <div class="listing-grid" id="listing-grid">
 
-    <div class="fb-card">
-      <div class="fb-card-header">
-        <div class="fb-icon">📘</div>
-        <div class="fb-card-title">דירות להשכרה רמת גן</div>
+    <!-- Card 1: Homeless – 2 rooms -->
+    <div class="listing-card src-homeless" data-rooms="2">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 2 חדרים – מרכז העיר רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
       </div>
-      <div class="fb-card-desc">
-        קבוצת פייסבוק ייעודית לדירות להשכרה ברמת גן. מאות מודעות ישירות מבעלי דירות ומתווכים. מומלץ לפרסם גם בעצמכם!
+      <div class="card-address">המעגל, מרכז העיר, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪4,200 / חודש</span>
+        <span class="tag rooms">🛏 2 חדרים</span>
+        <span class="tag">בעלים ישיר</span>
       </div>
-      <a href="https://www.facebook.com/groups/dirot.ramat.gan" target="_blank" class="fb-btn">לכניסה לקבוצה ←</a>
+      <a class="card-btn" href="https://www.homeless.co.il/rent/viewad,664473.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
     </div>
 
-    <div class="fb-card">
-      <div class="fb-card-header">
-        <div class="fb-icon">📘</div>
-        <div class="fb-card-title">דירות רמת גן</div>
+    <!-- Card 2: Facebook – 2.5 rooms -->
+    <div class="listing-card src-facebook" data-rooms="2">
+      <div class="card-header">
+        <div class="card-title">להשכרה 2.5 חדרים, מבוא נתן השקט – מרכז רמת גן</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
       </div>
-      <div class="fb-card-desc">
-        קבוצת פייסבוק נוספת לשכירות ומכירה ברמת גן. עדכונים תכופים מדיירים, בעלי נכסים ומשרדי תיווך באזור.
+      <div class="card-address">מבוא נתן השקט, מרכז רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪4,850 / חודש</span>
+        <span class="tag rooms">🛏 2.5 חדרים</span>
+        <span class="tag">משופצת</span>
+        <span class="tag">כניסה מיידית</span>
       </div>
-      <a href="https://www.facebook.com/groups/ramtganrent" target="_blank" class="fb-btn">לכניסה לקבוצה ←</a>
+      <a class="card-btn" href="https://www.facebook.com/ilanamirrealestate/videos/%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94-%D7%91%D7%9E%D7%A8%D7%9B%D7%96-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%A8%D7%97%D7%95%D7%91-%D7%9E%D7%91%D7%95%D7%90-%D7%A0%D7%AA%D7%9F-%D7%94%D7%A9%D7%A7%D7%98-%D7%A9%D7%A0%D7%99%D7%99%D7%9D-%D7%95%D7%97%D7%A6%D7%99-%D7%97%D7%93%D7%A8%D7%99%D7%9D-%D7%9E%D7%A9%D7%95%D7%A4%D7%A6%D7%AA-%D7%95%D7%99%D7%A4%D7%94-%D7%9B%D7%A0%D7%99%D7%A1%D7%94-%D7%9E%D7%99%D7%99%D7%93%D7%99%D7%AA/218539495474045/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
     </div>
 
-    <div class="fb-card">
-      <div class="fb-card-header">
-        <div class="fb-icon">🔍</div>
-        <div class="fb-card-title">חיפוש פייסבוק – להשכרה רמת גן</div>
+    <!-- Card 3: Homeless – 3 rooms -->
+    <div class="listing-card src-homeless" data-rooms="3">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 3 חדרים – נווה יהושע, רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
       </div>
-      <div class="fb-card-desc">
-        חיפוש ישיר בפייסבוק לפוסטים עדכניים עם המילים "להשכרה רמת גן דירה". מאפשר גישה לתוצאות מעמודים, קבוצות ואנשים.
+      <div class="card-address">הררי 3, נווה יהושע, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪5,300 / חודש</span>
+        <span class="tag rooms">🛏 3 חדרים</span>
+        <span class="tag">קרוב בר-אילן</span>
+        <span class="tag">מוארת</span>
       </div>
-      <a href="https://www.facebook.com/search/posts?q=%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94+%D7%A8%D7%9E%D7%AA+%D7%92%D7%9F+%D7%93%D7%99%D7%A8%D7%94" target="_blank" class="fb-btn">לכניסה לקבוצה ←</a>
+      <a class="card-btn" href="https://m.homeless.co.il/Rent/viewad,722629.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
     </div>
 
+    <!-- Card 4: Facebook – 3 rooms, רש"י 13 -->
+    <div class="listing-card src-facebook" data-rooms="3">
+      <div class="card-header">
+        <div class="card-title">להשכרה 3 חדרים – רש"י 13, רמת גן</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
+      </div>
+      <div class="card-address">רש"י 13, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪6,200 / חודש</span>
+        <span class="tag rooms">🛏 3 חדרים</span>
+        <span class="tag">קומת קרקע</span>
+        <span class="tag">כניסה מיידית</span>
+      </div>
+      <a class="card-btn" href="https://www.facebook.com/groups/641604913946062/posts/%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94-%D7%A8%D7%A9%D7%99-13-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%9B%D7%A0%D7%99%D7%A1%D7%94-%D7%9E%D7%99%D7%99%D7%93%D7%99%D7%AA-%D7%A9%D7%9B%D7%A8-%D7%93%D7%99%D7%A8%D7%94-62003-%D7%97%D7%93%D7%A8%D7%99%D7%9D-%D7%A7%D7%95%D7%9E%D7%AA-%D7%A7%D7%A8%D7%A7%D7%A2-0524777157-%D7%AA%D7%99%D7%95%D7%95/1233285531444661/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 5: Facebook – 1.5 rooms, מגדלי גרונר -->
+    <div class="listing-card src-facebook" data-rooms="1">
+      <div class="card-header">
+        <div class="card-title">דירה 1.5 חדרים מרהיבה – מגדלי גרונר, רמת גן</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
+      </div>
+      <div class="card-address">מגדלי גרונר, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">מחיר לפי פנייה</span>
+        <span class="tag rooms">🛏 1.5 חדרים</span>
+        <span class="tag">קומה 11</span>
+        <span class="tag">נוף פנורמי</span>
+      </div>
+      <a class="card-btn" href="https://m.facebook.com/groups/1870209196564360/posts/%D7%93%D7%99%D7%A8%D7%94-15-%D7%97%D7%93%D7%A8%D7%99%D7%9D-%D7%9E%D7%A8%D7%94%D7%99%D7%91%D7%94-%D7%91%D7%9E%D7%92%D7%93%D7%9C%D7%99-%D7%92%D7%A8%D7%95%D7%A0%D7%A8%D7%A8%D7%A9%D7%99-5-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F%D7%93%D7%99%D7%A8%D7%94-%D7%9E%D7%94%D7%9E%D7%9E%D7%AA-%D7%91%D7%A7%D7%95%D7%9E%D7%94-11-%D7%A2%D7%9D-%D7%A0%D7%95%D7%A3-%D7%A4%D7%A0%D7%95%D7%A8%D7%9E%D7%99-%D7%A2/3760583410860253/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 6: Homeless – 4 rooms, מנדל -->
+    <div class="listing-card src-homeless" data-rooms="4">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 4 חדרים – מנדל מתתיהו, רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
+      </div>
+      <div class="card-address">רחוב מנדל מתתיהו, קומה 11, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪7,100 / חודש</span>
+        <span class="tag rooms">🛏 4 חדרים</span>
+        <span class="tag">נוף ת"א</span>
+        <span class="tag">קנטרי קלאב</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,736124.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 7: Homeless – 4 rooms, הגת 10 -->
+    <div class="listing-card src-homeless" data-rooms="4">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 4 חדרים – הגת 10, רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
+      </div>
+      <div class="card-address">הגת 10, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪7,200 / חודש</span>
+        <span class="tag rooms">🛏 4 חדרים</span>
+        <span class="tag">בעלים ישיר</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,713068.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 8: Homeless – 5 rooms, שרה אהרונסון -->
+    <div class="listing-card src-homeless" data-rooms="5">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 5 חדרים – הבילויים, רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
+      </div>
+      <div class="card-address">שרה אהרונסון, הבילויים, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪7,200 / חודש</span>
+        <span class="tag rooms">🛏 5 חדרים</span>
+        <span class="tag">שכונה מבוקשת</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,707705.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 9: Facebook – 4 rooms, שד' התמרים -->
+    <div class="listing-card src-facebook" data-rooms="4">
+      <div class="card-header">
+        <div class="card-title">להשכרה 4 חדרים – שדרות התמרים 9, רמת גן</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
+      </div>
+      <div class="card-address">שדרות התמרים 9, קומה 11, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">מחיר לפי פנייה</span>
+        <span class="tag rooms">🛏 4 חדרים</span>
+        <span class="tag">קומה 11</span>
+        <span class="tag">נוף משגע</span>
+      </div>
+      <a class="card-btn" href="https://www.facebook.com/jjtelavivrealestate/posts/%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F%D7%A9%D7%93%D7%A8%D7%95%D7%AA-%D7%94%D7%AA%D7%9E%D7%A8%D7%99%D7%9D-9%D7%93%D7%99%D7%A8%D7%94-4-%D7%97%D7%93%D7%A8%D7%99%D7%9D-%D7%A7%D7%95%D7%9E%D7%94-11-%D7%93%D7%99%D7%A8%D7%94-%D7%9E%D7%93%D7%94%D7%99%D7%9E%D7%94-%D7%95%D7%9E%D7%A8%D7%95%D7%95%D7%97%D7%AA-%D7%A2%D7%9D-%D7%A0%D7%95%D7%A3-%D7%9E%D7%A9%D7%92%D7%A2-/1489245861262815/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 10: Homeless – 4 rooms, ביאליק 164 -->
+    <div class="listing-card src-homeless" data-rooms="4">
+      <div class="card-header">
+        <div class="card-title">דירה להשכרה 4 חדרים – ביאליק 164, חרוזים</div>
+        <span class="source-badge badge-homeless">הומלס</span>
+      </div>
+      <div class="card-address">ביאליק 164, שכונת חרוזים, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪8,200 / חודש</span>
+        <span class="tag rooms">🛏 4 חדרים</span>
+        <span class="tag">שכונת חרוזים</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,729882.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 11: Facebook – 5 rooms, רמת אפעל -->
+    <div class="listing-card src-facebook" data-rooms="5">
+      <div class="card-header">
+        <div class="card-title">להשכרה 5 חדרים חדשה ויפיפיה – רמת אפעל</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
+      </div>
+      <div class="card-address">שכונת רמת אפעל, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">מחיר לפי פנייה</span>
+        <span class="tag rooms">🛏 5 חדרים</span>
+        <span class="tag">דירה חדשה</span>
+        <span class="tag">שכונה יוקרתית</span>
+      </div>
+      <a class="card-btn" href="https://www.facebook.com/groups/253957624766723/posts/%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94-5-%D7%97%D7%93%D7%A8%D7%99%D7%9D-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%A8%D7%9E%D7%AA-%D7%90%D7%A4%D7%A2%D7%9C-%D7%93%D7%99%D7%A8%D7%94-%D7%97%D7%93%D7%A9%D7%94-%D7%95%D7%99%D7%A4%D7%99%D7%A4%D7%99%D7%94-%D7%91%D7%A9%D7%9B%D7%95%D7%A0%D7%AA-%D7%A8%D7%9E%D7%AA-%D7%90%D7%A4%D7%A2%D7%9C-%D7%94%D7%9E%D7%91%D7%95%D7%A7%D7%A9%D7%AA-%D7%A9%D7%9B%D7%95%D7%A0%D7%94-%D7%99/3093934387435685/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 12: Facebook – 5 rooms, TIME TOWER -->
+    <div class="listing-card src-facebook" data-rooms="5">
+      <div class="card-header">
+        <div class="card-title">להשכרה 5 חדרים – TIME TOWER, המעיין 3</div>
+        <span class="source-badge badge-facebook">פייסבוק</span>
+      </div>
+      <div class="card-address">המעיין 3, בורסת יהלומים, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">מחיר יוקרתי</span>
+        <span class="tag rooms">🛏 5 חדרים</span>
+        <span class="tag">קומה 23/36</span>
+        <span class="tag">135 מ"ר + מרפסת</span>
+        <span class="tag">TIME TOWER</span>
+      </div>
+      <a class="card-btn" href="https://www.facebook.com/KorenfeldGroup/videos/%D7%9C%D7%94%D7%A9%D7%9B%D7%A8%D7%94-%D7%91%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%91-time-tower-%D7%93%D7%99%D7%A8%D7%AA-5-%D7%97%D7%93%D7%A8%D7%99%D7%9D%D7%A8%D7%97-%D7%94%D7%9E%D7%A2%D7%99%D7%99%D7%9F-3-%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%91%D7%95%D7%A8%D7%A1%D7%AA-%D7%99%D7%94%D7%9C%D7%95%D7%9E%D7%99%D7%9D-135-%D7%9E%D7%A8-/489838131383071/" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+    <!-- Card 13: Homeless – 6 rooms, Villa, קרית קריניצי -->
+    <div class="listing-card src-homeless" data-rooms="5">
+      <div class="card-header">
+        <div class="card-title">וילה להשכרה 6 חדרים – קרית קריניצי, רמת גן</div>
+        <span class="source-badge badge-homeless">הומלס</span>
+      </div>
+      <div class="card-address">לייב יפה, קרית קריניצי, רמת גן</div>
+      <div class="card-tags">
+        <span class="tag price">₪10,500 / חודש</span>
+        <span class="tag rooms">🛏 6 חדרים</span>
+        <span class="tag">3 קומות</span>
+        <span class="tag">248 מ"ר</span>
+        <span class="tag">פרטי ללא תיווך</span>
+      </div>
+      <a class="card-btn" href="https://m.homeless.co.il/rent/viewad,714648.aspx" target="_blank" rel="noopener">לצפייה במודעה ←</a>
+    </div>
+
+  </div><!-- /listing-grid -->
+
+  <!-- SECTION 2: YAD2 -->
+  <div class="section-title yad2-section">חיפוש ביד2</div>
+  <div class="yad2-section">
+    <div class="yad2-card">
+      <div class="yad2-icon">🏠</div>
+      <div class="yad2-content">
+        <h3>יד2 – לוח הנדל"ן הגדול בישראל</h3>
+        <p>יד2 חוסמת גישה אוטומטית לתוצאות חיפוש. לחצו על הכפתור לחיפוש ישיר ועדכני של דירות להשכרה ברמת גן באתר יד2.</p>
+      </div>
+      <a class="yad2-btn" href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" rel="noopener">
+        🔍 יד2 חוסמת גישה אוטומטית. לחצו כאן לחיפוש ישיר באתר יד2
+      </a>
+    </div>
   </div>
-</section>
+
+</div><!-- /main -->
 
 <!-- FOOTER -->
 <footer>
-  <div>מקור: <a href="https://www.yad2.co.il/realestate/rent?topArea=2&area=3&city=8600&property=1" target="_blank">יד2</a> · <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">מדלן</a> · פייסבוק · נוצר אוטומטית על ידי Claude · 16 במרץ 2026</div>
-  <div style="margin-top:6px; color: #555566; font-size: 0.72rem;">המידע מבוסס על תוצאות חיפוש בזמן אמת. לפרטים מלאים ועדכניים בקרו באתרי המקור.</div>
+  <p>מקור: <a href="https://www.facebook.com/groups/253957624766723/" target="_blank">פייסבוק</a> · <a href="https://www.madlan.co.il/for-rent/%D7%A8%D7%9E%D7%AA-%D7%92%D7%9F-%D7%99%D7%A9%D7%A8%D7%90%D7%9C" target="_blank">מדלן</a> · <a href="https://www.homeless.co.il/Rent/city=%D7%A8%D7%9E%D7%AA%20%D7%92%D7%9F" target="_blank">הומלס</a> · <a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank">יד2</a></p>
+  <p style="margin-top:6px;">נוצר אוטומטית על ידי Claude · 16 במרץ 2026</p>
+  <p style="margin-top:6px; font-size:0.73rem;">המידע מוצג כפי שנמצא בחיפוש ועשוי להיות לא עדכני. יש לאמת ישירות מול המפרסמים.</p>
 </footer>
 
 <script>
   function filterCards(type, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    const cards = document.querySelectorAll('#listings-grid .listing-card');
-    let visible = 0;
-
+    const cards = document.querySelectorAll('.listing-card');
     cards.forEach(card => {
-      const rooms = parseInt(card.dataset.rooms) || 0;
-      let show = false;
-
+      const rooms = parseInt(card.dataset.rooms || '0');
       if (type === 'all') {
-        show = true;
-      } else if (type === '1-2') {
-        show = rooms >= 1 && rooms <= 2;
-      } else if (type === '3-4') {
-        show = rooms >= 3 && rooms <= 4;
-      } else if (type === '5plus') {
-        show = rooms >= 5;
-      }
-
-      if (show) {
         card.classList.remove('hidden');
-        visible++;
-      } else {
-        card.classList.add('hidden');
+      } else if (type === '1-2') {
+        card.classList.toggle('hidden', rooms > 2);
+      } else if (type === '3-4') {
+        card.classList.toggle('hidden', rooms < 3 || rooms > 4);
+      } else if (type === '5plus') {
+        card.classList.toggle('hidden', rooms < 5);
       }
     });
 
-    document.getElementById('visible-count').textContent = visible;
-
-    const emptyMsg = document.getElementById('empty-msg');
-    if (visible === 0) {
-      emptyMsg.classList.add('visible');
-    } else {
-      emptyMsg.classList.remove('visible');
-    }
+    // Update visible count
+    const visible = document.querySelectorAll('.listing-card:not(.hidden)').length;
+    document.querySelectorAll('.filter-btn.active')[0].textContent =
+      btn.textContent.replace(/\(\d+\)/, '') + '(' + visible + ')';
   }
 </script>
 
