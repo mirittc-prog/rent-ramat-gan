@@ -7,7 +7,6 @@
 import anthropic
 import os
 import sys
-import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -17,32 +16,13 @@ from datetime import datetime
 RECIPIENT_EMAIL = "mirit.tc@gmail.com"
 SENDER_EMAIL    = "miritronicohen@gmail.com"
 SITE_URL        = "https://mirittc-prog.github.io/rent-ramat-gan"
-
 DIGEST_TITLE    = "🏠 דירות להשכרה ברמת גן"
-CITY_CODE       = 8600   # קוד עיר יד2 עבור רמת גן
-MAX_LISTINGS    = 50     # מקסימום מודעות לשליפה
 # ────────────────────────────────────────────────────────────────────────────
 
 HEBREW_MONTHS = [
     "ינואר","פברואר","מרץ","אפריל","מאי","יוני",
     "יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"
 ]
-
-YAD2_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Referer": "https://www.yad2.co.il/realestate/rent",
-    "Origin": "https://www.yad2.co.il",
-    "sec-ch-ua": '"Chromium";v="122", "Not(A:Brand";v="24", "Google Chrome";v="122"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"macOS"',
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-site",
-    "Connection": "keep-alive",
-}
 
 
 def get_date_str():
@@ -60,59 +40,49 @@ def generate_html_with_search(client, date_str, issue):
     """מחפש מודעות ומייצר HTML בקריאה אחת עם web_search."""
     print("🔍 מחפש מודעות ומייצר דף HTML...")
 
-    prompt = f"""You have access to web search. Search for rental apartments in Ramat Gan, Israel.
-
-Run these searches:
-1. yad2.co.il "להשכרה" "רמת גן" דירה חדרים שקל
-2. madlan.co.il "להשכרה" "רמת גן" דירה
-
-RULES FOR LISTINGS:
-- Extract every rental listing detail you find: price, rooms, address, floor, sqm, date
-- For the listing link (href): use the most specific URL you found for that listing.
-  - If you have a direct listing URL (yad2.co.il/item/XXXXX) — use it
-  - If not, build a filtered search URL. For Yad2: https://www.yad2.co.il/realestate/rent?city=8600&rooms={rooms}
-  - For Madlan: https://www.madlan.co.il/for-rent/רמת-גן
-- Never show a generic category link as the only info — always include price or rooms in the card
-
-Then create a complete Hebrew HTML page with two sections:
-
-SECTION 1 — מודעות מיד2 ומדלן (all listings you found)
-SECTION 2 — קבוצות פייסבוק (static links, always shown):
-  - קבוצת "דירות להשכרה רמת גן": https://www.facebook.com/groups/dirot.ramat.gan
-  - קבוצת "דירות רמת גן": https://www.facebook.com/groups/ramtganrent
-  - חיפוש בפייסבוק: https://www.facebook.com/search/posts?q=להשכרה+רמת+גן+דירה
-
-Page requirements:
-- Full RTL HTML page, dir="rtl" lang="he"
-- Dark background: #0d0d14, cards: #1e1e2e with border #2a2a3e
-- Primary color: #4a9eff (blue), accent: #e94560 (red)
-- Sticky navbar: "{DIGEST_TITLE}" + {date_str}
-- Hero section: title "דירות להשכרה ברמת גן", issue #{issue}, stats (count of Section 1 listings, price range, average)
-- Filter tabs: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים (applies to Section 1)
-- Mobile-responsive cards
-- All CSS and JS embedded in one file
-
-For each listing in Section 1:
-- Title + address as clickable link (use best available URL per rules above)
-- Tags: price, rooms, floor (if available), sqm (if available)
-- Button "לצפייה במודעה ←" with the listing link
-- Source badge: "יד2" or "מדלן"
-- If it's a direct listing URL add badge "🔗 קישור ישיר", else add badge "🔍 חיפוש מסונן"
-- Badge "🆕 חדש!" if published today or yesterday
-
-For Section 2 (Facebook):
-- Section title: "🔵 קבוצות פייסבוק"
-- Show 3 cards, one per group above, each with a "לכניסה לקבוצה ←" button
-
-Page structure:
-1. Navbar (sticky)
-2. Hero with stats
-3. Filter tabs
-4. Section 1: listing cards
-5. Section 2: Facebook group cards
-6. Footer: "מקור: יד2 · מדלן · פייסבוק · נוצר אוטומטית על ידי Claude · {date_str}"
-
-Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
+    prompt = (
+        "You have access to web search. Search for rental apartments in Ramat Gan, Israel.\n\n"
+        "Run these searches:\n"
+        '1. yad2.co.il "להשכרה" "רמת גן" דירה חדרים שקל\n'
+        '2. madlan.co.il "להשכרה" "רמת גן" דירה\n'
+        '3. דירות להשכרה רמת גן 2026\n\n'
+        "RULES FOR LISTINGS:\n"
+        "- Extract every rental listing detail you find from search snippets: price, rooms, address, floor, sqm, date\n"
+        "- For the link: use the actual URL from search results. If it links to a specific listing page — great.\n"
+        "  If it links to a search page, that is also acceptable.\n"
+        "- Include ALL listings you find, even with partial data. More listings = better.\n\n"
+        "Then create a complete Hebrew HTML page with two sections:\n\n"
+        "SECTION 1 — מודעות מיד2 ומדלן (all listings you found)\n"
+        "SECTION 2 — קבוצות פייסבוק (static links, always shown):\n"
+        "  - קבוצת דירות להשכרה רמת גן: https://www.facebook.com/groups/dirot.ramat.gan\n"
+        "  - קבוצת דירות רמת גן: https://www.facebook.com/groups/ramtganrent\n"
+        "  - חיפוש בפייסבוק: https://www.facebook.com/search/posts?q=להשכרה+רמת+גן+דירה\n\n"
+        "Page requirements:\n"
+        "- Full RTL HTML page, dir=\"rtl\" lang=\"he\"\n"
+        "- Dark background: #0d0d14, cards: #1e1e2e with border #2a2a3e\n"
+        "- Primary color: #4a9eff (blue), accent: #e94560 (red)\n"
+        f"- Sticky navbar: \"{DIGEST_TITLE}\" + {date_str}\n"
+        f"- Hero section: title \"דירות להשכרה ברמת גן\", issue #{issue}, stats (count, price range, average)\n"
+        "- Filter tabs: הכל / 1-2 חדרים / 3-4 חדרים / 5+ חדרים (applies to Section 1)\n"
+        "- Mobile-responsive cards\n"
+        "- All CSS and JS embedded in one file\n\n"
+        "For each listing in Section 1:\n"
+        "- Title + address as clickable link\n"
+        "- Tags: price, rooms, floor (if available), sqm (if available)\n"
+        "- Button \"לצפייה במודעה ←\" with the listing link\n"
+        "- Source badge: \"יד2\" or \"מדלן\"\n\n"
+        "For Section 2 (Facebook):\n"
+        "- Section title: \"🔵 קבוצות פייסבוק\"\n"
+        "- Show 3 cards, one per group above, each with a \"לכניסה לקבוצה ←\" button\n\n"
+        "Page structure:\n"
+        "1. Navbar (sticky)\n"
+        "2. Hero with stats\n"
+        "3. Filter tabs\n"
+        "4. Section 1: listing cards\n"
+        "5. Section 2: Facebook group cards\n"
+        f"6. Footer: \"מקור: יד2 · מדלן · פייסבוק · נוצר אוטומטית על ידי Claude · {date_str}\"\n\n"
+        "Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."
+    )
 
     response = client.messages.create(
         model="claude-sonnet-4-6",
@@ -122,7 +92,6 @@ Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
     )
 
     html = ""
-    listing_count = 0
     for block in response.content:
         if hasattr(block, "text") and block.text:
             text = block.text
@@ -133,10 +102,9 @@ Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
                     html = text[start:end]
 
     if not html or "<!DOCTYPE" not in html:
-        print(f"❌ לא נוצר HTML תקין")
+        print("❌ לא נוצר HTML תקין")
         sys.exit(1)
 
-    # ספור כרטיסים כדי לדווח בנושא המייל
     listing_count = html.count('לצפייה במודעה')
     print(f"✅ HTML נוצר עם ~{listing_count} מודעות")
     return html, listing_count
@@ -163,7 +131,7 @@ def send_notification_email(date_str, issue, listing_count, app_password):
     <div style="padding:28px 32px;">
       <p style="font-size:16px;color:#333;line-height:1.6;">היי מירית! 👋</p>
       <p style="font-size:15px;color:#555;line-height:1.7;">
-        נמצאו <strong style="color:#4a9eff;">{listing_count} מודעות</strong> להשכרה ברמת גן ביד2 היום.
+        נמצאו <strong style="color:#4a9eff;">{listing_count} מודעות</strong> להשכרה ברמת גן היום.
       </p>
       <div style="text-align:center;margin:28px 0;">
         <a href="{SITE_URL}" style="background:#4a9eff;color:white;text-decoration:none;padding:14px 36px;border-radius:8px;font-size:16px;font-weight:bold;display:inline-block;">
@@ -171,7 +139,7 @@ def send_notification_email(date_str, issue, listing_count, app_password):
         </a>
       </div>
       <p style="font-size:13px;color:#999;border-top:1px solid #eee;padding-top:16px;margin-top:8px;">
-        מקור: יד2 · נשלח אוטומטית על ידי Claude · {date_str}<br>
+        מקור: יד2 · מדלן · פייסבוק · נשלח אוטומטית על ידי Claude · {date_str}<br>
         <a href="{SITE_URL}" style="color:#4a9eff;">{SITE_URL}</a>
       </p>
     </div>
