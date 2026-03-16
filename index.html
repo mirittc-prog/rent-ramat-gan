@@ -2,220 +2,180 @@
 <html dir="rtl" lang="he">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>דירות להשכרה ברמת גן</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0d0d14; color: #e0e0e0; font-family: 'Segoe UI', Arial, sans-serif; min-height: 100vh; direction: rtl; }
-  a { text-decoration: none; color: inherit; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d0d14;color:#e0e0e0;font-family:'Segoe UI',Arial,sans-serif;direction:rtl}
 
-  /* NAVBAR */
-  .navbar {
-    position: sticky; top: 0; z-index: 100;
-    background: #1e1e2e;
-    border-bottom: 1px solid #2a2a3e;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0.85rem 1.5rem;
-  }
-  .navbar-brand { font-size: 1.05rem; font-weight: 700; color: #4a9eff; }
-  .navbar-date { font-size: 0.9rem; color: #888; }
+.navbar{position:sticky;top:0;z-index:100;background:#0d0d14dd;backdrop-filter:blur(10px);
+  border-bottom:1px solid #2a2a3e;padding:14px 24px;
+  display:flex;justify-content:space-between;align-items:center}
+.navbar-title{color:#4a9eff;font-size:18px;font-weight:bold}
+.navbar-date{color:#888;font-size:13px}
 
-  /* HERO */
-  .hero {
-    background: linear-gradient(135deg, #1e1e2e 0%, #0d0d14 100%);
-    border-bottom: 1px solid #2a2a3e;
-    padding: 3rem 1.5rem 2.5rem;
-    text-align: center;
-  }
-  .hero h1 { font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-  .hero .subtitle { font-size: 1.05rem; color: #4a9eff; margin-bottom: 2rem; font-weight: 500; }
-  .stats { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-  .stat-box {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 12px;
-    padding: 1rem 1.6rem;
-    min-width: 130px;
-    text-align: center;
-  }
-  .stat-box .stat-value { font-size: 1.4rem; font-weight: 800; color: #4a9eff; }
-  .stat-box .stat-label { font-size: 0.78rem; color: #888; margin-top: 0.25rem; }
+.hero{text-align:center;padding:60px 20px 40px;
+  background:radial-gradient(ellipse at top,#0f3460 0%,#0d0d14 70%)}
+.hero h1{font-size:clamp(22px,5vw,38px);color:#4a9eff;margin-bottom:10px}
+.issue{color:#888;font-size:14px;margin-bottom:24px}
+.stats{display:inline-flex;gap:24px;background:#1e1e2e;
+  border:1px solid #2a2a3e;border-radius:12px;padding:16px 32px;flex-wrap:wrap;
+  justify-content:center}
+.stat{text-align:center}
+.stat-num{font-size:28px;font-weight:bold;color:#4a9eff}
+.stat-label{font-size:12px;color:#888;margin-top:4px}
 
-  /* FILTERS */
-  .filters-wrap { padding: 1.5rem 1.5rem 0.5rem; display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; }
-  .filter-tab {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 999px;
-    padding: 0.45rem 1.1rem;
-    font-size: 0.88rem;
-    cursor: pointer;
-    color: #e0e0e0;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
-  }
-  .filter-tab:hover { border-color: #4a9eff; color: #4a9eff; }
-  .filter-tab.active { background: #4a9eff; border-color: #4a9eff; color: #fff; font-weight: 700; }
+.filters{max-width:1200px;margin:32px auto 0;padding:0 20px;
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filters-label{color:#888;font-size:13px;margin-left:8px}
+.filter-btn{background:#1e1e2e;border:1px solid #2a2a3e;color:#aaa;
+  padding:8px 16px;border-radius:20px;cursor:pointer;font-size:13px;transition:all .2s}
+.filter-btn:hover{background:var(--c,#4a9eff);border-color:var(--c,#4a9eff);color:#fff}
+.filter-btn.active{background:var(--c,#4a9eff);border-color:var(--c,#4a9eff);color:#fff}
+.filter-btn[data-source="all"]{--c:#4a9eff;border-color:#4a9eff;color:#4a9eff}
 
-  /* GRID */
-  .grid-section { padding: 1.5rem; }
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
+.section{max-width:1200px;margin:32px auto;padding:0 20px}
+.section h2{color:#4a9eff;margin-bottom:20px;font-size:20px}
 
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 1rem;
-    color: #555;
-    grid-column: 1 / -1;
-  }
-  .empty-state .empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-  .empty-state p { font-size: 1.05rem; }
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;
+  display:flex;flex-direction:column;gap:12px;transition:border-color .2s}
+.card:hover{border-color:#4a9eff}
 
-  /* CARD */
-  .card {
-    background: #1e1e2e;
-    border: 1px solid #2a2a3e;
-    border-radius: 14px;
-    padding: 1.2rem;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .card:hover { transform: translateY(-3px); border-color: #4a9eff; }
-  .source-badge {
-    position: absolute;
-    top: 0.85rem;
-    left: 0.85rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.2rem 0.55rem;
-    border-radius: 999px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .badge-madlan { background: #27ae60; color: #fff; }
-  .badge-homeless { background: #e67e22; color: #fff; }
-  .badge-default { background: #555; color: #fff; }
-  .card-title { font-size: 0.98rem; font-weight: 700; color: #fff; padding-left: 4rem; line-height: 1.4; }
-  .card-address { font-size: 0.82rem; color: #888; }
-  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
-  .tag {
-    font-size: 0.78rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
-    border: 1px solid #2a2a3e;
-    color: #b0b0c0;
-    background: #0d0d14;
-  }
-  .tag-price { border-color: #4a9eff; color: #4a9eff; }
-  .tag-rooms { border-color: #e94560; color: #e94560; }
-  .card-btn {
-    margin-top: auto;
-    display: inline-block;
-    background: #4a9eff;
-    color: #fff;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.55rem 1rem;
-    border-radius: 8px;
-    text-align: center;
-    transition: background 0.2s;
-  }
-  .card-btn:hover { background: #2d7dd2; }
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:bold;color:#fff}
+.badge-grp{background:#2a2a3e;color:#aaa}
 
-  /* FOOTER */
-  footer {
-    text-align: center;
-    padding: 1.5rem 1rem;
-    font-size: 0.8rem;
-    color: #555;
-    border-top: 1px solid #2a2a3e;
-    margin-top: 2rem;
-  }
+.card-text{color:#ccc;font-size:14px;line-height:1.6;flex:1}
+.card-meta{display:flex;gap:8px;flex-wrap:wrap}
+.tag{background:#2a2a3e;color:#888;padding:3px 10px;border-radius:12px;font-size:12px}
+.tag-price{background:#0f3460;color:#4a9eff;font-weight:bold}
+
+.btn{display:block;text-align:center;background:#4a9eff;color:#fff;padding:11px;
+  border-radius:8px;text-decoration:none;font-weight:bold;font-size:14px;
+  transition:opacity .2s;margin-top:4px}
+.btn:hover{opacity:.85}
+
+.yad2-banner{max-width:1200px;margin:0 auto 32px;padding:0 20px}
+.yad2-box{background:#1e1e2e;border:1px solid #e94560;border-radius:12px;
+  padding:20px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  flex-wrap:wrap}
+.yad2-text{color:#e0e0e0;font-size:15px}
+.yad2-text strong{color:#e94560}
+
+.empty{text-align:center;padding:60px;color:#555}
+.empty span{font-size:48px;display:block;margin-bottom:12px}
+.empty p{font-size:15px}
+
+footer{text-align:center;padding:40px;color:#444;font-size:12px;
+  border-top:1px solid #2a2a3e;margin-top:40px}
+footer a{color:#4a9eff;text-decoration:none}
+
+@media(max-width:600px){
+  .stats{gap:16px}
+  .filter-btn{font-size:12px;padding:6px 12px}
+  .yad2-box{flex-direction:column}
+}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar">
-  <span class="navbar-brand">דירות להשכרה ברמת גן</span>
+  <span class="navbar-title">🏠 דירות להשכרה ברמת גן</span>
   <span class="navbar-date">16 במרץ 2026</span>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <h1>דירות להשכרה ברמת גן</h1>
-  <p class="subtitle">עדכון #2</p>
+<div class="hero">
+  <h1>🏠 דירות להשכרה ברמת גן</h1>
+  <div class="issue">עדכון #2 · 16 במרץ 2026 · 30 ימים אחרונים</div>
   <div class="stats">
-    <div class="stat-box">
-      <div class="stat-value">0 מודעות</div>
-      <div class="stat-label">סה״כ מודעות</div>
+    <div class="stat">
+      <div class="stat-num" style="color:#1877f2">13</div>
+      <div class="stat-label">פייסבוק</div>
     </div>
-    <div class="stat-box">
-      <div class="stat-value">₪0–₪0</div>
-      <div class="stat-label">טווח מחירים</div>
+    <div class="stat">
+      <div class="stat-num" style="color:#00c896">0</div>
+      <div class="stat-label">מדלן</div>
     </div>
-    <div class="stat-box">
-      <div class="stat-value">ממוצע ₪0</div>
-      <div class="stat-label">מחיר ממוצע</div>
+    <div class="stat">
+      <div class="stat-num" style="color:#ff6b35">18</div>
+      <div class="stat-label">הומלס</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">31</div>
+      <div class="stat-label">סה"כ</div>
     </div>
   </div>
-</section>
-
-<!-- FILTERS -->
-<div class="filters-wrap">
-  <button class="filter-tab active" data-filter="all">הכל</button>
-  <button class="filter-tab" data-filter="1-2">1-2 חדרים</button>
-  <button class="filter-tab" data-filter="3-4">3-4 חדרים</button>
-  <button class="filter-tab" data-filter="5+">5+ חדרים</button>
 </div>
 
-<!-- GRID -->
-<section class="grid-section">
-  <div class="card-grid" id="cardGrid">
-    <div class="empty-state">
-      <div class="empty-icon">🏠</div>
-      <p>אין מודעות להצגה כרגע</p>
-    </div>
+<div class="filters">
+  <span class="filters-label">סנן:</span>
+  <button class="filter-btn active" data-source="all" style="--c:#4a9eff" onclick="filterSource(this)">הכל</button>
+  <button class="filter-btn" data-source="facebook" onclick="filterSource(this)" style="--c:#1877f2">🔵 פייסבוק</button><button class="filter-btn" data-source="madlan" onclick="filterSource(this)" style="--c:#00c896">🏠 מדלן</button><button class="filter-btn" data-source="homeless" onclick="filterSource(this)" style="--c:#ff6b35">🏡 הומלס</button>
+</div>
+
+<div class="section">
+  <h2>📋 מודעות — 30 ימים אחרונים</h2>
+  <div class="grid" id="listings-grid"><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	מתחם נגבה	בהבעל שם טוב	3	5,380 ₪	02/01/2025	16/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪5,380</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/RentTivuch/viewad,83254.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	מרכז	הרצל	1	2,700 ₪	15/3/2026	16/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪2,700</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/RentTivuch/viewad,83338.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	הראשונים	שפירא	4	6	10,000 ₪	מיידי	01/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪10,000</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/rent/viewad,738159.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן		הרב אריה לוין	3	2	5,500 ₪	15/3/2026	02/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪5,500</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/rent/viewad,738175.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	קרית קריניצי / תל השומר	רועי קליין	3	3	6,700 ₪	מיידי	08/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,700</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/rent/viewad,738285.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	מתחם הבורסה	תובל	2	2	4,500 ₪	04/01/2026	11/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪4,500</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/rent/viewad,738321.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	נווה יהושע	האם	1	קרקע	3,300 ₪	מיידי	16/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪3,300</span><span class="tag">📍 רמת גן</span><span class="tag">📅 לאחרונה</span></div><a href="https://www.homeless.co.il/rent/viewad,690074.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת שכירות רמת גן</span></div><p class="card-text">להשכרה רמת גן – רחוב סביון 10
+דירת 2 חדרים משופצת ויפה
+ כ-50 מ”ר
+ קומה 3
+ דירה מוארת עם חלונות גדולים
+עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/647901439404148/posts/2023916715135940/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת שכירות רמת גן</span></div><p class="card-text">הבית החדש שלכם מחכה לכם!
+… עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/647901439404148/posts/2023918718469073/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת שכירות רמת גן</span></div><p class="card-text">הזדמנות נדירה בשכונת הגפן המבוקשת! 
+דירת חלומות מעוצבת – פשוט להביא מזוודות ולהיכנס!… עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/647901439404148/posts/2023918738469071/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות להשכרה ברמת גן</span></div><p class="card-text">להשכרה דירת 3.5 חדרים קומת קרקע בשכונת נווה יהושוע ברחוב :האם רחוב שקט מאוד.
+מיקום נוח קרוב לסופרים ומכולות
+תחבורה ציבורית לכל מקום
+מזגנים בכל חדר
+בעל הדירה אדיב מקשיב ועוזר.… עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/1870209196564360/posts/4262808770637712/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות להשכרה גוש דן</span></div><p class="card-text">מחפשים דירת גן ברמת גן? תעצרו רגע.
+בשיכון הוותיקים השקט והמבוקש –
+3 חדרים נעימים + גינה פרטית 
+ + חניה 
+בר… עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/253957624766723/posts/3431172387045215/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן והסביבה</span></div><p class="card-text">להשכרה ביד לבנים – דירה מקסימה ומשופצת!… עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/1774413905909921/posts/34937981619126389/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן והסביבה</span></div><p class="card-text">דירת 2.5 חדרים נעימה ומוארת ברחוב זבוטינסקי ברמת גן – מיקום מרכזי ונוח, עם כניסה שקטה שמבודדת את הרעש של הכביש הראשי
+לוקיישן מצוין:
+בקרבת סופר, בתי קפה ותחבורה ציבורית, רכבת קלה, ה</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/1774413905909921/posts/34937209652536919/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן</span></div><p class="card-text">להשכרה דירת 3 חדרים מרווחת במחיר מעודכן!
+ 4,900 ₪ בלבד.
+ רחוב שלם 35, קומה ג' (ללא מעלית)
+עוד</p><div class="card-meta"><span class="tag">📅 16/03/2026</span></div><a href="https://www.facebook.com/groups/1424244737803677/posts/4489353507959436/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן והסביבה</span></div><p class="card-text">דירות 4 חדרים חדשות מקבלן להשכרה ברמת גן – הזדמנות נדירה!
+ דירות אחרונות בבניין בוטיק חדש – מי שמחפש איכות חיים אמיתית חייב לראות את זה.… עוד</p><div class="card-meta"><span class="tag">📅 15/03/2026</span></div><a href="https://www.facebook.com/ramishawa320/posts/pfbid0GMMoQ6BQ6J6np2VqHYGVBtAaGyqqtUAcWtxztdvTHgDbWXnxV7e7ieFcU98AZm8Rl" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן והסביבה</span></div><p class="card-text">דירות 4 חדרים חדשות מקבלן להשכרה ברמת גן – הזדמנות נדירה!
+ דירות אחרונות בבניין בוטיק חדש – מי שמחפש איכות חיים אמיתית חייב לראות את זה.… עוד</p><div class="card-meta"><span class="tag">📅 15/03/2026</span></div><a href="https://www.facebook.com/groups/1774413905909921/posts/34935745966016621/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות להשכרה ברמת גן</span></div><p class="card-text">להשכרה במיקום מדהים ומבוקש ברחוב כצנלסון בשכונת פועלי הרכבת ליד כיכר נוח בגבעתיים 
+4 חדרים מרווחים כ-100 מ&quot;ר + משופצת מהיסוד הכל חדש (דייר ראשון 
+)
+מוארת במיוחד עם 3 כיווני אוויר 
+</p><div class="card-meta"><span class="tag">📅 15/03/2026</span></div><a href="https://www.facebook.com/groups/1870209196564360/posts/4261121674139755/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	מרכז	המעגל	4	2	7,000 ₪	מיידי	15/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪7,000</span><span class="tag">📍 רמת גן</span><span class="tag">📅 03/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738439.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	הראשונים	הראשונים	4	4	8,500 ₪	מיידי	15/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪8,500</span><span class="tag">📍 רמת גן</span><span class="tag">📅 03/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738347.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	תל גנים	לב הזהב	4.5	3	3,250 ₪	מיידי	13/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪3,250</span><span class="tag">📍 רמת גן</span><span class="tag">📅 03/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738421.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות רמת גן</span></div><p class="card-text">דירת חדר בגבעתיים.
+22 מר.
+3000₪ כולל כל החשבונות.
+לא קירות גבס!!!</p><div class="card-meta"><span class="tag">📅 10/03/2026</span></div><a href="https://www.facebook.com/groups/1424244737803677/posts/4495063980721722/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="facebook"><div class="badges"><span class="badge" style="background:#1877f2">פייסבוק</span><span class="badge badge-grp">קבוצת דירות להשכרה גוש דן</span></div><p class="card-text">ללא תיווך!
+להשכרה ברמת גן – רחוב הרא&quot;ה 158
+דירת 2 חדרים נעימה ומוארת, מתאימה ליחיד/ה או לזוג, במיקום מרכזי ונוח עם גישה מהירה לתחבורה, חנויות וסופר.
+פרטים:
+40 מ&quot;ר
+עוד</p><div class="card-meta"><span class="tag">📅 03/03/2026</span></div><a href="https://www.facebook.com/groups/253957624766723/posts/3418078645021256/" target="_blank" class="btn" style="background:#1877f2">לצפייה בפוסט ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">מקודמת 6,600 ₪ דירה להשכרה ברמת גן •  4 חדרים • 85 מ&quot;ר • קומה 8</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,600</span><span class="tag">🛏 4 חד'</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,737806.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">מקודמת 8,000 ₪ דירה להשכרה ברמת גן •  3 חדרים • 110 מ&quot;ר • קומה 5</p><div class="card-meta"><span class="tag tag-price">💰 ₪8,000</span><span class="tag">🛏 3 חד'</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,737947.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">מקודמת 6,200 ₪ דירה להשכרה ברמת גן • חשמונאים 3 חדרים • 63 מ&quot;ר • קומה קרקע</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,200</span><span class="tag">🛏 3 חד'</span><span class="tag">📍 חשמונאים</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738051.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	נווה יהושע	אריה בן אליעזר	3	4	6,100 ₪	01/01/2026	16/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,100</span><span class="tag">📍 רמת גן</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,737907.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	רמת עמידר	הרב לוין	2.5	1	5,000 ₪	04/01/2026	15/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪5,000</span><span class="tag">📍 רמת גן</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,737916.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	תל גנים	הפורצים	3	7	6,700 ₪	מיידי	09/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,700</span><span class="tag">📍 רמת גן</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738091.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן		קריניצי	3	5	6,930 ₪	מיידי	04/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪6,930</span><span class="tag">📍 רמת גן</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738238.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div><div class="card" data-source="homeless"><div class="badges"><span class="badge" style="background:#ff6b35">הומלס</span></div><p class="card-text">דירה	רמת גן	נווה יהושע	אריה בן אליעזר	1.5	3	3,350 ₪	מיידי	01/03/2026</p><div class="card-meta"><span class="tag tag-price">💰 ₪3,350</span><span class="tag">📍 רמת גן</span><span class="tag">📅 02/2026</span></div><a href="https://www.homeless.co.il/rent/viewad,738160.aspx" target="_blank" class="btn" style="background:#ff6b35">לצפייה במודעה ←</a></div></div>
+</div>
+
+<div class="yad2-banner">
+  <div class="yad2-box">
+    <div class="yad2-text">🔴 <strong>יד2</strong> — חיפוש ידני (חסום לגרידה אוטומטית)</div>
+    <a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" class="btn" style="background:#e94560;white-space:nowrap">
+      לחיפוש ביד2 ←
+    </a>
   </div>
-</section>
+</div>
 
-<section style="max-width:1200px;margin:48px auto;padding:0 20px;"><h2 style="color:#4a9eff;text-align:center;margin-bottom:24px;">🔵 קבוצות פייסבוק</h2><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;"><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות להשכרה ברמת גן</div><a href="https://www.facebook.com/groups/1870209196564360/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות רמת גן</div><a href="https://www.facebook.com/groups/1424244737803677/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת שכירות רמת גן</div><a href="https://www.facebook.com/groups/647901439404148/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות להשכרה גוש דן</div><a href="https://www.facebook.com/groups/253957624766723/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;"><div style="margin-bottom:10px;"><span style="background:#1877f2;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">🔵 פייסבוק</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:16px;">קבוצת דירות רמת גן והסביבה</div><a href="https://www.facebook.com/groups/1774413905909921/?sorting_setting=RECENT_ACTIVITY" target="_blank" style="display:block;text-align:center;background:#4a9eff;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לפוסטים החדשים ←</a></div></div></section><section style="max-width:420px;margin:0 auto 48px;"><div style="padding:0 20px;"><div style="background:#1e1e2e;border:1px solid #2a2a3e;border-radius:12px;padding:20px;text-align:center;"><div style="margin-bottom:10px;"><span style="background:#e94560;color:#fff;padding:3px 10px;border-radius:20px;font-size:12px;">יד2</span></div><div style="font-size:16px;font-weight:bold;color:#e0e0e0;margin-bottom:8px;">חיפוש דירות ביד2 — רמת גן</div><div style="font-size:13px;color:#888;margin-bottom:16px;">יד2 חוסמת גישה אוטומטית. לחצו לחיפוש ישיר.</div><a href="https://www.yad2.co.il/realestate/rent?city=8600" target="_blank" style="display:block;background:#e94560;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:bold;">לחיפוש ביד2 ←</a></div></div></section>
-
-<!-- FOOTER -->
 <footer>
-  מקור: פייסבוק · מדלן · יד2 · Claude · 16 במרץ 2026
+  מקור: פייסבוק · מדלן · הומלס · 16 במרץ 2026<br>
+  <a href="https://mirittc-prog.github.io/rent-ramat-gan">https://mirittc-prog.github.io/rent-ramat-gan</a>
 </footer>
 
 <script>
-  const tabs = document.querySelectorAll('.filter-tab');
-  const cards = document.querySelectorAll('.card');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-      cards.forEach(card => {
-        if (filter === 'all') {
-          card.style.display = '';
-          return;
-        }
-        const rooms = parseFloat(card.dataset.rooms);
-        let show = false;
-        if (filter === '1-2') show = rooms >= 1 && rooms <= 2;
-        else if (filter === '3-4') show = rooms >= 3 && rooms <= 4;
-        else if (filter === '5+') show = rooms >= 5;
-        card.style.display = show ? '' : 'none';
-      });
-    });
+function filterSource(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const s = btn.dataset.source;
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = (s === 'all' || c.dataset.source === s) ? '' : 'none';
   });
+}
 </script>
-
 </body>
 </html>
