@@ -66,14 +66,17 @@ Run these searches:
 1. yad2.co.il "להשכרה" "רמת גן" דירה חדרים שקל
 2. madlan.co.il "להשכרה" "רמת גן" דירה
 
-IMPORTANT RULES FOR LISTINGS:
-- Only include listings with a DIRECT URL to a specific listing page (e.g. yad2.co.il/item/XXXXX or madlan.co.il/listing/XXXXX)
-- Do NOT include links to search/category pages like yad2.co.il/realestate/rent or madlan.co.il/for-rent
-- If you cannot find the direct URL of a listing, skip it entirely
+RULES FOR LISTINGS:
+- Extract every rental listing detail you find: price, rooms, address, floor, sqm, date
+- For the listing link (href): use the most specific URL you found for that listing.
+  - If you have a direct listing URL (yad2.co.il/item/XXXXX) — use it
+  - If not, build a filtered search URL. For Yad2: https://www.yad2.co.il/realestate/rent?city=8600&rooms={rooms}
+  - For Madlan: https://www.madlan.co.il/for-rent/רמת-גן
+- Never show a generic category link as the only info — always include price or rooms in the card
 
 Then create a complete Hebrew HTML page with two sections:
 
-SECTION 1 — מודעות מיד2 ומדלן (listings you found with direct URLs)
+SECTION 1 — מודעות מיד2 ומדלן (all listings you found)
 SECTION 2 — קבוצות פייסבוק (static links, always shown):
   - קבוצת "דירות להשכרה רמת גן": https://www.facebook.com/groups/dirot.ramat.gan
   - קבוצת "דירות רמת גן": https://www.facebook.com/groups/ramtganrent
@@ -90,10 +93,11 @@ Page requirements:
 - All CSS and JS embedded in one file
 
 For each listing in Section 1:
-- Title + address as clickable link (MUST be direct listing URL)
+- Title + address as clickable link (use best available URL per rules above)
 - Tags: price, rooms, floor (if available), sqm (if available)
-- Button "לצפייה במודעה ←" linking directly to the listing
+- Button "לצפייה במודעה ←" with the listing link
 - Source badge: "יד2" or "מדלן"
+- If it's a direct listing URL add badge "🔗 קישור ישיר", else add badge "🔍 חיפוש מסונן"
 - Badge "🆕 חדש!" if published today or yesterday
 
 For Section 2 (Facebook):
