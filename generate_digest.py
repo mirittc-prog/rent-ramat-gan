@@ -53,17 +53,22 @@ def search_listings(client):
         tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 8}],
         messages=[{"role": "user", "content": (
             "Search for rental apartment listings in Ramat Gan, Israel. "
-            "Run these searches:\n"
+            "Include listings from the last month.\n"
+            "Run ALL these searches:\n"
             "1. madlan.co.il דירה להשכרה רמת גן\n"
             "2. homeless.co.il דירה להשכרה רמת גן\n"
             "3. winwin.co.il דירה להשכרה רמת גן\n"
             "4. komo.co.il דירה להשכרה רמת גן\n"
-            "5. דירה להשכרה רמת גן חדרים שקל 2026\n\n"
-            "For each listing found, extract: title, price (number), rooms (number), "
-            "address, date (YYYY-MM-DD or empty), source (site name), link (URL).\n\n"
+            "5. דירה להשכרה רמת גן חדרים שקל\n"
+            "6. madlan.co.il/listing רמת-גן\n"
+            "7. homeless.co.il/apartments/rent/ramat-gan\n\n"
+            "For each listing found, extract: title, price (number in ILS), rooms (number), "
+            "address, date (YYYY-MM-DD, very important — extract from search snippet), "
+            "source (site name), link (direct URL to listing).\n\n"
+            "Include as many listings as possible. Do not fabricate URLs.\n"
             "Return ONLY a JSON array. No text, no markdown. Example:\n"
-            '[{"title":"3 חדרים","price":6500,"rooms":3,"address":"ביאליק 5 רמת גן",'
-            '"date":"2026-03-10","source":"madlan","link":"https://..."}]\n\n'
+            '[{"title":"3 חדרים ברמת גן","price":6500,"rooms":3,"address":"ביאליק 5",'
+            '"date":"2026-02-20","source":"madlan","link":"https://www.madlan.co.il/listing/..."}]\n\n'
             "If nothing found, return: []"
         )}]
     )
