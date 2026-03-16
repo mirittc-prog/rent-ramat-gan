@@ -66,6 +66,8 @@ Search for:
 1. "דירות להשכרה רמת גן" yad2 OR madlan
 2. yad2.co.il apartments rent "רמת גן" 2026
 3. madlan.co.il דירות להשכרה רמת גן
+4. facebook.com "דירות להשכרה" "רמת גן" 2026
+5. "להשכרה רמת גן" פייסבוק קבוצה דירה חדרים
 
 Collect all rental listings you find. Then create a complete Hebrew HTML page.
 
@@ -90,7 +92,7 @@ Page structure:
 2. Hero with stats
 3. Filter tabs
 4. Listing cards sorted by date (newest first)
-5. Footer: "מקור: יד2/מדלן · נוצר אוטומטית על ידי Claude · {date_str}"
+5. Footer: "מקור: יד2 · מדלן · פייסבוק · נוצר אוטומטית על ידי Claude · {date_str}"
 
 If you find NO listings, show a friendly message with links to:
 - https://www.yad2.co.il/realestate/rent?city=8600
@@ -101,7 +103,7 @@ Return ONLY complete HTML from <!DOCTYPE html> to </html>, no other text."""
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=16000,
-        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 5}],
+        tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 8}],
         messages=[{"role": "user", "content": prompt}]
     )
 
